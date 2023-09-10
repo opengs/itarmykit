@@ -3,7 +3,11 @@
   "version": "0.0.1",
   "description": "IT Army Kit",
   "productName": "IT Army Kit",
-  "author": "slamy",
+  "author": {
+    "name": "slamy",
+    "email": "unknown@unknown.com",
+    "url": "https://github.com/opengs"
+  },
   "private": false,
   "license": "GPLv3",
   "repository": "https://github.com/opengs/itarmykit",
@@ -35,6 +39,8 @@
     "@typescript-eslint/parser": "^5.10.0",
     "autoprefixer": "^10.4.2",
     "electron": "^26.2.0",
+    "electron-builder": "^24.3.0",
+    "electron-packager": "^17.1.1",
     "eslint": "^8.10.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.19.1",
