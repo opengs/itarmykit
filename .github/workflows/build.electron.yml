@@ -9,7 +9,7 @@ on:
 jobs:
   build_for_linux:
     name: Build for linux
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -28,7 +28,7 @@ jobs:
           quasar build --mode electron --publish always -T linux
   build_for_windows:
     name: Build for windows
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
