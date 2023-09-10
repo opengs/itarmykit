@@ -220,8 +220,7 @@ module.exports = configure(function (/* ctx */) {
         },
 
         linux: {
-          target: 'deb',
-          arch: ['x64', 'arm64']
+          target: ['deb'],
         },
 
         appId: 'uacybershield.itarmykit',
