@@ -232,6 +232,7 @@ module.exports = configure(function (/* ctx */) {
           ],
         },
 
+        artifactName: '${name}-${os}-${arch}.${ext}',
         appId: 'uacybershield.itarmykit',
 
         publish: {

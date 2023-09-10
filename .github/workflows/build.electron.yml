@@ -46,7 +46,7 @@ jobs:
           sudo apt update
           sudo apt install -y wine32
           sudo snap install snapcraft --classic
-      - name: Build and release Windows 64bit and 32bit binaries 
+      - name: Build and release Windows binaries 
         env:
           GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
         run: |
