@@ -223,11 +223,11 @@ module.exports = configure(function (/* ctx */) {
           target: [
             {
               target: 'deb',
-              arch: ['x64', 'arm64', 'ia32']
+              arch: ['x64', 'arm64']
             },
             {
               target: 'AppImage',
-              arch: ['x64', 'arm64', 'ia32']
+              arch: ['x64', 'arm64']
             }
           ],
         },
