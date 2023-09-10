@@ -23,7 +23,7 @@ jobs:
           yarn install
       - name: Build and release Linux binaries
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
         run: |
           quasar build --mode electron --publish always -T linux
   build_for_windows:
@@ -48,6 +48,6 @@ jobs:
           sudo snap install snapcraft --classic
       - name: Build and release Windows 64bit and 32bit binaries 
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
         run: |
           quasar build --mode electron --publish always -T win32
