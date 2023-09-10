@@ -1,0 +1,53 @@
+name: Build and publish electron app
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build_for_linux:
+    name: Build for linux
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Install dependencies
+        run: |
+          rm -rf dist/
+          npm install -g @quasar/cli yarn --force
+          yarn install
+      - name: Build and release Linux binaries
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          quasar build --mode electron --publish always -T linux
+  build_for_windows:
+    name: Build for windows
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Install dependencies
+        run: |
+          rm -rf dist/
+          npm install -g @quasar/cli yarn --force
+          yarn install
+      - name: Install wine
+        run: |
+          sudo dpkg --add-architecture i386
+          sudo apt update
+          sudo apt install -y wine32
+          sudo snap install snapcraft --classic
+      - name: Build and release Windows 64bit and 32bit binaries 
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          quasar build --mode electron --publish always -T win
