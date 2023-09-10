@@ -206,7 +206,7 @@ module.exports = configure(function (/* ctx */) {
           target: [
             {
               target: 'nsis',
-              arch: ['x64', 'ia32']
+              arch: ['x64', 'ia32', 'arm64']
             }
           ]
         },
@@ -220,7 +220,16 @@ module.exports = configure(function (/* ctx */) {
         },
 
         linux: {
-          target: ['deb'],
+          target: [
+            {
+              target: 'deb',
+              arch: ['x64', 'arm64', 'ia32']
+            },
+            {
+              target: 'AppImage',
+              arch: ['x64', 'arm64', 'ia32']
+            }
+          ],
         },
 
         appId: 'uacybershield.itarmykit',
