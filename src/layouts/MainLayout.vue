@@ -56,7 +56,7 @@ const router = useRouter()
 
 const pages = [
   { name: 'dashboard', title: 'Dashboard', page: 'dashboard', icon: 'dashboard' },
-  { name: 'modules', title: 'DDOS modules', page: 'modules_active', icon: 'filter_none' },
+  { name: 'modules', title: 'DDOS modules', page: 'modules_active', icon: 'fa-solid fa-layer-group' },
   { name: 'settings', title: 'Settings', page: 'settings', icon: 'settings' },
   { name: 'developers', title: 'Developers', page: 'developers', icon: 'person' }
 ] as Array<{

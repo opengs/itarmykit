@@ -38,8 +38,8 @@ export class MHDDOSProxy extends Module<Config> {
       { name: 'mhddos_proxy_linux_arm64', arch: 'arm64', platform: 'linux' },
       { name: 'mhddos_proxy_linux_x86', arch: 'ia32', platform: 'linux' },
 
-      { name: 'mhddos_proxy_win', arch: 'x64', platform: 'win32' },
-      { name: 'mhddos_proxy_win_x86', arch: 'ia32', platform: 'win32' }
+      { name: 'mhddos_proxy_win.exe', arch: 'x64', platform: 'win32' },
+      { name: 'mhddos_proxy_win_x86.exe', arch: 'ia32', platform: 'win32' }
   ] as Array<{
     name: string;
     arch: "x64" | "arm64" | "ia32";
@@ -49,14 +49,7 @@ export class MHDDOSProxy extends Module<Config> {
 
 
   override async *installVersion (versionTag: string): AsyncGenerator<InstallProgress, void, void> {
-    const progressGenerator = this.installVersionFromGithub('porthole-ascend-cinnamon', 'mhddos_proxy_releases', versionTag, [
-      { name: 'mhddos_proxy_linux', arch: 'x64', platform: 'linux' },
-      { name: 'mhddos_proxy_linux_arm64', arch: 'arm64', platform: 'linux' },
-      { name: 'mhddos_proxy_linux_x86', arch: 'ia32', platform: 'linux' },
-
-      { name: 'mhddos_proxy_win', arch: 'x64', platform: 'win32' },
-      { name: 'mhddos_proxy_win_x86', arch: 'ia32', platform: 'win32' }
-    ])
+    const progressGenerator = this.installVersionFromGithub('porthole-ascend-cinnamon', 'mhddos_proxy_releases', versionTag, this.assetMapping)
 
     for await (const progress of progressGenerator) {
       yield progress
