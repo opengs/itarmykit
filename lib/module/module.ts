@@ -2,6 +2,9 @@ import { ChildProcessWithoutNullStreams, spawn } from 'child_process'
 import { EventEmitter } from 'stream'
 import path from 'path'
 import { app } from 'electron'
+import fs from 'fs'
+import fetch from 'electron-fetch'
+import decompress from 'decompress'
 
 export type ModuleName = 'DB1000N' | 'DISTRESS' | 'MHDDOS_PROXY'
 
@@ -113,15 +116,10 @@ export abstract class Module<ConfigType extends BaseConfig> {
     abstract getAllVersions(): Promise<Version[]>
     abstract installVersion(versionTag: string): AsyncGenerator<InstallProgress, void, void>
     public async uninstallVersion (versionTag: string): Promise<void> {
-      // Import here to make file compatible with frontend
-      const fs = (await import('fs')).promises
-      await fs.rmdir(path.join(this.installationDirectory, versionTag), { recursive: true })
+      await fs.promises.rmdir(path.join(this.installationDirectory, versionTag), { recursive: true })
     }
 
     protected async *installVersionFromGithub (owner: string, repo: string, tag: string, assetMapping: Array<{ name: string, arch: 'x64' | 'arm64' | 'ia32', platform: 'linux' | 'win32' | 'darwin' }>): AsyncGenerator<InstallProgress, void, void> {
-      // Import here to make file compatible with frontend
-      const fetch = await import('node-fetch')
-
         interface GithubRelease {
             assets: Array<{ name: string, browser_download_url: string }>
         }
@@ -129,7 +127,7 @@ export abstract class Module<ConfigType extends BaseConfig> {
         let release: GithubRelease
         try {
           console.log(`Fetching github release: https://api.github.com/repos/${owner}/${repo}/releases/tags/${tag}`)
-          const releaseResponse = await fetch.default(`https://api.github.com/repos/${owner}/${repo}/releases/tags/${tag}`)
+          const releaseResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}/releases/tags/${tag}`)
           if (releaseResponse.status !== 200) {
             yield { stage: 'FAILED', progress: 0, errorCode: InstallationErrorCodes.UNKNOWN, errorMessage: `Cant fetch github release: ${await releaseResponse.text()}` }
             return
@@ -180,13 +178,10 @@ export abstract class Module<ConfigType extends BaseConfig> {
     private githubReleaseCache = [] as { tag_name: string, name: string, body: string }[]
     private githubReleaseCacheTime?: Date
     protected async loadVersionsFromGithub (owner: string, repo: string): Promise<Version[]> {
-      // Import here to make file compatible with frontend
-      const fetch = await import('node-fetch')
-      const fs = (await import('fs')).promises
 
       const isVersionInstalled = async (tagName: string) => {
         return await new Promise<boolean>((resolve) => {
-          fs.access(path.join(this.installationDirectory, tagName))
+          fs.promises.access(path.join(this.installationDirectory, tagName))
             .then(() => resolve(true))
             .catch(() => resolve(false))
         })
@@ -194,7 +189,7 @@ export abstract class Module<ConfigType extends BaseConfig> {
 
       //Cache github releases for 5 minutes in order to ommit Gihub API rate limit
       if (this.githubReleaseCacheTime === undefined || this.githubReleaseCacheTime.getTime() + 5 * 60 * 1000 > new Date().getTime()) {
-        const response = await fetch.default(`https://api.github.com/repos/${owner}/${repo}/releases`)
+        const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/releases`)
         if (response.status !== 200) {
           throw new Error(`Cant fetch github releases: ${await response.text()}`)
         }
@@ -213,11 +208,7 @@ export abstract class Module<ConfigType extends BaseConfig> {
     }
 
     protected async *downloadFile (url: string, outPath: string): AsyncGenerator<{progress: number}, void, void> {
-      // Import here to make file compatible with frontend
-      const fetch = await import('node-fetch')
-      const fs = await import('fs')
-
-      const response = await fetch.default(url)
+      const response = await fetch(url)
       const fileStream = fs.createWriteStream(outPath)
       const contentLengthHeader = response.headers.get('content-length')
       if (contentLengthHeader == null) {
@@ -268,31 +259,27 @@ export abstract class Module<ConfigType extends BaseConfig> {
     }
 
     protected async extractArchive (archivePath: string, outPath: string, deleteSource = true): Promise<void> {
-      // Import here to make file compatible with frontend
-      const fs = (await import('fs')).promises
-      const decompress = (await import('decompress')).default
-
       try {
         const directoryExist = await new Promise<boolean>((resolve) => {
-          fs.access(outPath)
+          fs.promises.access(outPath)
             .then(() => resolve(true))
             .catch(() => resolve(false))
         })
         if (!directoryExist) {
-          await fs.mkdir(outPath, { recursive: true })
+          await fs.promises.mkdir(outPath, { recursive: true })
         }
 
         if (archivePath.endsWith('.zip') || archivePath.endsWith('.tar.gz')) {
           await decompress(archivePath, outPath)
         } else {
-          await fs.copyFile(archivePath, path.join(outPath, path.basename(archivePath)))
+          await fs.promises.copyFile(archivePath, path.join(outPath, path.basename(archivePath)))
           if (process.platform !== 'win32') {
-            await fs.chmod(path.join(outPath, path.basename(archivePath)), "775") // Make executable
+            await fs.promises.chmod(path.join(outPath, path.basename(archivePath)), "775") // Make executable
           }
         }
       } finally {
         if (deleteSource) {
-          await fs.unlink(archivePath)
+          await fs.promises.unlink(archivePath)
         }
       }
     }
@@ -373,25 +360,19 @@ export abstract class Module<ConfigType extends BaseConfig> {
     }
 
     protected async loadConfig (): Promise<void> {
-      // Import here to make file compatible with frontend
-      const fs = (await import('fs')).promises
-
       const configFilePath = path.join(this.installationDirectory, 'config.json')
       try {
-        const configDump = await fs.readFile(configFilePath, { encoding: 'utf-8' })
+        const configDump = await fs.promises.readFile(configFilePath, { encoding: 'utf-8' })
         const config = JSON.parse(configDump) as ConfigType
         this._config = config
       } catch (err) {}
     }
 
     protected async saveConfig(config: ConfigType): Promise<void> {
-      // Import here to make file compatible with frontend
-      const fs = (await import('fs')).promises
-
       const configDump = JSON.stringify(config)
       const configFilePath = path.join(this.installationDirectory, 'config.json')
 
-      await fs.mkdir(this.installationDirectory, { recursive: true })
-      await fs.writeFile(configFilePath, configDump, { encoding: 'utf-8' })
+      await fs.promises.mkdir(this.installationDirectory, { recursive: true })
+      await fs.promises.writeFile(configFilePath, configDump, { encoding: 'utf-8' })
     }
 }
