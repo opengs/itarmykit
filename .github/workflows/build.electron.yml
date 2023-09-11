@@ -23,6 +23,7 @@ jobs:
           yarn install
       - name: Build and release Linux binaries
         env:
+          EP_GH_IGNORE_TIME: true
           GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
         run: |
           quasar build --mode electron --publish always -T linux
@@ -48,6 +49,7 @@ jobs:
           sudo snap install snapcraft --classic
       - name: Build and release Windows binaries 
         env:
+          EP_GH_IGNORE_TIME: true
           GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
         run: |
           quasar build --mode electron --publish always -T win32
@@ -70,6 +72,7 @@ jobs:
           sudo npm install -g dmg-license
       - name: Build and release MacOS binaries
         env:
+          EP_GH_IGNORE_TIME: true
           GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
         run: |
           quasar build --mode electron --publish always -T darwin
