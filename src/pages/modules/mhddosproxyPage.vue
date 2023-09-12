@@ -33,13 +33,13 @@
             </q-item>
             <div class="row q-pt-sm">
                 <div class="col text-subtitle1">Copies</div>
-                <q-slider v-model="configCopies" :min="1" :max="32" :step="1" label color="primary" class="col-8 q-pr-md" @update:model-value="setConfigDebouced"/>
+                <q-slider v-model="configCopies" :min="1" :max="72" :step="1" label color="primary" class="col-8 q-pr-md" @update:model-value="setConfigDebouced"/>
                 <q-input outlined v-model="configCopies" type="number" dense class="col-2" @update:model-value="setConfigDebouced"/>
                 <div class="col-12 text-caption text-grey-8" style="margin-top: -15px;">Number of started processes (copies of the module)</div>
             </div>
             <div class="row q-pt-sm">
                 <div class="col text-subtitle1">Threads</div>
-                <q-slider v-model="configThreads" :min="1" :max="32" :step="1" label color="primary" class="col-8 q-pr-md" @update:model-value="setConfigDebouced"/>
+                <q-slider v-model="configThreads" :min="1000" :max="65535" :step="1" label color="primary" class="col-8 q-pr-md" @update:model-value="setConfigDebouced"/>
                 <q-input outlined v-model="configThreads" type="number" dense class="col-2" @update:model-value="setConfigDebouced"/>
                 <div class="col-12 text-caption text-grey-8" style="margin-top: -15px;">Number of threads runned per process</div>
             </div>
