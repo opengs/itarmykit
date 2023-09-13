@@ -5,26 +5,69 @@ import { WebContents, app, ipcMain } from 'electron'
 import { Distress } from "app/lib/module/distress";
 import { DB1000N } from "app/lib/module/db1000n";
 import { MHDDOSProxy } from "app/lib/module/mhddosproxy";
-import { ModuleExecutionErrorEventData, ModuleExecutionStdoutEventData, ModuleName } from "app/lib/module/module";
+import { ModuleExecutionErrorEventData, ModuleExecutionStatisticsEventData, ModuleExecutionStdoutEventData, ModuleName } from "app/lib/module/module";
 
 export interface ExecutionLogEntry {
     type: 'STARTED' | 'STOPPED' | 'ERROR'
-    timestamp: Date
+    moduleName: ModuleName
+    timestamp: number
     message: string
 }
 
-export interface Config {
+export interface State {
     moduleToRun?: ModuleName
     run: boolean
+
+    executionLog: Array<ExecutionLogEntry>
+    stdOut: Array<string>
+    stdErr: Array<string>
+    statistics: Array<ModuleExecutionStatisticsEventData>
 }
 
+
+
 export class ExecutionEngine {
-    private static configFilePath = path.join(app.getPath('appData'), 'UACyberShield', 'itarmykit', 'engine.config.json')
+    private static stateFilePath = path.join(app.getPath('appData'), 'UACyberShield', 'itarmykit', 'engine.state.json')
 
     private modules: Array<Distress | DB1000N | MHDDOSProxy> = []
     private runningModule: Distress | DB1000N | MHDDOSProxy | null
-    private config?: Config
+    private state?: State
 
+    private async appendToExecutionLog(entry: ExecutionLogEntry) {
+        const state = await this.getState()
+        state.executionLog.push(entry)
+        if (state.executionLog.length > 100) {
+            state.executionLog.shift()
+        }
+        await this.setState(state)
+    }
+
+    private async appendToStdOut(data: string) {
+        const state = await this.getState()
+        state.stdOut.push(data)
+        if (state.stdOut.length > 100) {
+            state.stdOut.shift()
+        }
+        await this.setState(state)
+    }
+
+    private async appendToStdErr(data: string) {
+        const state = await this.getState()
+        state.stdErr.push(data)
+        if (state.stdErr.length > 100) {
+            state.stdErr.shift()
+        }
+        await this.setState(state)
+    }
+
+    private async appendToStatistics(data: ModuleExecutionStatisticsEventData) {
+        const state = await this.getState()
+        state.statistics.push(data)
+        if (state.statistics.length > 100) {
+            state.statistics.shift()
+        }
+        await this.setState(state)
+    }
 
     constructor(modules: Array<Distress | DB1000N | MHDDOSProxy>) {
         this.modules = modules
@@ -39,11 +82,15 @@ export class ExecutionEngine {
                     }
                     alreadySended.add(listener)
 
-                    listener.send('executionEngine:executionLog', {
+                    const entry = {
                         type: 'STARTED',
-                        timestamp: new Date(),
+                        moduleName: module.name,
+                        timestamp: new Date().getTime(),
                         message: `Module ${module.name} started`
-                    } as ExecutionLogEntry)
+                    } as ExecutionLogEntry
+
+                    listener.send('executionEngine:executionLog', entry)
+                    void this.appendToExecutionLog(entry)
                 }
             })
             module.on('execution:stdout', (data) => {
@@ -55,6 +102,7 @@ export class ExecutionEngine {
                     alreadySended.add(listener)
 
                     listener.send('executionEngine:stdout', (data as ModuleExecutionStdoutEventData).data)
+                    void this.appendToStdOut((data as ModuleExecutionStdoutEventData).data)
                 }
             })
             module.on('execution:stderr', (data) => {
@@ -66,6 +114,7 @@ export class ExecutionEngine {
                     alreadySended.add(listener)
 
                     listener.send('executionEngine:stderr', (data as ModuleExecutionStdoutEventData).data)
+                    void this.appendToStdErr((data as ModuleExecutionStdoutEventData).data)
                 }
             })
             module.on('execution:stopped', () => {
@@ -76,11 +125,15 @@ export class ExecutionEngine {
                     }
                     alreadySended.add(listener)
 
-                    listener.send('executionEngine:executionLog', {
+                    const entry = {
                         type: 'STOPPED',
-                        timestamp: new Date(),
+                        moduleName: module.name,
+                        timestamp: new Date().getTime(),
                         message: `Module ${module.name} stopped`
-                    } as ExecutionLogEntry)
+                    } as ExecutionLogEntry
+
+                    listener.send('executionEngine:executionLog', entry)
+                    void this.appendToExecutionLog(entry)
                 }
             })
             module.on('execution:error', (error) => {
@@ -91,11 +144,27 @@ export class ExecutionEngine {
                     }
                     alreadySended.add(listener)
 
-                    listener.send('executionEngine:executionLog', {
+                    const entry = {
                         type: 'ERROR',
-                        timestamp: new Date(),
+                        moduleName: module.name,
+                        timestamp: new Date().getTime(),
                         message: `Module ${module.name} error: ${(error as ModuleExecutionErrorEventData).error}`
-                    } as ExecutionLogEntry)
+                    } as ExecutionLogEntry
+
+                    listener.send('executionEngine:executionLog', entry)
+                    void this.appendToExecutionLog(entry)
+                }
+            })
+            module.on('execution:statistics', (data) => {
+                const alreadySended = new Set<WebContents>()
+                for (const listener of this.statisticsListeners) {
+                    if (alreadySended.has(listener)) {
+                        continue
+                    }
+                    alreadySended.add(listener)
+
+                    listener.send('executionEngine:statistics', data as ModuleExecutionStatisticsEventData)
+                    void this.appendToStatistics(data as ModuleExecutionStatisticsEventData)
                 }
             })
         }
@@ -106,10 +175,12 @@ export class ExecutionEngine {
             throw new Error(`Module ${this.runningModule.name} is already running`)
         }
         
-        const config = await this.getConfig()
+        const config = await this.getState()
         const moduleName = config.moduleToRun
         config.run = true
-        await this.setConfig(config)
+        config.stdOut = []
+        config.stdErr = []
+        await this.setState(config)
 
         const module = this.modules.find(m => m.name === moduleName)
         if (!module) {
@@ -125,9 +196,9 @@ export class ExecutionEngine {
             await this.runningModule.stop()
             this.runningModule = null
 
-            const config = await this.getConfig()
+            const config = await this.getState()
             config.run = false
-            await this.setConfig(config)
+            await this.setState(config)
         }
     }
 
@@ -135,24 +206,24 @@ export class ExecutionEngine {
         await this.stopModule()
     }
 
-    public async getConfig(): Promise<Config> {
-        if (this.config === undefined) {
+    public async getState(): Promise<State> {
+        if (this.state === undefined) {
             try {
-                const configString = await fs.promises.readFile(ExecutionEngine.configFilePath, 'utf8')
-                this.config = JSON.parse(configString) as Config
+                const configString = await fs.promises.readFile(ExecutionEngine.stateFilePath, 'utf8')
+                this.state = JSON.parse(configString) as State
             } catch {
-                this.config = { run: false } // To enable TS types
-                this.setConfig(this.config)
+                this.state = { run: false, executionLog: [] ,statistics: [], stdErr: [], stdOut: [] } // To enable TS types
+                this.setState(this.state)
             }
         }
 
-        return this.config
+        return this.state
     }
 
-    public async setConfig(config: Config) {
-        this.config = config
-        await fs.promises.mkdir(path.dirname(ExecutionEngine.configFilePath), { recursive: true })
-        await fs.promises.writeFile(ExecutionEngine.configFilePath, JSON.stringify(config))
+    public async setState(config: State) {
+        this.state = config
+        await fs.promises.mkdir(path.dirname(ExecutionEngine.stateFilePath), { recursive: true })
+        await fs.promises.writeFile(ExecutionEngine.stateFilePath, JSON.stringify(config))
     }
 
     private executionLogListeners = [] as Array<WebContents>
@@ -187,6 +258,17 @@ export class ExecutionEngine {
             this.stdErrListeners.splice(index, 1)
         }
     }
+
+    private statisticsListeners = [] as Array<WebContents>
+    public startListeningForStatistics(webContents: WebContents) {
+        this.statisticsListeners.push(webContents)
+    }
+    public stopListeningForStatistics(webContents: WebContents) {
+        const index = this.statisticsListeners.indexOf(webContents)
+        if (index !== -1) {
+            this.statisticsListeners.splice(index, 1)
+        }
+    }
 }
 
 export function handleExecutionEngine(modules: Array<Distress | DB1000N | MHDDOSProxy>) {
@@ -204,12 +286,14 @@ export function handleExecutionEngine(modules: Array<Distress | DB1000N | MHDDOS
         await engine.stopModule()
     })
 
-    ipcMain.handle('executionEngine:getConfig', async () => {
-        return await engine.getConfig()
+    ipcMain.handle('executionEngine:getState', async () => {
+        return await engine.getState()
     })
 
-    ipcMain.handle('executionEngine:setConfig', async (_e, config: Config) => {
-        await engine.setConfig(config)
+    ipcMain.handle('executionEngine:setModuleToRun', async (_e, module?: ModuleName) => {
+        const state = await engine.getState()
+        state.moduleToRun = module
+        await engine.setState(state)
     })
 
     ipcMain.handle('executionEngine:listenForExecutionLog', async (e) => {
@@ -231,5 +315,12 @@ export function handleExecutionEngine(modules: Array<Distress | DB1000N | MHDDOS
     })
     ipcMain.handle('executionEngine:stopListeningForStdErr', async (e) => {
         engine.stopListeningForStdErr(e.sender)
+    })
+
+    ipcMain.handle('executionEngine:listenForStatistics', async (e) => {
+        engine.startListeningForStatistics(e.sender)
+    })
+    ipcMain.handle('executionEngine:stopListeningForStatistics', async (e) => {
+        engine.stopListeningForStatistics(e.sender)
     })
 }

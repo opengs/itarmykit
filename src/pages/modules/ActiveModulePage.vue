@@ -45,24 +45,27 @@ const executionLog = ref("")
 const stdOUT = ref("")
 const stdERR = ref("")
 
-async function loadConfig() {
-    const executionEngineConfig = await window.executionEngineAPI.getConfig()
-    moduleEnabled.value = executionEngineConfig.run
-    selectedModule.value = executionEngineConfig.moduleToRun || null
+async function loadState() {
+    const executionEngineState = await window.executionEngineAPI.getState()
+    moduleEnabled.value = executionEngineState.run
+    selectedModule.value = executionEngineState.moduleToRun || null
+
+    executionLog.value = executionEngineState.executionLog.map((e) => JSON.stringify(e) + "\n").join("")
+    stdOUT.value = executionEngineState.stdOut.join("")
+    stdERR.value = executionEngineState.stdErr.join("")
 }
 
 const setConfigDebounce = debounce(setConfig, 1000)
 async function setConfig() {
-    await window.executionEngineAPI.setConfig({
-        run: moduleEnabled.value,
-        moduleToRun: selectedModule.value || undefined
-    })
+    await window.executionEngineAPI.setModuleToRun(selectedModule.value || undefined)
 }
 
 async function setModuleEnabled(enable: boolean) {
     moduleEnabled.value = enable
     if (enable) {
         await window.executionEngineAPI.startModule()
+        stdOUT.value = ""
+        stdERR.value = ""
     } else {
         await window.executionEngineAPI.stopModule()
     }
@@ -94,7 +97,7 @@ onMounted(async () => {
     window.executionEngineAPI.listenForExecutionLog(onExecutionLog)
     window.executionEngineAPI.listenForStdOut(onStdOut)
     window.executionEngineAPI.listenForStdErr(onStdErr)
-    await loadConfig()
+    await loadState()
 })
 
 onUnmounted(() => {

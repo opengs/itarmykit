@@ -1,5 +1,5 @@
 import { ChildProcessWithoutNullStreams, spawn } from 'child_process'
-import { EventEmitter } from 'stream'
+import internal, { EventEmitter } from 'stream'
 import path from 'path'
 import { app } from 'electron'
 import fs from 'fs'
@@ -56,7 +56,12 @@ export interface BaseConfig {
 export type ModuleExecutionEvent = 'execution:statistics' | 'execution:stdout' | 'execution:stderr' | 'execution:error' | 'execution:started' | 'execution:stopped'
 export interface ModuleExecutionStatisticsEventData {
     type: 'execution:statistics';
-    reqeustsMade: number;
+    // Total number of bytes currently sending per second
+    currentSendBitrate: number
+    // Number of bytes sent since last event
+    bytesSend: number
+    // When the statistics were collected
+    timestamp: number
 }
 export interface ModuleExecutionStdoutEventData {
     type: 'execution:stdout';
@@ -222,16 +227,17 @@ export abstract class Module<ConfigType extends BaseConfig> {
       if (response.body == null) {
         throw new Error('Response body is null')
       }
-      response.body.pipe(fileStream)
+      const body = response.body as internal.Readable
+      body.pipe(fileStream)
 
       const e = new EventEmitter()
 
-      response.body.on('data', (chunk) => {
+      body.on('data', (chunk) => {
         downloadedBytes += chunk.length
         e.emit('progress', downloadedBytes / contentLength * 100)
       })
 
-      response.body.on('error', (err: any) => {
+      body.on('error', (err: any) => {
         e.emit('err', err)
       })
 

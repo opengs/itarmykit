@@ -68,6 +68,7 @@ export class DB1000N extends Module<Config> {
     const handler = await this.startExecutable(executableName, args)
 
     // Process statistics
+    let lastStatisticsEvent = null as Date | null
     let statisticsBuffer = ''
     handler.stderr.on('data', (data: Buffer) => {
       statisticsBuffer += data.toString()
@@ -82,6 +83,32 @@ export class DB1000N extends Module<Config> {
       for (const line of lines) {
         try {
           const lineJSON = JSON.parse(line)
+          if (lineJSON["msg"] !== "stats") {
+            continue
+          }
+
+          const bytesSend = lineJSON["total"]["bytes_sent"]
+          if (bytesSend === undefined) {
+            continue
+          }
+          let currentSendBitrate = 0
+          if (lastStatisticsEvent == null) {
+            lastStatisticsEvent = new Date()
+          } else {
+            const now = new Date()
+            const timeDiff = (now.getTime() - lastStatisticsEvent.getTime()) / 1000.0
+            if (timeDiff > 0) {
+              currentSendBitrate = bytesSend * 1.0 / timeDiff
+            }
+            lastStatisticsEvent = now
+          }
+
+          this.emit('execution:statistics', {
+            type: 'execution:statistics',
+            bytesSend: Number(bytesSend),
+            currentSendBitrate,
+            timestamp: new Date().getTime()
+          })
           //TODO: extract statistics
         } catch (e) {
           console.error(String(e) + '\n' + line)

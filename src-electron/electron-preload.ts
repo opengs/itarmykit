@@ -31,7 +31,7 @@
 import { Config as DistressConfig } from 'app/lib/module/distress'
 import { Config as MHDDOSProxyConfig } from 'app/lib/module/mhddosproxy'
 import { Config as DB1000NConfig } from 'app/lib/module/db1000n'
-import { InstallProgress, ModuleName, Version } from 'app/lib/module/module'
+import { InstallProgress, ModuleExecutionStatisticsEventData, ModuleName, Version } from 'app/lib/module/module'
 import { IpcRendererEvent, contextBridge, ipcRenderer } from 'electron'
 
 declare global {
@@ -70,7 +70,7 @@ const modulesAPI = {
 }
 contextBridge.exposeInMainWorld('modulesAPI', modulesAPI)
 
-import { Config as ExecutionEngineConfig, ExecutionLogEntry } from './handlers/engine'
+import { State as ExecutionEngineState, ExecutionLogEntry } from './handlers/engine'
 
 declare global {
   interface Window {
@@ -85,11 +85,11 @@ const executionEngineAPI = {
   async stopModule (): Promise<void> {
     return await ipcRenderer.invoke('executionEngine:stopModule')
   },
-  async getConfig (): Promise<ExecutionEngineConfig> {
-    return await ipcRenderer.invoke('executionEngine:getConfig')
+  async getState (): Promise<ExecutionEngineState> {
+    return await ipcRenderer.invoke('executionEngine:getState')
   },
-  async setConfig (config: ExecutionEngineConfig): Promise<void> {
-    return await ipcRenderer.invoke('executionEngine:setConfig', config)
+  async setModuleToRun (module?: ModuleName): Promise<void> {
+    return await ipcRenderer.invoke('executionEngine:setModuleToRun', module)
   },
   async listenForExecutionLog (callback: (_e: IpcRendererEvent, data: ExecutionLogEntry) => void): Promise<void> {
     await ipcRenderer.invoke('executionEngine:listenForExecutionLog')
@@ -114,6 +114,14 @@ const executionEngineAPI = {
   async stopListeningForStdErr (callback: (_e: IpcRendererEvent, data: string) => void): Promise<void> {
     await ipcRenderer.invoke('executionEngine:stopListeningForStdErr')
     ipcRenderer.off('executionEngine:stderr', callback)
+  },
+  async listenForStatistics (callback: (_e: IpcRendererEvent, data: ModuleExecutionStatisticsEventData) => void): Promise<void> {
+    await ipcRenderer.invoke('executionEngine:listenForStatistics')
+    ipcRenderer.on('executionEngine:statistics', callback)
+  },
+  async stopListeningForStatistics (callback: (_e: IpcRendererEvent, data: ModuleExecutionStatisticsEventData) => void): Promise<void> {
+    await ipcRenderer.invoke('executionEngine:stopListeningForStatistics')
+    ipcRenderer.off('executionEngine:statistics', callback)
   }
 }
 
