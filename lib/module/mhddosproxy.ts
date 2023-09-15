@@ -60,7 +60,7 @@ export class MHDDOSProxy extends Module<Config> {
     const config = await this.getConfig()
 
     const args = [] as string[]
-    args.push('--no-updates', '--json-logs')
+    args.push('--no-updates')
     args.push('--copies', config.copies.toString())
     args.push('--threads', config.threads.toString())
     args.push(...config.executableArguments.filter(arg => arg !== ''))
