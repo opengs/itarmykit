@@ -58,6 +58,7 @@ const pages = [
   { name: 'dashboard', title: 'Dashboard', page: 'dashboard', icon: 'dashboard' },
   { name: 'modules', title: 'DDOS modules', page: 'modules_active', icon: 'fa-solid fa-layer-group' },
   { name: 'settings', title: 'Settings', page: 'settings', icon: 'settings' },
+  { name: 'top', title: 'Leaderboard', page: 'top', icon: 'leaderboard' },
   { name: 'developers', title: 'Developers', page: 'developers', icon: 'person' }
 ] as Array<{
   name: string

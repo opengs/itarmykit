@@ -10,7 +10,8 @@ const routes: RouteRecordRaw[] = [
       { path: '/modules/db1000n', name: 'modules_db1000n', component: () => import('pages/modules/db100nPage.vue') },
       { path: '/modules/mhddosproxy', name: 'modules_mhddosproxy', component: () => import('pages/modules/mhddosproxyPage.vue') },
       { path: '/modules/distress', name: 'modules_distress', component: () => import('pages/modules/distressPage.vue') },
-      { path: '/settings', name: 'settings', component: () => import('pages/SettingsPage.vue') }
+      { path: '/settings', name: 'settings', component: () => import('pages/SettingsPage.vue') },
+      { path: '/top', name: 'top', component: () => import('pages/top/TopPage.vue') }
     ]
   },
 
