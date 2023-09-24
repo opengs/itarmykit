@@ -23,6 +23,7 @@
     "apexcharts": "^3.42.0",
     "decompress": "^4.2.1",
     "electron-fetch": "^1.9.1",
+    "electron-updater": "^6.1.4",
     "node-fetch": "^3.3.2",
     "pinia": "^2.0.11",
     "quasar": "^2.6.0",

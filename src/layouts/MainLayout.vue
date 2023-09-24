@@ -15,7 +15,7 @@
         <q-toolbar-title>
         </q-toolbar-title>
 
-        <div>v{{ $q.version }}</div>
+        <div>v{{ version }}</div>
       </q-toolbar>
     </q-header>
 
@@ -51,6 +51,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { version } from '../../package.json'
+
 
 const router = useRouter()
 

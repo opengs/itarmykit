@@ -4,6 +4,7 @@ import { MHDDOSProxy } from 'app/lib/module/mhddosproxy'
 import { handleModules } from './modules'
 import { handleExecutionEngine } from './engine'
 import { handleTop } from './top'
+import { handleUpdater } from './updater'
 
 export function handle () {
   const modules = [
@@ -15,4 +16,5 @@ export function handle () {
   handleModules(modules)
   handleExecutionEngine(modules)
   handleTop()
+  handleUpdater()
 }
