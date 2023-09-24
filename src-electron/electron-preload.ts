@@ -71,7 +71,7 @@ const modulesAPI = {
 contextBridge.exposeInMainWorld('modulesAPI', modulesAPI)
 
 import { State as ExecutionEngineState, ExecutionLogEntry } from './handlers/engine'
-import { WeeklyTopData } from './handlers/top'
+import { TopData } from './handlers/top'
 
 declare global {
   interface Window {
@@ -135,7 +135,7 @@ declare global {
 }
 
 const topAPI = {
-  async getWeeklyTop (): Promise<WeeklyTopData> {
+  async getWeeklyTop (): Promise<TopData> {
     return await ipcRenderer.invoke('top:getWeeklyTop')
   },
 }

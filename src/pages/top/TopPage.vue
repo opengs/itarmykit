@@ -1,20 +1,51 @@
 <template>
     <q-page padding>
         <div class="text-h4 text-center text-bold q-mb-md">TOP USERS</div>
-        <q-table
-        flat
-        bordered
+        <q-tabs
+            v-model="activeTab"
             dense
-            :columns="columns"
-            :rows="top"
-            hide-pagination
-            :pagination="{rowsPerPage: 100}"
-        ></q-table>
+        >
+            <q-tab name="weekly" label="This week" />
+            <q-tab name="monthly" label="This month" />
+        </q-tabs>
+
+        <q-separator class="q-mb-sm"/>
+
+        <q-tab-panels v-model="activeTab" animated class="bg-transparent">
+            <q-tab-panel name="weekly" class="bg-transparent">
+                <q-table
+                    class="bg-transparent"
+                    flat
+                    
+                    dense
+                    :columns="columns"
+                    :rows="topWeek"
+                    hide-pagination
+                    :pagination="{rowsPerPage: 100}"
+                />
+            </q-tab-panel>
+            <q-tab-panel name="monthly" class="bg-transparent">
+                <q-table
+                    class="bg-transparent"
+                    flat
+                    
+                    dense
+                    :columns="columns"
+                    :rows="topMonth"
+                    hide-pagination
+                    :pagination="{rowsPerPage: 100}"
+                />
+            </q-tab-panel>
+        </q-tab-panels>
+
     </q-page>
 </template>
 
 <script setup lang="ts">
+import { QTableColumn } from 'quasar';
 import { ref, onMounted } from 'vue'
+
+const activeTab = ref('weekly')
 
 function humanBytesString(bytes: number, dp=1) {
   const thresh = 1000;
@@ -40,9 +71,15 @@ const columns = [
     {'name': "Traffic", 'field': (row) => humanBytesString(row.traffic), 'align': "left", 'label': "Traffic", 'sortable': false},
     {'name': "Name", 'field': "name", 'align': "left", 'label': "Name", 'sortable': false},
     {'name': "Servers", 'field': "servers", 'align': "left", 'label': "Servers", 'sortable': false}
-]
+] as Array<QTableColumn>
 
-const top = ref([] as Array<{
+const topWeek = ref([] as Array<{
+    traffic: number
+    name: string
+    servers: number
+}>)
+
+const topMonth = ref([] as Array<{
     traffic: number
     name: string
     servers: number
@@ -50,11 +87,17 @@ const top = ref([] as Array<{
 
 async function loadTop() {
     const weeklyTop = await window.topAPI.getWeeklyTop()
-    console.log(weeklyTop)
-    console.log(weeklyTop.data.items)
-    top.value = []
-    for (const entry of weeklyTop.data.items) {
-        top.value.push({
+    topWeek.value = []
+    for (const entry of weeklyTop.data.week_stats.items) {
+        topWeek.value.push({
+            traffic: entry.traffic,
+            name: entry.user_name,
+            servers: entry.servers_count
+        })
+    }
+    topMonth.value = []
+    for (const entry of weeklyTop.data.month_stats.items) {
+        topMonth.value.push({
             traffic: entry.traffic,
             name: entry.user_name,
             servers: entry.servers_count
