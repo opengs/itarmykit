@@ -74,6 +74,73 @@ export class MHDDOSProxy extends Module<Config> {
     }
 
     const handler = await this.startExecutable(filename, args)
+
+    // Process statistics
+    let lastStatisticsEvent = null as Date | null
+    let statisticsBuffer = ''
+    handler.stderr.on('data', (data: Buffer) => {
+      statisticsBuffer += data.toString()
+
+      const lines = statisticsBuffer.trimEnd().split('\n')
+      if (statisticsBuffer.endsWith('\n')) {
+        statisticsBuffer = ''
+      } else {
+        statisticsBuffer = lines.pop() as string
+      }
+
+      for (const line of lines) {
+        try {
+          // Sample line: [19:26:37 - INFO] Потужність: 77.3%, З'єднань: 2, Пакети: 12.00/s, Трафік: 70.49 kBit/s
+          if (!line.includes("Трафік") || !line.includes("Пакети") || !line.includes("Потужність")) {
+            continue
+          }
+
+          let bytesSend = 0
+          let currentSendBitrate = 0
+
+          const convertToBytes = (value: string): number => {
+            value = value.toLowerCase()
+            
+            if (value.includes("kb")) {
+              return Number(value.split(" ")[0]) * 1024
+            } else if (value.includes("mb")) {
+              return Number(value.split(" ")[0]) * 1024 * 1024
+            } else if (value.includes("gb")) {
+              return Number(value.split(" ")[0]) * 1024 * 1024 * 1024
+            } else if (value.includes("tb")) {
+              return Number(value.split(" ")[0]) * 1024 * 1024 * 1024 * 1024
+            } else if (value.includes("pb")) {
+              return Number(value.split(" ")[0]) * 1024 * 1024 * 1024 * 1024 * 1024
+            } else if (value.includes("eb")) {
+              return Number(value.split(" ")[0]) * 1024 * 1024 * 1024 * 1024 * 1024 * 1024
+            } else {
+              return Number(value.split(" ")[0])
+            }
+          }
+
+          const msg = line.split("Трафік:")[1].trim()
+          currentSendBitrate = convertToBytes(msg)
+
+          if (lastStatisticsEvent != null) {
+            const now = new Date()
+            const timeDiff = (now.getTime() - lastStatisticsEvent.getTime()) / 1000.0
+            if (timeDiff > 0) {
+              bytesSend = currentSendBitrate * timeDiff
+            }
+          }
+          lastStatisticsEvent = new Date()
+
+          this.emit('execution:statistics', {
+            type: 'execution:statistics',
+            bytesSend: bytesSend,
+            currentSendBitrate,
+            timestamp: new Date().getTime()
+          })
+        } catch (e) {
+          console.error(String(e) + '\n' + line)
+        }
+      }
+    })
   }
   override async stop (): Promise<void> {
     this.stopExecutable()
