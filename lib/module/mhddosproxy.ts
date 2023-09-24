@@ -60,10 +60,10 @@ export class MHDDOSProxy extends Module<Config> {
     const config = await this.getConfig()
 
     const args = [] as string[]
-    args.push('--no-updates')
-    args.push('--copies', config.copies.toString())
-    args.push('--threads', config.threads.toString())
-    args.push(...config.executableArguments.filter(arg => arg !== ''))
+    //args.push('--no-updates')
+    //args.push('--copies', config.copies.toString())
+    //args.push('--threads', config.threads.toString())
+    //args.push(...config.executableArguments.filter(arg => arg !== ''))
 
     let filename = 'mhddos_proxy_linux'
     for (const asset of this.assetMapping) {
