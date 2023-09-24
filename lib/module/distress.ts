@@ -71,6 +71,72 @@ export class Distress extends Module<Config> {
     }
 
     const handler = await this.startExecutable(filename, args)
+
+    // Process statistics
+    let lastStatisticsEvent = null as Date | null
+    let statisticsBuffer = ''
+    handler.stdout.on('data', (data: Buffer) => {
+      statisticsBuffer += data.toString()
+
+      const lines = statisticsBuffer.trimEnd().split('\n')
+      if (statisticsBuffer.endsWith('\n')) {
+        statisticsBuffer = ''
+      } else {
+        statisticsBuffer = lines.pop() as string
+      }
+
+      for (const line of lines) {
+        try {
+          const lineJSON = JSON.parse(line)
+          const msg = lineJSON["msg"] as string
+
+          if (!msg.includes("active connections") || !msg.includes("bps") || !msg.includes("bytes")) {
+            continue
+          }
+
+          let bytesSend = 0
+          let currentSendBitrate = 0
+
+          const convertToBytes = (value: string): number => {
+            value = value.toLowerCase()
+            
+            if (value.includes("kb")) {
+              return Number(value.split("kb")[0]) * 1024
+            } else if (value.includes("mb")) {
+              return Number(value.split("mb")[0]) * 1024 * 1024
+            } else if (value.includes("gb")) {
+              return Number(value.split("gb")[0]) * 1024 * 1024 * 1024
+            } else if (value.includes("tb")) {
+              return Number(value.split("tb")[0]) * 1024 * 1024 * 1024 * 1024
+            } else if (value.includes("pb")) {
+              return Number(value.split("pb")[0]) * 1024 * 1024 * 1024 * 1024 * 1024
+            } else if (value.includes("eb")) {
+              return Number(value.split("eb")[0]) * 1024 * 1024 * 1024 * 1024 * 1024 * 1024
+            } else {
+              return Number(value.split("b")[0])
+            }
+          }
+
+          const parameters = msg.split(",").map((parameter) => parameter.trim())
+          for (const parameter of parameters) {
+            if (parameter.includes("bytes")) {
+              bytesSend = convertToBytes(parameter.split("=")[1])
+            } else if (parameter.includes("bps")) {
+              currentSendBitrate = convertToBytes(parameter.split("=")[1])
+            }
+          }
+
+          this.emit('execution:statistics', {
+            type: 'execution:statistics',
+            bytesSend: Number(bytesSend),
+            currentSendBitrate,
+            timestamp: new Date().getTime()
+          })
+        } catch (e) {
+          console.error(String(e) + '\n' + line)
+        }
+      }
+    })
   }
   override async stop (): Promise<void> {
     this.stopExecutable()
