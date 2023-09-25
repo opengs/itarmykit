@@ -313,6 +313,9 @@ export abstract class Module<ConfigType extends BaseConfig> {
     }
 
     protected executedProcessHandler?: ChildProcessWithoutNullStreams
+    protected executableOutputToString(data: Buffer) {
+      return data.toString()
+    }
     protected async startExecutable (executableName: string, args: string[]): Promise<ChildProcessWithoutNullStreams> {
       const config = await this.getConfig()
       if (config.selectedVersion === undefined) {
@@ -330,10 +333,10 @@ export abstract class Module<ConfigType extends BaseConfig> {
       this.emit('execution:started', { type: 'execution:started' })
 
       this.executedProcessHandler.stdout.on('data', (data: Buffer) => {
-        this.emit('execution:stdout', { type: 'execution:stdout', data: data.toString() })
+        this.emit('execution:stdout', { type: 'execution:stdout', data: this.executableOutputToString(data) })
       })
       this.executedProcessHandler.stderr.on('data', (data: Buffer) => {
-        this.emit('execution:stderr', { type: 'execution:stderr', data: data.toString() })
+        this.emit('execution:stderr', { type: 'execution:stderr', data: this.executableOutputToString(data) })
       })
       this.executedProcessHandler.on('error', (error: Error) => {
         this.emit('execution:error', { type: 'execution:error', error })

@@ -1,4 +1,5 @@
 import { Module, Version, InstallProgress, InstallationTarget, BaseConfig, ModuleName } from './module'
+import { decode as decodeWindowsString } from 'windows-1251'
 
 export interface Config extends BaseConfig {
   // Number of processes to launch
@@ -56,14 +57,21 @@ export class MHDDOSProxy extends Module<Config> {
     }
   }
 
+  override executableOutputToString(data: Buffer) {
+    if (process.platform === 'win32') {
+      return decodeWindowsString(data)
+    }
+    return data.toString()
+  }
+
   override async start (): Promise<void> {
     const config = await this.getConfig()
 
     const args = [] as string[]
-    //args.push('--no-updates')
-    //args.push('--copies', config.copies.toString())
-    //args.push('--threads', config.threads.toString())
-    //args.push(...config.executableArguments.filter(arg => arg !== ''))
+    args.push('--no-updates')
+    args.push('--copies', config.copies.toString())
+    args.push('--threads', config.threads.toString())
+    args.push(...config.executableArguments.filter(arg => arg !== ''))
 
     let filename = 'mhddos_proxy_linux'
     for (const asset of this.assetMapping) {
