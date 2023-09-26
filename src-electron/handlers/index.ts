@@ -5,16 +5,23 @@ import { handleModules } from './modules'
 import { handleExecutionEngine } from './engine'
 import { handleTop } from './top'
 import { handleUpdater } from './updater'
+import { Settings, handleSettings } from './settings'
+import { handleTray } from './tray'
+import { BrowserWindow } from 'electron'
 
-export function handle () {
+export function handle (mainWindow: BrowserWindow) {
+  const settings = new Settings()
+  
   const modules = [
-    new Distress(),
-    new MHDDOSProxy(),
-    new DB1000N()
+    new Distress(settings),
+    new MHDDOSProxy(settings),
+    new DB1000N(settings)
   ]
 
   handleModules(modules)
   handleExecutionEngine(modules)
   handleTop()
-  handleUpdater()
+  handleUpdater(settings)
+  handleTray(settings, mainWindow)
+  handleSettings(settings)
 }

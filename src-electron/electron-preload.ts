@@ -141,3 +141,41 @@ const topAPI = {
 }
 
 contextBridge.exposeInMainWorld('topAPI', topAPI)
+
+import { SettingsData } from './handlers/settings'
+
+declare global {
+  interface Window {
+      settingsAPI: typeof settingsAPI
+  }
+}
+
+const settingsAPI = {
+  async get (): Promise<SettingsData> {
+    return await ipcRenderer.invoke('settings:get')
+  },
+  system: {
+    async setAutoUpdate (data: SettingsData['system']['autoUpdate']): Promise<void> {
+      return await ipcRenderer.invoke('settings:system:autoUpdate', data)
+    },
+    async setHideInTray (data: SettingsData['system']['hideInTray']): Promise<void> {
+      return await ipcRenderer.invoke('settings:system:hideInTray', data)
+    },
+    async setStartOnBoot (data: SettingsData['system']['startOnBoot']): Promise<void> {
+      return await ipcRenderer.invoke('settings:system:startOnBoot', data)
+    },
+  },
+  modules: {
+    async setDataPath (data: SettingsData['modules']['dataPath']): Promise<void> {
+      return await ipcRenderer.invoke('settings:modules:dataPath', data)
+    },
+    async promptForDataPath (): Promise<void> {
+      return await ipcRenderer.invoke('settings:modules:promptForDataPath')
+    },
+    async openDataFolder (): Promise<void> {
+      return await ipcRenderer.invoke('settings:modules:openDataFolder')
+    }
+  }
+}
+
+contextBridge.exposeInMainWorld('settingsAPI', settingsAPI)

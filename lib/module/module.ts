@@ -5,6 +5,7 @@ import { app } from 'electron'
 import fs from 'fs'
 import fetch from 'electron-fetch'
 import decompress from 'decompress'
+import { Settings } from '../../src-electron/handlers/settings'
 
 export type ModuleName = 'DB1000N' | 'DISTRESS' | 'MHDDOS_PROXY'
 
@@ -108,10 +109,19 @@ export abstract class Module<ConfigType extends BaseConfig> {
       await this.saveConfig(this._config)
     }
 
+    private settings: Settings
+
     private _config?: ConfigType
     protected abstract get defaultConfig(): ConfigType
 
-    protected get installationDirectory (): string { return path.join(app.getPath('appData'), 'UACyberShield', 'itarmykit', 'modules', this.name) }
+    protected async getInstallationDirectory () {
+      const settingsData = await this.settings.getData()  
+      return path.join(settingsData.modules.dataPath, this.name)
+    }
+
+    constructor (settings: Settings) {
+      this.settings = settings
+    }
 
     // Start execution of the module
     abstract start(): Promise<void>
@@ -121,7 +131,8 @@ export abstract class Module<ConfigType extends BaseConfig> {
     abstract getAllVersions(): Promise<Version[]>
     abstract installVersion(versionTag: string): AsyncGenerator<InstallProgress, void, void>
     public async uninstallVersion (versionTag: string): Promise<void> {
-      await fs.promises.rmdir(path.join(this.installationDirectory, versionTag), { recursive: true })
+      const installDirectory = await this.getInstallationDirectory()
+      await fs.promises.rmdir(path.join(installDirectory, versionTag), { recursive: true })
     }
 
     protected async *installVersionFromGithub (owner: string, repo: string, tag: string, assetMapping: Array<{ name: string, arch: 'x64' | 'arm64' | 'ia32', platform: 'linux' | 'win32' | 'darwin' }>): AsyncGenerator<InstallProgress, void, void> {
@@ -168,7 +179,8 @@ export abstract class Module<ConfigType extends BaseConfig> {
 
         yield { stage: 'EXTRACTING', progress: 0 }
         try {
-          await this.extractArchive(tempDownoloadPath, path.join(this.installationDirectory, tag))
+          const installDirectory = await this.getInstallationDirectory()
+          await this.extractArchive(tempDownoloadPath, path.join(installDirectory, tag))
         } catch (err) {
           yield { stage: 'FAILED', progress: 0, errorCode: InstallationErrorCodes.UNKNOWN, errorMessage: `Cant extract archive: ${err}` }
           return
@@ -183,10 +195,11 @@ export abstract class Module<ConfigType extends BaseConfig> {
     private githubReleaseCache = [] as { tag_name: string, name: string, body: string }[]
     private githubReleaseCacheTime?: Date
     protected async loadVersionsFromGithub (owner: string, repo: string): Promise<Version[]> {
+      const installDirectory = await this.getInstallationDirectory()
 
       const isVersionInstalled = async (tagName: string) => {
         return await new Promise<boolean>((resolve) => {
-          fs.promises.access(path.join(this.installationDirectory, tagName))
+          fs.promises.access(path.join(installDirectory, tagName))
             .then(() => resolve(true))
             .catch(() => resolve(false))
         })
@@ -317,6 +330,7 @@ export abstract class Module<ConfigType extends BaseConfig> {
       return data.toString()
     }
     protected async startExecutable (executableName: string, args: string[]): Promise<ChildProcessWithoutNullStreams> {
+      const installDirectory = await this.getInstallationDirectory()
       const config = await this.getConfig()
       if (config.selectedVersion === undefined) {
         throw new Error('No version selected')
@@ -326,8 +340,8 @@ export abstract class Module<ConfigType extends BaseConfig> {
         throw new Error('Already running')
       }
 
-      const executablePath = path.join(this.installationDirectory, config.selectedVersion, executableName)
-      const cwd = path.join(this.installationDirectory, config.selectedVersion)
+      const executablePath = path.join(installDirectory, config.selectedVersion, executableName)
+      const cwd = path.join(installDirectory, config.selectedVersion)
       this.executedProcessHandler = spawn(executablePath, args, { cwd, shell: false })
 
       this.emit('execution:started', { type: 'execution:started' })
@@ -376,7 +390,8 @@ export abstract class Module<ConfigType extends BaseConfig> {
     }
 
     protected async loadConfig (): Promise<void> {
-      const configFilePath = path.join(this.installationDirectory, 'config.json')
+      const installDirectory = await this.getInstallationDirectory()
+      const configFilePath = path.join(installDirectory, 'config.json')
       try {
         const configDump = await fs.promises.readFile(configFilePath, { encoding: 'utf-8' })
         const config = JSON.parse(configDump) as ConfigType
@@ -385,10 +400,11 @@ export abstract class Module<ConfigType extends BaseConfig> {
     }
 
     protected async saveConfig(config: ConfigType): Promise<void> {
+      const installDirectory = await this.getInstallationDirectory()
       const configDump = JSON.stringify(config)
-      const configFilePath = path.join(this.installationDirectory, 'config.json')
+      const configFilePath = path.join(installDirectory, 'config.json')
 
-      await fs.promises.mkdir(this.installationDirectory, { recursive: true })
+      await fs.promises.mkdir(installDirectory, { recursive: true })
       await fs.promises.writeFile(configFilePath, configDump, { encoding: 'utf-8' })
     }
 }

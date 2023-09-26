@@ -1,4 +1,4 @@
-import { app, BrowserWindow, nativeTheme } from 'electron'
+import { app, BrowserWindow, nativeTheme, nativeImage } from 'electron'
 import path from 'path'
 import os from 'os'
 
@@ -18,12 +18,14 @@ try {
 let mainWindow: BrowserWindow | undefined
 
 function createWindow () {
-  handle()
+  const appIcon = nativeImage.createFromPath(path.resolve(__dirname, 'icons/icon.png'))
+  console.log(appIcon)
+
   /**
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    icon: path.resolve(__dirname, 'icons/icon.png'), // tray icon
+    icon: appIcon.resize({ width: 32, height: 32 }), // tray icon
     width: 1400,
     height: 660,
     useContentSize: true,
@@ -50,6 +52,8 @@ function createWindow () {
   mainWindow.on('closed', () => {
     mainWindow = undefined
   })
+
+  handle(mainWindow)
 }
 
 app.whenReady().then(createWindow)

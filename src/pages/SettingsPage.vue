@@ -7,7 +7,7 @@
             <q-card-section>
                 <div class="text-h5">System</div>
                 <q-separator class="q-mt-xs q-mb-xs"/>
-                <q-item class="" v-ripple clickable>
+                <q-item class="" v-ripple clickable @click="setSystemAutoUpdate(!systemAutoUpdate)">
                     <q-item-section>
                         <q-item-label>Automatic updates</q-item-label>
                         <q-item-label caption>Automatically update application to the newest version</q-item-label>
@@ -17,7 +17,7 @@
                     </q-item-section>
                 </q-item>
 
-                <q-item class="" v-ripple clickable>
+                <q-item class="" v-ripple clickable @click="setSystemAutoStartup(!systemAutoStartup)">
                     <q-item-section>
                         <q-item-label>Automatic startup</q-item-label>
                         <q-item-label caption>Automatically startup application on system startup</q-item-label>
@@ -27,10 +27,10 @@
                     </q-item-section>
                 </q-item>
 
-                <q-item class="" v-ripple clickable>
+                <q-item class="" v-ripple clickable @click="setSystemHideInTray(!systemHideInTray)">
                     <q-item-section>
                         <q-item-label>Hide application in tray</q-item-label>
-                        <q-item-label caption>Hide application in tray instead closing it. Also when starting up, dont show the main window.</q-item-label>
+                        <q-item-label caption>Hide application in tray instead of closing it. Also when starting up, dont show the main window.</q-item-label>
                     </q-item-section>
                     <q-item-section side top>
                         <q-toggle color="primary" v-model="systemHideInTray" @update:model-value="setSystemHideInTray" />
@@ -39,15 +39,15 @@
             </q-card-section>
 
             <q-card-section>
-                <div class="text-h5">Shedule</div>
+                <div class="text-h5">Schedule</div>
                 <q-separator class="q-mt-xs q-mb-xs"/>
-                <q-item class="" v-ripple clickable>
+                <q-item class="" v-ripple clickable @click="setSystemSheduleEnabled(!systemSheduleEnabled)" disable>
                     <q-item-section>
                         <q-item-label>Enable</q-item-label>
                         <q-item-label caption>Enable or disable sheduler. It changes behaviour of the tool in specified hour (for example during the work you can lower resource usage)</q-item-label>
                     </q-item-section>
                     <q-item-section side top>
-                        <q-toggle color="primary" v-model="systemSheduleEnabled" @update:model-value="setSystemSheduleEnabled" />
+                        <q-toggle color="primary" v-model="systemSheduleEnabled" @update:model-value="setSystemSheduleEnabled" disable/>
                     </q-item-section>
                 </q-item>
                 <div class="row fit q-mt-sm">
@@ -89,9 +89,11 @@
             <q-card-section>
                 <div class="text-h5">Data</div>
                 <q-separator class="q-mt-xs q-mb-xs"/>
-                <q-btn outline label="Open data folder" class="fit q-mt-sm" />
-                <q-btn outline label="Delete modules cache" color="negative" class="fit q-mt-sm" />
-                <q-btn outline label="Delete all the data" color="negative" class="fit q-mt-sm" />
+                <div><span class="">Currently your modules located under:</span> {{ modulesDataFolderPath }}  </div>
+                <q-btn outline label="Open data folder" class="fit q-mt-sm" @click="openModulesDataFolder" />
+                <q-btn outline label="Change modules data location" class="fit q-mt-sm" @click="selectFolderForModulesData" />
+                <q-btn outline label="Delete modules cache" color="negative" class="fit q-mt-sm" disable />
+                <q-btn outline label="Delete all the data" color="negative" class="fit q-mt-sm" disable />
             </q-card-section>
 
         </q-card>
@@ -99,26 +101,29 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const systemAutoUpdate = ref(true)
-async function setSystemAutoUpdate() {
-    
+async function setSystemAutoUpdate(newValue: boolean) {
+    await window.settingsAPI.system.setAutoUpdate(newValue)
+    systemAutoUpdate.value = newValue
 }
 
 const systemAutoStartup = ref(true)
-async function setSystemAutoStartup() {
-    
+async function setSystemAutoStartup(newValue: boolean) {
+    await window.settingsAPI.system.setStartOnBoot(newValue)
+    systemAutoStartup.value = newValue
 }
 
 const systemHideInTray = ref(true)
-async function setSystemHideInTray() {
-    
+async function setSystemHideInTray(newValue: boolean) {
+    await window.settingsAPI.system.setHideInTray(newValue)
+    systemHideInTray.value = newValue
 }
 
 const systemSheduleEnabled = ref(false)
-async function setSystemSheduleEnabled() {
-    
+async function setSystemSheduleEnabled(newValue: boolean) {
+
 }
 
 const sheduleStartTime = ref("08:00")
@@ -131,5 +136,30 @@ const sheduleActivity = ref("DO_NOTHING")
 async function setSheduleActivity() {
     
 }
+
+const modulesDataFolderPath = ref("")
+async function selectFolderForModulesData() {
+    await window.settingsAPI.modules.promptForDataPath()
+    await loadSettings()
+}
+async function openModulesDataFolder() {
+    await window.settingsAPI.modules.openDataFolder()
+}
+
+async function loadSettings() {
+    const settings = await window.settingsAPI.get()
+    systemAutoUpdate.value = settings.system.autoUpdate
+    systemAutoStartup.value = settings.system.startOnBoot
+    systemHideInTray.value = settings.system.hideInTray
+    systemSheduleEnabled.value = settings.schedule.enabled
+    sheduleStartTime.value = settings.schedule.startTime
+    sheduleEndTime.value = settings.schedule.endTime
+    sheduleActivity.value = settings.schedule.activity
+    modulesDataFolderPath.value = settings.modules.dataPath
+}
+
+onMounted(async () => {
+    await loadSettings()
+})
 
 </script>
