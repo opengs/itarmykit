@@ -352,17 +352,24 @@ export abstract class Module<ConfigType extends BaseConfig> {
       const handler = this.executedProcessHandler // Copy handler, because other async task can chenage it in the meantime
 
       await new Promise<void>((resolve, reject) => {
+        const termTimeout = setTimeout(() => {
+          handler?.kill('SIGTERM')
+        }, 5000) 
+
+        const killTimeout = setTimeout(() => {
+          handler?.kill('SIGKILL')
+          resolve()
+        }, 10000)
+        
         handler?.on('close', () => {
-          clearTimeout(timeout)
+          clearTimeout(termTimeout)
+          clearTimeout(killTimeout)
           resolve()
         })
         
         handler?.kill('SIGINT')
         
-        const timeout = setTimeout(() => {
-          handler?.kill('SIGKILL')
-          resolve()
-        }, 5000)
+        
       })
 
       this.executedProcessHandler = undefined
