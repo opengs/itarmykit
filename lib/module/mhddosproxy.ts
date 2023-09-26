@@ -1,5 +1,4 @@
 import { Module, Version, InstallProgress, InstallationTarget, BaseConfig, ModuleName } from './module'
-import { decode as decodeWindowsString } from 'windows-1251'
 
 export interface Config extends BaseConfig {
   // Number of processes to launch
@@ -58,9 +57,6 @@ export class MHDDOSProxy extends Module<Config> {
   }
 
   override executableOutputToString(data: Buffer) {
-    if (process.platform === 'win32') {
-      return decodeWindowsString(data)
-    }
     return data.toString()
   }
 

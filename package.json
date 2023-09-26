@@ -31,8 +31,7 @@
     "vue": "^3.0.0",
     "vue-i18n": "^9.2.2",
     "vue-router": "^4.0.0",
-    "vue3-apexcharts": "^1.4.4",
-    "windows-1251": "^3.0.4"
+    "vue3-apexcharts": "^1.4.4"
   },
   "devDependencies": {
     "@intlify/vite-plugin-vue-i18n": "^3.3.1",

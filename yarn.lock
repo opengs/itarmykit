@@ -5362,11 +5362,6 @@ wildcard@^2.0.0:
   resolved "https://registry.yarnpkg.com/wildcard/-/wildcard-2.0.1.tgz#5ab10d02487198954836b6349f74fff961e10f67"
   integrity sha512-CC1bOL87PIWSBhDcTrdeLo6eGT7mCFtrg0uIJtqJUFyK+eJnzl8A1niH56uu7KMa5XFrtiV+AQuHO3n7DsHnLQ==
 
-windows-1251@^3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/windows-1251/-/windows-1251-3.0.4.tgz#984b9f2e76befd9ec2e825f9fe77b681fadcdb55"
-  integrity sha512-H6W68MVertlR74xVuwa2pdQ1jR5qksk+oZX6QXFhL5OYj/ZZxViob8UyGLfXPwsCijuaV7NUYOYkK0oXSaWW5g==
-
 wrap-ansi@^6.0.1:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-6.2.0.tgz#e9393ba07102e6c91a3b221478f0257cd2856e53"
