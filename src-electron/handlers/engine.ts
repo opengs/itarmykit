@@ -170,6 +170,13 @@ export class ExecutionEngine {
         }
     }
 
+    public async init() {
+        const config = await this.getState()
+        if (config.run) {
+            await this.startModule()
+        }
+    }
+
     public async startModule() {
         if (this.runningModule != null) {
             throw new Error(`Module ${this.runningModule.name} is already running`)
@@ -203,7 +210,10 @@ export class ExecutionEngine {
     }
 
     public async dispose() {
-        await this.stopModule()
+        if (this.runningModule != null) {
+            await this.runningModule.stop()
+            this.runningModule = null
+        }
     }
 
     public async getState(): Promise<State> {
@@ -323,4 +333,6 @@ export function handleExecutionEngine(modules: Array<Distress | DB1000N | MHDDOS
     ipcMain.handle('executionEngine:stopListeningForStatistics', async (e) => {
         engine.stopListeningForStatistics(e.sender)
     })
+
+    void engine.init()
 }
