@@ -5,7 +5,9 @@ import { app } from 'electron'
 import fs from 'fs'
 import fetch from 'electron-fetch'
 import decompress from 'decompress'
+import { v4 as uuid4 } from 'uuid'
 import { Settings } from '../../src-electron/handlers/settings'
+
 
 export type ModuleName = 'DB1000N' | 'DISTRESS' | 'MHDDOS_PROXY'
 
@@ -118,6 +120,13 @@ export abstract class Module<ConfigType extends BaseConfig> {
       const settingsData = await this.settings.getData()  
       return path.join(settingsData.modules.dataPath, this.name)
     }
+    protected async getCacheDirectory () {
+      // Dont use app.getPath('temp') because on windows you will have to specify multiple folders as exception in windows defender / antivirus
+      const settingsData = await this.settings.getData()  
+      const location = path.join(settingsData.modules.dataPath, "cache")
+      await fs.promises.mkdir(location, { recursive: true })
+      return location
+    }
 
     constructor (settings: Settings) {
       this.settings = settings
@@ -167,7 +176,10 @@ export abstract class Module<ConfigType extends BaseConfig> {
           return
         }
 
-        const tempDownoloadPath = path.join(app.getPath('temp'), assetName)
+        const installDirectory = await this.getInstallationDirectory()
+        const cacheDirectory = await this.getCacheDirectory()
+        
+        const tempDownoloadPath = path.join(cacheDirectory, assetName)
         try {
           for await (const progress of this.downloadFile(asset.browser_download_url, tempDownoloadPath)) {
             yield { stage: 'DOWNLOADING', progress: progress.progress }
@@ -179,7 +191,7 @@ export abstract class Module<ConfigType extends BaseConfig> {
 
         yield { stage: 'EXTRACTING', progress: 0 }
         try {
-          const installDirectory = await this.getInstallationDirectory()
+          
           await this.extractArchive(tempDownoloadPath, path.join(installDirectory, tag))
         } catch (err) {
           yield { stage: 'FAILED', progress: 0, errorCode: InstallationErrorCodes.UNKNOWN, errorMessage: `Cant extract archive: ${err}` }
@@ -261,7 +273,7 @@ export abstract class Module<ConfigType extends BaseConfig> {
             e.removeAllListeners()
             return resolve({ progress })
           })
-
+ 
           e.on('err', (err: any) => {
             e.removeAllListeners()
             return reject(err)
