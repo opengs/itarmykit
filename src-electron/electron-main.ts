@@ -19,8 +19,7 @@ let mainWindow: BrowserWindow | undefined
 
 function createWindow () {
   const appIcon = nativeImage.createFromPath(path.resolve(__dirname, 'icons/icon.png'))
-  console.log(appIcon)
-
+  
   /**
    * Initial window options
    */
@@ -34,10 +33,11 @@ function createWindow () {
       contextIsolation: true,
       // More info: https://v2.quasar.dev/quasar-cli-vite/developing-electron-apps/electron-preload-script
       preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD)
-    }
+    },
   })
 
   mainWindow.loadURL(process.env.APP_URL)
+  mainWindow.webContents.session
 
   if (process.env.DEBUGGING) {
     // if on DEV or Production with debug enabled
@@ -54,6 +54,11 @@ function createWindow () {
   })
 
   handle(mainWindow)
+}
+
+// On windows, when downloading modules, data is saved to cache thus requring for user to add several folders to exception of windows defender / antivirus
+if (process.platform === 'win32') {
+  app.commandLine.appendSwitch("disable-http-cache");
 }
 
 app.whenReady().then(createWindow)
