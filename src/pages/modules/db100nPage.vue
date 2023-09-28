@@ -68,6 +68,7 @@
                 module-name="DB1000N"
                 v-model:installed-versions="installedVersions"
                 v-model:selected-version="configSelectedVersion"
+                @update:selected-version="setConfigDebouced"
             />
             
         </div>

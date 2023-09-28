@@ -54,6 +54,7 @@
                 module-name="MHDDOS_PROXY"
                 v-model:installed-versions="installedVersions"
                 v-model:selected-version="configSelectedVersion"
+                @update:selected-version="setConfigDebouced"
             />
         </div>
     </q-page>

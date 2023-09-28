@@ -345,7 +345,9 @@ export abstract class Module<ConfigType extends BaseConfig> {
       const installDirectory = await this.getInstallationDirectory()
       const config = await this.getConfig()
       if (config.selectedVersion === undefined) {
-        throw new Error('No version selected')
+        const error = new Error('Failed to start executable. No version selected')
+        this.emit('execution:error', { type: 'execution:error', error })
+        throw error
       }
 
       if (this.executedProcessHandler !== undefined) {

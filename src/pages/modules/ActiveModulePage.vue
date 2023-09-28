@@ -4,26 +4,26 @@
             <MenuComponent />
         </div>
         <div class="col q-pl-lg">
-            <q-select outlined v-model="selectedModule" type="number" class="row q-mt-sm" :options="availableModules" label="Selected module to run" :disable="moduleEnabled" @update:model-value="setConfig"/>
+            <q-select outlined v-model="selectedModule" type="number" class="row q-mt-sm" :options="availableModules" :label="$t('modules.active.selected')" :disable="moduleEnabled" @update:model-value="setConfig"/>
             <q-item class="row q-mt-sm" :v-ripple="selectedModule != null" clickable @click="setModuleEnabled(!moduleEnabled)" :disable="selectedModule == null">
                 <q-item-section>
-                <q-item-label>Module enabled</q-item-label>
-                <q-item-label caption>Enable or disable module execution</q-item-label>
+                <q-item-label>{{ $t('modules.active.enabled.title') }}</q-item-label>
+                <q-item-label caption>{{ $t('modules.active.enabled.caption') }}</q-item-label>
                 </q-item-section>
                 <q-item-section side top>
                 <q-toggle color="primary" v-model="moduleEnabled" disable/>
                 </q-item-section>
             </q-item>
             
-            <div class="text-bold text-h6 q-mt-lg">Execution Log:</div>
+            <div class="text-bold text-h6 q-mt-lg">{{ $t('modules.active.executionLog') }}:</div>
             <q-separator></q-separator> 
             <q-input outlined v-model="executionLog" type="textarea" class="row q-mt-sm"/>
 
-            <div class="text-bold text-h6 q-mt-lg">STD OUT:</div>
+            <div class="text-bold text-h6 q-mt-lg">{{ $t('modules.active.stdout') }}:</div>
             <q-separator></q-separator> 
             <q-input outlined v-model="stdOUT" type="textarea" class="row q-mt-sm"/>
 
-            <div class="text-bold text-h6 q-mt-lg">STD ERR:</div>
+            <div class="text-bold text-h6 q-mt-lg">{{ $t('modules.active.stderr') }}:</div>
             <q-separator></q-separator> 
             <q-input outlined v-model="stdERR" type="textarea" class="row q-mt-sm"/>
         </div>

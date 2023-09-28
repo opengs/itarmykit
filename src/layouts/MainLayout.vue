@@ -36,7 +36,7 @@
         <div class="row" style="border-top: solid 1px #aaa;">
           <div v-for="page of pages" :key="page.name" class="row fit" @click="goToPage(page.page)">
             <div class="col bg-yellow-7" style="max-width: 6px;border-bottom: solid 1px #aaa;border-right: solid 1px #aaa;" v-if="($route.name as string).startsWith(page.name)"></div>
-            <div :class="'col text-subtitle1 text-bold q-pl-md selectable_menu ' + (($route.name as string).startsWith(page.name) ? 'bg-grey-4':'')" style="border-bottom: solid 1px #aaa;"> <q-icon size="xs" :name="page.icon" class="q-mr-xs"></q-icon> {{ page.title }}</div>
+            <div :class="'col text-subtitle1 text-bold q-pl-md selectable_menu ' + (($route.name as string).startsWith(page.name) ? 'bg-grey-4':'')" style="border-bottom: solid 1px #aaa;"> <q-icon size="xs" :name="page.icon" class="q-mr-xs"></q-icon> {{ $t(page.title) }}</div>
           </div>
         </div>
       </q-list>
@@ -50,18 +50,17 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { version } from '../../package.json'
-
 
 const router = useRouter()
 
 const pages = [
-  { name: 'dashboard', title: 'Dashboard', page: 'dashboard', icon: 'dashboard' },
-  { name: 'modules', title: 'DDOS modules', page: 'modules_active', icon: 'fa-solid fa-layer-group' },
-  { name: 'settings', title: 'Settings', page: 'settings', icon: 'settings' },
-  { name: 'top', title: 'Leaderboard', page: 'top', icon: 'leaderboard' },
-  { name: 'developers', title: 'Developers', page: 'developers', icon: 'person' }
+  { name: 'dashboard', title: 'layout.dashboard', page: 'dashboard', icon: 'dashboard' },
+  { name: 'modules', title: 'layout.modules', page: 'modules_active', icon: 'fa-solid fa-layer-group' },
+  { name: 'settings', title: 'layout.settings', page: 'settings', icon: 'settings' },
+  { name: 'top', title: 'layout.top', page: 'top', icon: 'leaderboard' },
+  { name: 'developers', title: 'layout.developers', page: 'developers', icon: 'person' }
 ] as Array<{
   name: string
   title: string

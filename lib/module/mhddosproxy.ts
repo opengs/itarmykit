@@ -1,3 +1,4 @@
+import { spawn } from 'child_process'
 import { Module, Version, InstallProgress, InstallationTarget, BaseConfig, ModuleName } from './module'
 
 export interface Config extends BaseConfig {
@@ -58,6 +59,16 @@ export class MHDDOSProxy extends Module<Config> {
 
   override executableOutputToString(data: Buffer) {
     return data.toString()
+  }
+
+  protected override async stopExecutable (): Promise<void> {
+    if (process.platform === 'win32') {
+      // on windows MHDDOS fails to kill subprocesses when the main process is killed
+      spawn(`taskkill /F /T /PID ${this.executedProcessHandler?.pid}`, { shell: true })
+      this.executedProcessHandler = undefined
+    } else {
+      await super.stopExecutable()
+    }
   }
 
   override async start (): Promise<void> {
