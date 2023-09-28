@@ -1,33 +1,19 @@
 # IT Army Kit (itkit)
 
-A Quasar Project
+TODO: English version
 
-## Install the dependencies
-```bash
-yarn
-# or
-npm install
-```
+## Встановлення
 
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
-```bash
-quasar dev
-```
+Через те, що кількість ресурсів обмежена, дистрибутиви аплікацій мають різні рівні підтримки:
+- ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) Приоритетна, повна підтримка.
+- ![#1589F0](https://placehold.co/15x15/1589F0/1589F0.png) Другорядна підтримка. Проблеми з дистрибутивами можуть розглядатися з великими затримками.
+- ![#f03c15](https://placehold.co/15x15/f03c15/f03c15.png) Комюніті. Якщо виникають проблеми з цією версією, то швидче всього вам потрібно буде просити допомоги в комюніті, або ж полагодити самому.
 
+Для завантаження, клікніть по значку вибраного дистрибутива.
 
-### Lint the files
-```bash
-yarn lint
-# or
-npm run lint
-```
+|       |                                                                                  Windows XP/7                                                                                  |                                                                                   Windows 10/11                                                                                   |                                                                                                                                                                                 Linux (Debian based)                                                                                                                                                                                  |                                                                                      MacOS                                                                                       |
+| :---: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+|  x32  | ![Win x32 exe](https://img.shields.io/badge/exe-black?color=f03c15&link=https%3A%2F%2Fgithub.com%2Fopengs%2Fitarmykit%2Freleases%2Flatest%2Fdownload%2Fitarmykit-win-is32.exe) |                                                                                         -                                                                                         |                                                                                                                                                                                                                                                                                                                                                                                       |                                                                                                                                                                                  |
+|  x64  |                                                                                       ?                                                                                        |   ![Win X64 exe](https://img.shields.io/badge/exe-black?color=c5f015&link=https%3A%2F%2Fgithub.com%2Fopengs%2Fitarmykit%2Freleases%2Flatest%2Fdownload%2Fitarmykit-win-x64.exe)   | ![linux x64 Appimage](https://img.shields.io/badge/AppImage-black?color=c5f015&link=https%3A%2F%2Fgithub.com%2Fopengs%2Fitarmykit%2Freleases%2Flatest%2Fdownload%2Fitarmykit-linux-amd64.AppImage) ![Static Badge](https://img.shields.io/badge/deb-black?color=1589F0&link=https%3A%2F%2Fgithub.com%2Fopengs%2Fitarmykit%2Freleases%2Flatest%2Fdownload%2Fitarmykit-linux-amd64.deb) | ![Static Badge](https://img.shields.io/badge/deb-black?color=1589F0&link=https%3A%2F%2Fgithub.com%2Fopengs%2Fitarmykit%2Freleases%2Flatest%2Fdownload%2Fitarmykit-mac-amd64.deb) |
+|  arm  |                                                                                       ?                                                                                        | ![Win arm64 exe](https://img.shields.io/badge/exe-black?color=f03c15&link=https%3A%2F%2Fgithub.com%2Fopengs%2Fitarmykit%2Freleases%2Flatest%2Fdownload%2Fitarmykit-win-arm64.exe) | ![linux x64 Appimage](https://img.shields.io/badge/AppImage-black?color=f03c15&link=https%3A%2F%2Fgithub.com%2Fopengs%2Fitarmykit%2Freleases%2Flatest%2Fdownload%2Fitarmykit-linux-arm64.AppImage) ![Static Badge](https://img.shields.io/badge/deb-black?color=f03c15&link=https%3A%2F%2Fgithub.com%2Fopengs%2Fitarmykit%2Freleases%2Flatest%2Fdownload%2Fitarmykit-linux-arm64.deb) |                                                                                                                                                                                  |
 
-
-
-### Build the app for production
-```bash
-quasar build
-```
-
-### Customize the configuration
-See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
