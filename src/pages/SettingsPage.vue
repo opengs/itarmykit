@@ -87,6 +87,12 @@
             </q-card-section>
 
             <q-card-section>
+                <div class="text-h5">ItArmy</div>
+                <q-separator class="q-mt-xs q-mb-sm"/>
+                <q-input outlined label="IT Army ID" v-model="itArmyUUID" @update:model-value="setItArmyUUID" debounce="500" type="password"/>
+            </q-card-section>
+
+            <q-card-section>
                 <div class="text-h5">Data</div>
                 <q-separator class="q-mt-xs q-mb-xs"/>
                 <div><span class="">Currently your modules located under:</span> {{ modulesDataFolderPath }}  </div>
@@ -146,6 +152,11 @@ async function openModulesDataFolder() {
     await window.settingsAPI.modules.openDataFolder()
 }
 
+const itArmyUUID = ref("")
+async function setItArmyUUID(newValue: string | number | null) {
+    await window.settingsAPI.itarmy.setUUID(String(newValue))
+}
+
 async function loadSettings() {
     const settings = await window.settingsAPI.get()
     systemAutoUpdate.value = settings.system.autoUpdate
@@ -156,6 +167,7 @@ async function loadSettings() {
     sheduleEndTime.value = settings.schedule.endTime
     sheduleActivity.value = settings.schedule.activity
     modulesDataFolderPath.value = settings.modules.dataPath
+    itArmyUUID.value = settings.itarmy.uuid
 }
 
 onMounted(async () => {

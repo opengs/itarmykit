@@ -175,6 +175,11 @@ const settingsAPI = {
     async openDataFolder (): Promise<void> {
       return await ipcRenderer.invoke('settings:modules:openDataFolder')
     }
+  },
+  itarmy: {
+    async setUUID (data: SettingsData['itarmy']['uuid']): Promise<void> {
+      return await ipcRenderer.invoke('settings:itarmy:uuid', data)
+    }
   }
 }
 

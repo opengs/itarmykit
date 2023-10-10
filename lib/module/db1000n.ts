@@ -53,9 +53,14 @@ export class DB1000N extends Module<Config> {
   }
 
   override async start (): Promise<void> {
+    const settings = await this.settings.getData()
     const config = await this.getConfig()
 
     const args = [] as string[]
+    if (settings.itarmy.uuid !== '') {
+      args.push('--user-id', settings.itarmy.uuid)
+    }
+
     args.push('--log-format', 'json')
     args.push('--scale', config.scale.toString())
     args.push('--min-interval', config.minInterval.toString() + "ms")

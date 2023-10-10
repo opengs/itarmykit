@@ -55,9 +55,13 @@ export class Distress extends Module<Config> {
   }
 
   override async start (): Promise<void> {
+    const settings = await this.settings.getData()
     const config = await this.getConfig()
 
     const args = [] as string[]
+    if (settings.itarmy.uuid !== '') {
+      args.push('--user-id', settings.itarmy.uuid)
+    }
     args.push('--disable-auto-update', '--json-logs')
     args.push('--concurrency', config.concurrency.toString())
     args.push(...config.executableArguments.filter(arg => arg !== ''))

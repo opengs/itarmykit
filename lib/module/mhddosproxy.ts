@@ -72,9 +72,13 @@ export class MHDDOSProxy extends Module<Config> {
   }
 
   override async start (): Promise<void> {
+    const settings = await this.settings.getData()
     const config = await this.getConfig()
 
     const args = [] as string[]
+    if (settings.itarmy.uuid !== '') {
+      args.push('--user-id', settings.itarmy.uuid)
+    }
     args.push('--no-updates')
     args.push('--copies', config.copies.toString())
     args.push('--threads', config.threads.toString())

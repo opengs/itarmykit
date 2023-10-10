@@ -17,6 +17,9 @@ export interface SettingsData {
         startTime: string;
         endTime: string;
         activity: 'DO_NOTHING' | 'MINIMAL'
+    },
+    itarmy: {
+        uuid: string
     }
 }
 
@@ -38,6 +41,9 @@ export class Settings {
             startTime: '07:30',
             endTime: '17:30',
             activity: 'DO_NOTHING'
+        },
+        itarmy: {
+            uuid: ''
         }
     }
     private loaded = false
@@ -64,6 +70,13 @@ export class Settings {
     async load() {
         try {
             this.data = JSON.parse(await fsPromises.readFile(Settings.settingsFile, 'utf-8'))
+            
+            // Backwards compatibility
+            if (this.data.itarmy === undefined) {
+                this.data.itarmy = {
+                    uuid: ''
+                }
+            }
         } catch (e) {
             await this.save()
         }
@@ -149,6 +162,16 @@ export class Settings {
         const { shell } = await import('electron')
         await shell.openPath(this.data.modules.dataPath)
     }
+
+    async setItArmyUUID(data: SettingsData['itarmy']['uuid']) {
+        if (!this.loaded) {
+            await this.load()
+        }
+
+        this.data.itarmy.uuid = data
+        await this.save()
+        this.settingsChangedEmiter.emit('settingsChanged', this.data)
+    }
 }
 
 export function handleSettings(settings: Settings) {
@@ -179,5 +202,9 @@ export function handleSettings(settings: Settings) {
 
     ipcMain.handle('settings:modules:openDataFolder', async () => {
         await settings.openModulesDataFolder()
+    })
+
+    ipcMain.handle('settings:itarmy:uuid', async (_e, data: SettingsData['itarmy']['uuid']) => {
+        await settings.setItArmyUUID(data)
     })
 }
