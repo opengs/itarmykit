@@ -1,8 +1,14 @@
 import { Module, Version, InstallProgress, InstallationTarget, BaseConfig, ModuleName } from './module'
 
 export interface Config extends BaseConfig {
-  // NUmber of concurrent tasks
+  // Enable UDP flood or not
+  directUDPFailover: boolean;
+  // Number of concurrent tasks
   concurrency: number;
+  // Number of Tor connections
+  useTor: number
+  // Percentage of own IP usage
+  useMyIP: number
 }
 
 export class Distress extends Module<Config> {
@@ -23,7 +29,10 @@ export class Distress extends Module<Config> {
     return {
       autoUpdate: true,
       executableArguments: [],
-      concurrency: 512
+      concurrency: 1024,
+      directUDPFailover: false,
+      useMyIP: 0,
+      useTor: 0
     }
   }
 
@@ -64,6 +73,15 @@ export class Distress extends Module<Config> {
     }
     args.push('--disable-auto-update', '--json-logs')
     args.push('--concurrency', config.concurrency.toString())
+    if (config.directUDPFailover) {
+      args.push('--direct-udp-failover', '1')
+    }
+    if (config.useTor > 0) {
+      args.push('--use-tor', config.useTor.toString())
+    }
+    if (config.useMyIP > 0) {
+      args.push('--use-my-ip', config.useMyIP.toString())
+    }
     args.push(...config.executableArguments.filter(arg => arg !== ''))
 
     let filename = 'distress_x86_64-unknown-linux-musl'

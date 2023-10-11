@@ -33,15 +33,21 @@
             </q-item>
             <div class="row q-pt-sm">
                 <div class="col text-subtitle1">Copies</div>
-                <q-slider v-model="configCopies" :min="1" :max="32" :step="1" label color="primary" class="col-8 q-pr-md" @update:model-value="setConfigDebouced"/>
+                <q-slider v-model="configCopies" :min="0" :max="64" :step="1" label color="primary" class="col-8 q-pr-md" @update:model-value="setConfigDebouced"/>
                 <q-input outlined v-model="configCopies" type="number" dense class="col-2" @update:model-value="setConfigDebouced"/>
-                <div class="col-12 text-caption text-grey-8" style="margin-top: -15px;">Number of started processes (copies of the module)</div>
+                <div class="col-12 text-caption text-grey-8" style="margin-top: -15px;">Number of started processes (copies of the module). 0 to auto</div>
             </div>
             <div class="row q-pt-sm">
                 <div class="col text-subtitle1">Threads</div>
-                <q-slider v-model="configThreads" :min="1" :max="32" :step="1" label color="primary" class="col-8 q-pr-md" @update:model-value="setConfigDebouced"/>
+                <q-slider v-model="configThreads" :min="1024" :max="32768" :step="1024" label color="primary" class="col-8 q-pr-md" @update:model-value="setConfigDebouced"/>
                 <q-input outlined v-model="configThreads" type="number" dense class="col-2" @update:model-value="setConfigDebouced"/>
-                <div class="col-12 text-caption text-grey-8" style="margin-top: -15px;">Number of threads runned per process</div>
+                <div class="col-12 text-caption text-grey-8" style="margin-top: -15px;">Number of threads runned per process. 0 to auto</div>
+            </div>
+            <div class="row q-pt-sm">
+                <div class="col text-subtitle1">Use my IP</div>
+                <q-slider v-model="configVPNPercents" :min="0" :max="100" :step="1" label color="primary" class="col-8 q-pr-md" @update:model-value="setConfigDebouced"/>
+                <q-input outlined v-model="configVPNPercents" type="number" dense class="col-2" @update:model-value="setConfigDebouced"/>
+                <div class="col-12 text-caption text-grey-8" style="margin-top: -15px;">Percentage of own IP address usage or VPN if configured</div>
             </div>
             <div class="row q-pt-sm">
                 <div class="col-12 text-subtitle1">Executable arguments (only for advanced users)</div>
@@ -71,9 +77,10 @@ const configSelectedVersion = ref(null as string | null)
 const configAutoUpdate = ref(true)
 const configCopies = ref(1)
 const configThreads = ref(8)
+const configVPNPercents = ref(0)
 const configExecutableArguments = ref("")
 const configExecutableArgumentsPrefix = computed(() => {
-    return `--no-updates --copies ${configCopies.value} --threads ${configThreads.value}`
+    return `--no-updates` + (configVPNPercents.value > 0 ? ` --vpn true --vpn-percents ${configVPNPercents.value}` : "") + (configCopies.value > 0 ? ` --copies ${configCopies.value}` : "") + (configThreads.value > 0 ? ` --threads ${configThreads.value}` : "")
 })
 
 const installedVersions = ref([] as string[])
@@ -84,6 +91,7 @@ async function loadConfig() {
     configAutoUpdate.value = config.autoUpdate
     configCopies.value = Number(config.copies)
     configThreads.value = Number(config.threads)
+    configVPNPercents.value = Number(config.vpnPercents)
     configExecutableArguments.value = config.executableArguments.join(" ")
 }
 
@@ -94,7 +102,8 @@ async function setConfig() {
         autoUpdate: configAutoUpdate.value,
         copies: Number(configCopies.value),
         threads: Number(configThreads.value),
-        executableArguments: configExecutableArguments.value.split(" ")
+        executableArguments: configExecutableArguments.value.split(" "),
+        vpnPercents: Number(configVPNPercents.value),
     } as Config
 
     await window.modulesAPI.setConfig<Config>('MHDDOS_PROXY', config)

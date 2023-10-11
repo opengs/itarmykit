@@ -111,7 +111,7 @@ export abstract class Module<ConfigType extends BaseConfig> {
       await this.saveConfig(this._config)
     }
 
-    private settings: Settings
+    protected settings: Settings
 
     private _config?: ConfigType
     protected abstract get defaultConfig(): ConfigType
@@ -409,7 +409,10 @@ export abstract class Module<ConfigType extends BaseConfig> {
       try {
         const configDump = await fs.promises.readFile(configFilePath, { encoding: 'utf-8' })
         const config = JSON.parse(configDump) as ConfigType
-        this._config = config
+        this._config = {
+          ...this.defaultConfig, // do this to ensure config backward compatibility in future
+          ...config
+        }
       } catch (err) {}
     }
 

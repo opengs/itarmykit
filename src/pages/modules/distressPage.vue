@@ -31,12 +31,34 @@
                 <q-toggle color="primary" v-model="configAutoUpdate" @update:model-value="setConfigDebouced"/>
                 </q-item-section>
             </q-item>
+            <q-item class="row q-pa-none q-pt-sm">
+                <q-item-section>
+                <q-item-label>UDP flood</q-item-label>
+                <q-item-label caption>Allow UDP flood atack</q-item-label>
+                </q-item-section>
+                <q-item-section side top>
+                <q-toggle color="primary" v-model="configAllowUdpFlood" @update:model-value="setConfigDebouced"/>
+                </q-item-section>
+            </q-item>
             <div class="row q-pt-sm">
                 <div class="col text-subtitle1">Concurrency</div>
                 <q-slider v-model="configConcurrency" :min="0" :max="16384" :step="512" label color="primary" class="col-8 q-pr-md" @update:model-value="setConfigDebouced"/>
                 <q-input outlined v-model="configConcurrency" type="number" dense class="col-2" @update:model-value="setConfigDebouced"/>
                 <div class="col-12 text-caption text-grey-8" style="margin-top: -15px;">Number of task spawners</div>
             </div>
+            <div class="row q-pt-sm">
+                <div class="col text-subtitle1">Use my IP</div>
+                <q-slider v-model="configUseMyIP" :min="0" :max="100" :step="1" label color="primary" class="col-8 q-pr-md" @update:model-value="setConfigDebouced"/>
+                <q-input outlined v-model="configUseMyIP" type="number" dense class="col-2" @update:model-value="setConfigDebouced"/>
+                <div class="col-12 text-caption text-grey-8" style="margin-top: -15px;">Percentage of usage of my ip address</div>
+            </div>
+            <div class="row q-pt-sm">
+                <div class="col text-subtitle1">Tor connections</div>
+                <q-slider v-model="configTorConnections" :min="0" :max="100" :step="1" label color="primary" class="col-8 q-pr-md" @update:model-value="setConfigDebouced"/>
+                <q-input outlined v-model="configTorConnections" type="number" dense class="col-2" @update:model-value="setConfigDebouced"/>
+                <div class="col-12 text-caption text-grey-8" style="margin-top: -15px;">Use Tor connections for atack</div>
+            </div>
+            
             <div class="row q-pt-sm">
                 <div class="col-12 text-subtitle1">Executable arguments (only for advanced users)</div>
                 <q-input outlined v-model="configExecutableArguments" dense class="col-12" hint="Additional executable arguments that will be used when starting binary" :prefix="configExecutableArgumentsPrefix" @update:model-value="setConfigDebouced"/>
@@ -63,10 +85,13 @@ import { Config } from 'lib/module/distress'
 
 const configSelectedVersion = ref(null as string | null)
 const configAutoUpdate = ref(true)
+const configAllowUdpFlood = ref(true)
 const configConcurrency = ref(4096)
+const configUseMyIP = ref(0)
+const configTorConnections = ref(0)
 const configExecutableArguments = ref("")
 const configExecutableArgumentsPrefix = computed(() => {
-    return `--disable-auto-update --json-logs --concurrency ${configConcurrency.value}`
+    return `--disable-auto-update --json-logs --concurrency ${configConcurrency.value}` + (configUseMyIP.value != 0 ? ` --use-my-ip ${configUseMyIP.value}` : "") + (configTorConnections.value != 0 ? ` --use-tor ${configTorConnections.value}` : "") + (configAllowUdpFlood.value ? ` --direct-udp-failover 1` : "")
 })
 
 const installedVersions = ref([] as string[])
@@ -75,7 +100,10 @@ async function loadConfig() {
     const config = await window.modulesAPI.getConfig<Config>('DISTRESS')
     configSelectedVersion.value = config.selectedVersion || null
     configAutoUpdate.value = config.autoUpdate
+    configAllowUdpFlood.value = config.directUDPFailover
     configConcurrency.value = Number(config.concurrency)
+    configUseMyIP.value = Number(config.useMyIP)
+    configTorConnections.value = Number(config.useTor)
     configExecutableArguments.value = config.executableArguments.join(" ")
 }
 
@@ -85,7 +113,10 @@ async function setConfig() {
         selectedVersion: configSelectedVersion.value || undefined,
         autoUpdate: configAutoUpdate.value,
         concurrency: Number(configConcurrency.value),
-        executableArguments: configExecutableArguments.value.split(" ")
+        executableArguments: configExecutableArguments.value.split(" "),
+        useMyIP: Number(configUseMyIP.value),
+        useTor: Number(configTorConnections.value),
+        directUDPFailover: configAllowUdpFlood.value,
     } as Config
 
     await window.modulesAPI.setConfig<Config>('DISTRESS', config)

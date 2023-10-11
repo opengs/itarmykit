@@ -7,6 +7,10 @@ export interface Config extends BaseConfig {
     minInterval: number;
     // Set to true if you want to run primitive jobs that are less resource-efficient
     enablePrimitive: boolean;
+    // Path to the file with proxies. can be on internet
+    proxylist: string;
+    // Deefault proxy protocol to use
+    defaultProxyProto: 'http' | 'socks4' | 'socks5' | null;
 }
 
 export class DB1000N extends Module<Config> {
@@ -29,7 +33,9 @@ export class DB1000N extends Module<Config> {
       scale: 1,
       minInterval: 0,
       enablePrimitive: false,
-      executableArguments: []
+      executableArguments: [],
+      proxylist: '',
+      defaultProxyProto: null
     }
   }
 
@@ -66,6 +72,12 @@ export class DB1000N extends Module<Config> {
     args.push('--min-interval', config.minInterval.toString() + "ms")
     if (config.enablePrimitive) {
       args.push('--enable-primitive')
+    }
+    if (config.proxylist !== '') {
+      args.push('--proxylist', config.proxylist)
+    }
+    if (config.defaultProxyProto !== null) {
+      args.push('--default-proxy-proto', config.defaultProxyProto)
     }
     args.push(...config.executableArguments.filter(arg => arg !== ''))
 

@@ -57,6 +57,15 @@
                 </q-item-section>
             </q-item>
             <div class="row q-pt-sm">
+                <div class="col-12 text-subtitle1">Proxies list</div>
+                <q-input outlined v-model="configProxiesList" dense class="col-12" hint="Address (in filesystem or on internet) to the file with proxies in format 'protocol://ip:port' or 'ip:port'" @update:model-value="setConfigDebouced"/>
+            </div>
+            <div class="row q-pt-md">
+                <div class="col text-subtitle1">Default proxy protocol</div>
+                <q-select outlined v-model="configProxiesListProtocol" type="number" dense class="col-4" :options="configProxiesListProtocolOptions" @update:model-value="setConfigDebouced" clearable/>
+                <div class="col-12 text-caption text-grey-8" style="margin-top: -15px;">Protocol to use if it not defined in proxy list</div>
+            </div>
+            <div class="row q-pt-sm">
                 <div class="col-12 text-subtitle1">Executable arguments (only for advanced users)</div>
                 <q-input outlined v-model="configExecutableArguments" dense class="col-12" hint="Additional executable arguments that will be used when starting binary" :prefix="configExecutableArgumentsPrefix" @update:model-value="setConfigDebouced"/>
             </div>
@@ -87,9 +96,12 @@ const configAutoUpdate = ref(true)
 const configScale = ref(1)
 const configInterval = ref(0)
 const configEnablePrimitive = ref(false)
+const configProxiesList = ref("")
+const configProxiesListProtocol = ref(null as "socks4" | "socks5" | "http" | null)
+const configProxiesListProtocolOptions = ["socks4", "socks5", "http"]
 const configExecutableArguments = ref("")
 const configExecutableArgumentsPrefix = computed(() => {
-    return `--log-format json --scale ${configScale.value} --min-interval ${configInterval.value}ms` + (configEnablePrimitive.value ? ' --enable-primitive' : '')
+    return `--log-format json --scale ${configScale.value} --min-interval ${configInterval.value}ms` + (configEnablePrimitive.value ? ' --enable-primitive' : '') + (configProxiesList.value ? ` --proxylist ${configProxiesList.value}` : '') + (configProxiesListProtocol.value ? ` --default-proxy-proto ${configProxiesListProtocol.value}` : '')
 })
 
 const installedVersions = ref([] as string[])
@@ -101,6 +113,8 @@ async function loadConfig() {
     configScale.value = Number(config.scale)
     configInterval.value = Number(config.minInterval)
     configEnablePrimitive.value = config.enablePrimitive
+    configProxiesList.value = config.proxylist
+    configProxiesListProtocol.value = config.defaultProxyProto
     configExecutableArguments.value = config.executableArguments.join(" ")
 }
 
@@ -112,7 +126,9 @@ async function setConfig() {
         scale: Number(configScale.value),
         minInterval: Number(configInterval.value),
         enablePrimitive: configEnablePrimitive.value,
-        executableArguments: configExecutableArguments.value.split(" ")
+        proxylist: configProxiesList.value,
+        defaultProxyProto: configProxiesListProtocol.value,
+        executableArguments: configExecutableArguments.value.split(" "),
     } as Config
 
     await window.modulesAPI.setConfig<Config>('DB1000N', config)

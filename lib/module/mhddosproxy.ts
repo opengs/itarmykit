@@ -6,6 +6,8 @@ export interface Config extends BaseConfig {
   copies: number;
   // Number of threads per process
   threads: number;
+  // Percent of own IP address to use. 0 to disable.
+  vpnPercents: number;
 }
 
 export class MHDDOSProxy extends Module<Config> {
@@ -25,8 +27,9 @@ export class MHDDOSProxy extends Module<Config> {
     return {
       autoUpdate: true,
       executableArguments: [],
-      copies: 1,
-      threads: 16
+      copies: 0,
+      threads: 8192,
+      vpnPercents: 0
     }
   }
 
@@ -80,8 +83,14 @@ export class MHDDOSProxy extends Module<Config> {
       args.push('--user-id', settings.itarmy.uuid)
     }
     args.push('--no-updates')
-    args.push('--copies', config.copies.toString())
+    if (config.copies > 0) {
+      args.push('--copies', config.copies.toString())
+    }
     args.push('--threads', config.threads.toString())
+    if (config.vpnPercents > 0) {
+      args.push('--vpn', 'true')
+      args.push('--vpn-percents', config.vpnPercents.toString())
+    }
     args.push(...config.executableArguments.filter(arg => arg !== ''))
 
     let filename = 'mhddos_proxy_linux'
