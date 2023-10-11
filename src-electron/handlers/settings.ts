@@ -7,7 +7,8 @@ export interface SettingsData {
     system: {
         autoUpdate: boolean
         hideInTray: boolean
-        startOnBoot: boolean
+        startOnBoot: boolean,
+        language: 'en-US' | 'ua-UA'
     },
     modules: {
         dataPath: string;
@@ -31,7 +32,8 @@ export class Settings {
         system: {
             autoUpdate: true,
             hideInTray: false,
-            startOnBoot: false
+            startOnBoot: false,
+            language: 'en-US'
         },
         modules: {
             dataPath: joinPath(app.getPath('appData'), 'UACyberShield', 'itarmykit', 'modules')
@@ -72,10 +74,15 @@ export class Settings {
             this.data = JSON.parse(await fsPromises.readFile(Settings.settingsFile, 'utf-8'))
             
             // Backwards compatibility
+
             if (this.data.itarmy === undefined) {
                 this.data.itarmy = {
                     uuid: ''
                 }
+            }
+
+            if (this.data.system.language === undefined) {
+                this.data.system.language = 'en-US'
             }
         } catch (e) {
             await this.save()
@@ -127,6 +134,16 @@ export class Settings {
         })
 
         this.data.system.startOnBoot = data
+        await this.save()
+        this.settingsChangedEmiter.emit('settingsChanged', this.data)
+    }
+
+    async setSystemLanguage(data: SettingsData['system']['language']) {
+        if (!this.loaded) {
+            await this.load()
+        }
+
+        this.data.system.language = data
         await this.save()
         this.settingsChangedEmiter.emit('settingsChanged', this.data)
     }
@@ -190,6 +207,10 @@ export function handleSettings(settings: Settings) {
 
     ipcMain.handle('settings:system:startOnBoot', async (_e, data: SettingsData['system']['startOnBoot']) => {
         await settings.setSystemStartOnBoot(data)
+    })
+
+    ipcMain.handle('settings:system:language', async (_e, data: SettingsData['system']['language']) => {
+        await settings.setSystemLanguage(data)
     })
 
     ipcMain.handle('settings:modules:dataPath', async (_e, data: SettingsData['modules']['dataPath']) => {

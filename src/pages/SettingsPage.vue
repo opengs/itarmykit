@@ -36,6 +36,10 @@
                         <q-toggle color="primary" v-model="systemHideInTray" @update:model-value="setSystemHideInTray" />
                     </q-item-section>
                 </q-item>
+
+                <div class="q-pt-sm">
+                <LanguageSelectorComponent />
+                </div>
             </q-card-section>
 
             <q-card-section>
@@ -107,6 +111,8 @@
 </template>
 
 <script lang="ts" setup>
+import LanguageSelectorComponent from './settings/LanguageSelectorComponent.vue';
+
 import { onMounted, ref } from 'vue';
 
 const systemAutoUpdate = ref(true)

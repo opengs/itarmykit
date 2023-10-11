@@ -164,6 +164,9 @@ const settingsAPI = {
     async setStartOnBoot (data: SettingsData['system']['startOnBoot']): Promise<void> {
       return await ipcRenderer.invoke('settings:system:startOnBoot', data)
     },
+    async setLanguage (data: SettingsData['system']['language']): Promise<void> {
+      return await ipcRenderer.invoke('settings:system:language', data)
+    }
   },
   modules: {
     async setDataPath (data: SettingsData['modules']['dataPath']): Promise<void> {
