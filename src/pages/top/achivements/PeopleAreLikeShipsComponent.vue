@@ -1,6 +1,6 @@
 <template>
     <q-card>
-        <img src="/assets/russianWarShip.jpeg">
+        <img src="../../../assets/russianWarShip.jpeg">
 
         <q-card-section>
             <div class="text-h6">{{ $t('top.achivements.peopleAreLikeShips.title') }}</div>
