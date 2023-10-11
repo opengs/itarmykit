@@ -11,7 +11,7 @@
                 <q-item-label caption>{{ $t('modules.active.enabled.caption') }}</q-item-label>
                 </q-item-section>
                 <q-item-section side top>
-                <q-toggle color="primary" v-model="moduleEnabled" disable/>
+                <q-toggle color="primary" v-model="moduleEnabled" @update:model-value="setModuleEnabled"/>
                 </q-item-section>
             </q-item>
             
