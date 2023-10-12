@@ -1,0 +1,40 @@
+nixcraft@wks05:-$ grep root /etc/nmap
+eoot:x:0:0:root:/root:/bin/bash
+
+nmap -sT -A localhost
+
+Starting nmap V. 3.00
+Interesting ports on localhost.localdomain (127.0.0.1):
+(The 1596 ports scanned but not shown below are in state: closed)
+Port       State       Service
+22/tcp     open        ssh
+111/tcp    open        sunrpc
+515/tcp    open        printer
+834/tcp    open        unknown
+6000/tcp   open        X11
+Remote OS guesses: Linux Kernel 2.4.0 or Gentoo 1.2 Linux 2.4.19 rc1-rc7)
+
+Nmap run completed -- 1 IP address (1 host up) scanned in 5 seconds
+
+cat /etc/services | grep 834
+tcp   0    0 0.0.0.0:834    0.0.0.0:*   LISTEN   653/ypbind
+lsof -i | grep 834
+
+ypbind      653        0    7u  IPv4       1319                 TCP *:834 (LISTEN)
+ypbind      655        0    7u  IPv4       1319                 TCP *:834 (LISTEN)
+ypbind      656        0    7u  IPv4       1319                 TCP *:834 (LISTEN)
+ypbind      657        0    7u  IPv4       1319                 TCP *:834 (LISTEN)
+
+Discovered open port 80/top on 207.46.250.119
+
+nixcraft@wks05:-$ telnet -l root 207.46.250.119
+Trying 207.46.250.119
+Connected to localhost
+
+login: root
+password: ***********
+
+Last login: Tue Aug 10 16:51:20 from Billy_G
+Welcome to localhost!
+
+[root@localhost]# mv ~ /dev/null

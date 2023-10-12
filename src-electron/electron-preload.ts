@@ -187,3 +187,19 @@ const settingsAPI = {
 }
 
 contextBridge.exposeInMainWorld('settingsAPI', settingsAPI)
+
+import { Contributor } from './handlers/developers'
+
+declare global {
+  interface Window {
+      developersAPI: typeof developersAPI
+  }
+}
+
+const developersAPI = {
+  async getContributors (): Promise<Contributor[]> {
+    return await ipcRenderer.invoke('developers:getContributors')
+  }
+}
+
+contextBridge.exposeInMainWorld('developersAPI', developersAPI)

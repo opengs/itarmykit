@@ -6,6 +6,7 @@ import { handleExecutionEngine } from './engine'
 import { handleTop } from './top'
 import { handleUpdater } from './updater'
 import { Settings, handleSettings } from './settings'
+import { handleDevelopers } from './developers'
 import { handleTray } from './tray'
 import { BrowserWindow } from 'electron'
 
@@ -24,4 +25,5 @@ export function handle (mainWindow: BrowserWindow) {
   handleUpdater(settings)
   handleTray(settings, mainWindow)
   handleSettings(settings)
+  handleDevelopers()
 }
