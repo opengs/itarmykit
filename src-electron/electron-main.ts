@@ -20,9 +20,9 @@ let mainWindow: BrowserWindow | undefined
 function createWindow () {
   let appIcon: string | undefined = undefined
   if (platform == 'win32'){
-    appIcon = path.resolve(__dirname, 'src-electron/icons/icon.ico')
+    appIcon = path.resolve(__dirname, 'icons', 'icon.ico')
   } else if (platform == 'linux'){
-    appIcon = path.resolve(__dirname, 'src-electron/icons/256x256.png')
+    appIcon = path.resolve(__dirname, 'icons', '256x256.png')
   }
   
   /**
