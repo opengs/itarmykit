@@ -36,6 +36,7 @@ function createWindow () {
     },
   })
 
+  console.log(process.env.APP_URL)
   mainWindow.loadURL(process.env.APP_URL)
   mainWindow.webContents.session
 
@@ -44,9 +45,9 @@ function createWindow () {
     mainWindow.webContents.openDevTools()
   } else {
     // we're on production; no access to devtools pls
-    mainWindow.webContents.on('devtools-opened', () => {
+    /*mainWindow.webContents.on('devtools-opened', () => {
       mainWindow?.webContents.closeDevTools()
-    })
+    })*/
   }
 
   mainWindow.on('closed', () => {
