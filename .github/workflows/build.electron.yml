@@ -29,7 +29,7 @@ jobs:
           quasar build --mode electron --publish always -T linux
   build_for_windows:
     name: Build for windows
-    runs-on: ubuntu-22.04
+    runs-on: windows-2022
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -38,15 +38,8 @@ jobs:
           node-version: '18'
       - name: Install dependencies
         run: |
-          rm -rf dist/
           npm install -g @quasar/cli yarn --force
           yarn install
-      - name: Install wine
-        run: |
-          sudo dpkg --add-architecture i386
-          sudo apt update
-          sudo apt install -y wine32
-          sudo snap install snapcraft --classic
       - name: Build and release Windows binaries 
         env:
           EP_GH_IGNORE_TIME: true
