@@ -75,7 +75,11 @@ const biohazardActivationMenu = ref(0)
 function biohazardClick() {
     biohazardActivationMenu.value += 0.1
     if (biohazardActivationMenu.value >= 1) {
-        window.location.pathname = "/hazard/index.html"
+        if (window.location.pathname == "/") { // DEV 
+            window.location.pathname = "/hazard/index.html"
+        } else {
+            window.location.pathname = window.location.pathname.split("index.html")[0] + "hazard/index.html"
+        }
     }
 }
 function openContributorPage(contributor: Contributor) {

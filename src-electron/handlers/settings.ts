@@ -21,6 +21,10 @@ export interface SettingsData {
     },
     itarmy: {
         uuid: string
+    },
+    bootstrap: {
+        step: 'LANGUAGE' | 'DATA_FOLDER' | 'MODULES_CONFIGURATION' | 'ITARMY_UUID' | 'DONE'
+        selectedModulesConfig: 'NONE' | 'GOVERNMENT_AGENCY' | 'WORK' | 'HOME'
     }
 }
 
@@ -46,6 +50,10 @@ export class Settings {
         },
         itarmy: {
             uuid: ''
+        },
+        bootstrap: {
+            step: 'LANGUAGE',
+            selectedModulesConfig: 'NONE'
         }
     }
     private loaded = false
@@ -83,6 +91,13 @@ export class Settings {
 
             if (this.data.system.language === undefined) {
                 this.data.system.language = 'en-US'
+            }
+
+            if (this.data.bootstrap === undefined) {
+                this.data.bootstrap = {
+                    step: 'DONE',
+                    selectedModulesConfig: 'NONE'
+                }
             }
         } catch (e) {
             await this.save()
@@ -189,6 +204,26 @@ export class Settings {
         await this.save()
         this.settingsChangedEmiter.emit('settingsChanged', this.data)
     }
+
+    async setBootstrapStep(data: SettingsData['bootstrap']['step']) {
+        if (!this.loaded) {
+            await this.load()
+        }
+
+        this.data.bootstrap.step = data
+        await this.save()
+        this.settingsChangedEmiter.emit('settingsChanged', this.data)
+    }
+
+    async setBootstrapSelectedModulesConfig(data: SettingsData['bootstrap']['selectedModulesConfig']) {
+        if (!this.loaded) {
+            await this.load()
+        }
+
+        this.data.bootstrap.selectedModulesConfig = data
+        await this.save()
+        this.settingsChangedEmiter.emit('settingsChanged', this.data)
+    }
 }
 
 export function handleSettings(settings: Settings) {
@@ -227,5 +262,13 @@ export function handleSettings(settings: Settings) {
 
     ipcMain.handle('settings:itarmy:uuid', async (_e, data: SettingsData['itarmy']['uuid']) => {
         await settings.setItArmyUUID(data)
+    })
+
+    ipcMain.handle('settings:bootstrap:step', async (_e, data: SettingsData['bootstrap']['step']) => {
+        await settings.setBootstrapStep(data)
+    })
+
+    ipcMain.handle('settings:bootstrap:selectedModulesConfig', async (_e, data: SettingsData['bootstrap']['selectedModulesConfig']) => {
+        await settings.setBootstrapSelectedModulesConfig(data)
     })
 }
