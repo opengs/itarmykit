@@ -18,13 +18,18 @@ try {
 let mainWindow: BrowserWindow | undefined
 
 function createWindow () {
-  const appIcon = nativeImage.createFromPath(path.resolve(__dirname, 'icons/icon.png'))
+  let appIcon: string | undefined = undefined
+  if (platform == 'win32'){
+    appIcon = path.resolve(__dirname, 'icons', 'icon.ico')
+  } else if (platform == 'linux'){
+    appIcon = path.resolve(__dirname, 'icons', '256x256.png')
+  }
   
   /**
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    //icon: appIcon.resize({ width: 32, height: 32, quality: best }), // tray icon
+    icon: appIcon,
     width: 1400,
     height: 660,
     useContentSize: true,
