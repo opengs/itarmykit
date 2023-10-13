@@ -24,7 +24,7 @@ function createWindow () {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    icon: appIcon.resize({ width: 32, height: 32 }), // tray icon
+    //icon: appIcon.resize({ width: 32, height: 32, quality: best }), // tray icon
     width: 1400,
     height: 660,
     useContentSize: true,

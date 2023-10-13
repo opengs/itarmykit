@@ -22,7 +22,9 @@ export function handleTray(settings: Settings, mainWindow: BrowserWindow) {
         }
         }
     ]));
-    const appIcon = nativeImage.createFromPath(path.resolve(__dirname, 'icons/icon.png'))
+
+    const appIcon = nativeImage.createFromPath(path.resolve(__dirname, 'icons/trey.png'))
+
     tray.setImage(appIcon); // tray icon
     tray.setToolTip('IT Army Kit');
 
