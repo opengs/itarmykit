@@ -183,6 +183,14 @@ const settingsAPI = {
     async setUUID (data: SettingsData['itarmy']['uuid']): Promise<void> {
       return await ipcRenderer.invoke('settings:itarmy:uuid', data)
     }
+  },
+  bootstrap: {
+    async setStep (data: SettingsData['bootstrap']['step']): Promise<void> {
+      return await ipcRenderer.invoke('settings:bootstrap:step', data)
+    },
+    async setSelectedModulesConfig (data: SettingsData['bootstrap']['selectedModulesConfig']): Promise<void> {
+      return await ipcRenderer.invoke('settings:bootstrap:selectedModulesConfig', data)
+    }
   }
 }
 
