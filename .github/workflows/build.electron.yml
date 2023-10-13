@@ -26,7 +26,7 @@ jobs:
           EP_GH_IGNORE_TIME: true
           GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
         run: |
-          quasar build --mode electron --publish always -T linux
+          quasar build --mode electron --publish always -T linux --icon=/src-electron/icons/icon.png
   build_for_windows:
     name: Build for windows
     runs-on: ubuntu-22.04
@@ -52,7 +52,7 @@ jobs:
           EP_GH_IGNORE_TIME: true
           GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
         run: |
-          quasar build --mode electron --publish always -T win32
+          quasar build --mode electron --publish always -T win32 --icon=/src-electron/icons/icon.ico
   build_for_macos:
     name: Build for macos
     runs-on: macos-12
@@ -75,4 +75,4 @@ jobs:
           EP_GH_IGNORE_TIME: true
           GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
         run: |
-          quasar build --mode electron --publish always -T darwin
+          quasar build --mode electron --publish always -T darwin --icon=/src-electron/icons/icon.icns
