@@ -203,7 +203,7 @@ module.exports = configure(function (/* ctx */) {
       builder: {
         // https://www.electron.build/configuration/configuration
         win: {
-          icon: './src-electron/icons/icon.ico',
+          icon: 'src-electron/icons/icon.ico',
           target: [
             {
               target: 'nsis',
@@ -212,7 +212,7 @@ module.exports = configure(function (/* ctx */) {
           ]
         },
         mac: {
-          icon: './src-electron/icons/icon.icns',
+          icon: 'src-electron/icons/icon.icns',
           target: [
             {
               target: 'dmg',
@@ -222,7 +222,7 @@ module.exports = configure(function (/* ctx */) {
         },
 
         linux: {
-          icon: './src-electron/icons/icon.png',
+          icon: 'src-electron/icons/icon.icns',
           target: [
             {
               target: 'deb',
