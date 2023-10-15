@@ -1,4 +1,5 @@
 import { RouteRecordRaw } from 'vue-router'
+import { bootstrapGuard } from './guards'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -13,7 +14,14 @@ const routes: RouteRecordRaw[] = [
       { path: '/settings', name: 'settings', component: () => import('pages/SettingsPage.vue') },
       { path: '/top', name: 'top', component: () => import('pages/top/TopPage.vue') },
       { path: '/developers', name: 'developers', component: () => import('pages/developers/DevelopersPage.vue') }
-    ]
+    ],
+    beforeEnter: [ bootstrapGuard ]
+  },
+
+  {
+    path: '/bootstrap',
+    name: 'bootstrap',
+    component: () => import('pages/bootstrap/BootstrapPage.vue')
   },
 
   // Always leave this as last one,

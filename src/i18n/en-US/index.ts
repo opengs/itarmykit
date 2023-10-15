@@ -35,5 +35,35 @@ export default {
         badButton: "I dont like Ukraine",
       },
     }
+  },
+  bootstrap: {
+    title: "Looks like you are first time here. Let us help you",
+
+    header: {
+      language: "Select language",
+      data: "Data",
+      itarmy: "ITArmy ID"
+
+    },
+
+    language: {
+      continueButton: "Continue"
+    },
+
+    data: {
+      body: "Application will automatically download required modules and store them on yours PC. Modules and all the data will be stored in the folder",
+      windows: "Before continue, make sure you added data folder to the windows defender and antivirus exceptions. Otherwise, all the downloaded data will be deleted.",
+      openDataFolderButton: "Open data folder",
+      changeDataFolderButton: "Change data folder",
+      continueButton: "Continue",
+      backButton: "Back"
+    },
+
+    itarmy: {
+      body: "If you have ITArmy ID, you can enter it here. Otherwise, you can skip this step.",
+      uuidInputTitle: "ITArmy ID",
+      continueButton: "Continue",
+      backButton: "Back"
+    }
   }
 }
