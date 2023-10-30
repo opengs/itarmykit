@@ -51,17 +51,87 @@
             :name="3"
             :title="$t('bootstrap.header.itarmy')"
             icon="add_comment"
+            :done="step > 3"
             :header-nav="step > 3"
         >
             <div class="q-mb-md">{{ $t('bootstrap.itarmy.body') }}</div>
             <q-input :label="$t('bootstrap.itarmy.uuidInputTitle')" outlined v-model="itArmyUUID" @update:model-value="setItArmyUUID" :debounce="500" />
 
             <q-stepper-navigation class="row">
+                <q-btn @click="step = 2" color="primary" :label="$t('bootstrap.itarmy.backButton')" class="q-mr-sm col-2" outline />
+            <q-btn @click="finishItArmyStep" color="primary" :label="$t('bootstrap.itarmy.continueButton')" class="col fit" outline />
+            </q-stepper-navigation>
+        </q-step>
+
+        <q-step
+            :name="4"
+            :title="$t('bootstrap.header.module')"
+            icon="view_module"
+            :done="step > 4"
+            :header-nav="step > 4"
+        >
+            <div class="q-mb-md">{{ $t('bootstrap.module.body') }}</div>
+            <q-list>
+                <q-item tag="label" v-ripple>
+                    <q-item-section avatar>
+                    <q-radio v-model="presetToInstall" :val="Preset.GOVERNMENT_AGENCY" color="yellow-7" />
+                    </q-item-section>
+                    <q-item-section>
+                    <q-item-label>{{ $t('bootstrap.module.preset.government.title') }}</q-item-label>
+                    <q-item-label caption>{{ $t('bootstrap.module.preset.government.description') }}</q-item-label>
+                    </q-item-section>
+                </q-item>
+                <q-item tag="label" v-ripple>
+                    <q-item-section avatar>
+                    <q-radio v-model="presetToInstall" :val="Preset.NORMAL" color="yellow-7" />
+                    </q-item-section>
+                    <q-item-section>
+                    <q-item-label>{{ $t('bootstrap.module.preset.normal.title') }}</q-item-label>
+                    <q-item-label caption>{{ $t('bootstrap.module.preset.normal.description') }}</q-item-label>
+                    </q-item-section>
+                </q-item>
+                <q-item tag="label" v-ripple>
+                    <q-item-section avatar>
+                    <q-radio v-model="presetToInstall" :val="Preset.LAPTOP" color="yellow-7" />
+                    </q-item-section>
+                    <q-item-section>
+                    <q-item-label>{{ $t('bootstrap.module.preset.laptop.title') }}</q-item-label>
+                    <q-item-label caption>{{ $t('bootstrap.module.preset.laptop.description') }}</q-item-label>
+                    </q-item-section>
+                </q-item>
+                <q-item tag="label" v-ripple>
+                    <q-item-section avatar>
+                    <q-radio v-model="presetToInstall" :val="Preset.MAX" color="yellow-7" />
+                    </q-item-section>
+                    <q-item-section>
+                    <q-item-label>{{ $t('bootstrap.module.preset.max.title') }}</q-item-label>
+                    <q-item-label caption>{{ $t('bootstrap.module.preset.max.description') }}</q-item-label>
+                    </q-item-section>
+                </q-item>
+                <q-item tag="label" v-ripple>
+                    <q-item-section avatar>
+                    <q-radio v-model="presetToInstall" :val="null" color="yellow-7" />
+                    </q-item-section>
+                    <q-item-section>
+                    <q-item-label>{{ $t('bootstrap.module.preset.expert.title') }}</q-item-label>
+                    <q-item-label caption>{{ $t('bootstrap.module.preset.expert.description') }}</q-item-label>
+                    </q-item-section>
+                </q-item>
+            </q-list>
+            <q-stepper-navigation class="row">
                 <q-btn @click="step = 2" color="primary" :label="$t('bootstrap.data.backButton')" class="q-mr-sm col-2" outline />
-            <q-btn @click="finishItArmyStep" color="primary" :label="$t('bootstrap.data.continueButton')" class="col fit" outline />
+            <q-btn @click="finishModuleStep" color="primary" :label="$t('bootstrap.data.continueButton')" class="col fit" outline />
             </q-stepper-navigation>
         </q-step>
         </q-stepper>
+    
+    <q-dialog v-model="moduleInstallationDialog">
+        <ModuleInstallationComponent
+            @error="moduleInstallationError"
+            @configured="moduleInstalledSuccessfully"
+            :preset-name="presetToInstall ? presetToInstall : Preset.NORMAL"
+        />
+    </q-dialog>
     </div>
 </template>
 
@@ -70,9 +140,13 @@ import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import LanguageSelectorComponent from '../settings/LanguageSelectorComponent.vue';
+import { Preset } from './moduleConfig';
+import ModuleInstallationComponent from './ModuleInstallationComponent.vue';
+import { useQuasar } from 'quasar';
 
 const step = ref(1);
 const router = useRouter();
+const quasar = useQuasar();
 
 const dataFolder = ref("")
 
@@ -101,6 +175,30 @@ async function setItArmyUUID(newValue: string | number | null) {
 }
 
 async function finishItArmyStep() {
+    await window.settingsAPI.bootstrap.setStep("MODULES_CONFIGURATION")
+    step.value = 4;
+}
+
+const presetToInstall = ref<Preset | null>(Preset.NORMAL)
+const moduleInstallationDialog = ref(false)
+async function finishModuleStep() {
+    if (presetToInstall.value === null) {
+        await window.settingsAPI.bootstrap.setStep("DONE")
+        await router.push({ name: "dashboard" })
+    } else {
+        moduleInstallationDialog.value = true
+    }
+}
+async function moduleInstallationError(error: string) {
+    quasar.notify({
+        message: error,
+        type: "negative",
+        timeout: 5000
+    })
+    moduleInstallationDialog.value = false
+}
+async function moduleInstalledSuccessfully() {
+    moduleInstallationDialog.value = false
     await window.settingsAPI.bootstrap.setStep("DONE")
     await router.push({ name: "dashboard" })
 }

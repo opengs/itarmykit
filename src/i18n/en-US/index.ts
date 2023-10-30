@@ -42,8 +42,8 @@ export default {
     header: {
       language: "Select language",
       data: "Data",
-      itarmy: "ITArmy ID"
-
+      itarmy: "ITArmy ID",
+      module: "Modules"
     },
 
     language: {
@@ -64,6 +64,35 @@ export default {
       uuidInputTitle: "ITArmy ID",
       continueButton: "Continue",
       backButton: "Back"
+    },
+
+    module: {
+      body: "Select configuration preset. You can change all the configured options later.",
+      installation: {
+        title: "Installing module"
+      },
+      preset: {
+        government: {
+          title: "Government / Old PC",
+          description: "This preset will use as little resources as possible. This may cut several features of the modules.",
+        },
+        laptop: {
+          title: "Laptop",
+          description: "This preset will try to use less resources, but will not cut features.",
+        },
+        normal: {
+          title: "Normal",
+          description: "Normal computer at home. This preset will use default (supplied by developers) configuration options for installed modules",
+        },
+        max: {
+          title: "Maximum",
+          description: "Maximum performance. This preset will use maximum resources of your computer. This may cause some lags in other applications.",
+        },
+        expert: {
+          title: "Expert",
+          description: "Dont make any changes to the configuration. You will have to provide everything manually",
+        }
+      }
     }
   }
 }

@@ -53,7 +53,7 @@ const modulesAPI = {
     ipcRenderer.on('modules:installProgress', handleProgress)
     try {
         await ipcRenderer.invoke('modules:installVersion', moduleName, versionTag)
-        await new Promise(resolve => setTimeout(resolve, 100)) // wait for the last progress callback
+        await new Promise(resolve => setTimeout(resolve, 500)) // wait for the last progress callback
     } finally {
         ipcRenderer.off('modules:installProgress', handleProgress)
     }
