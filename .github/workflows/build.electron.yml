@@ -58,9 +58,9 @@ jobs:
       - name: Install dependencies
         run: |
           npm install -g @quasar/cli yarn --force
-          rm package.json yarn.lock quasar.config.js
-          mv package.winxp.json package.json
-          mv quasar.config.winxp.js quasar.conf.js
+          del package.json yarn.lock quasar.config.js
+          ren package.winxp.json package.json
+          ren quasar.config.winxp.js quasar.conf.js
           yarn install
       - name: Build and release WindowsXP binaries 
         env:
