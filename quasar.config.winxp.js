@@ -207,32 +207,9 @@ module.exports = configure(function (/* ctx */) {
           target: [
             {
               target: 'nsis',
-              arch: ['x64', 'arm64']
+              arch: ['ia32']
             }
           ]
-        },
-        mac: {
-          icon: 'src-electron/icons/icon.icns',
-          target: [
-            {
-              target: 'dmg',
-              arch: ['x64', 'arm64']
-            }
-          ]
-        },
-
-        linux: {
-          icon: 'src-electron/icons/icon.icns',
-          target: [
-            {
-              target: 'deb',
-              arch: ['x64', 'arm64']
-            },
-            {
-              target: 'AppImage',
-              arch: ['x64', 'arm64']
-            }
-          ],
         },
 
         artifactName: '${name}-${os}-${arch}.${ext}',

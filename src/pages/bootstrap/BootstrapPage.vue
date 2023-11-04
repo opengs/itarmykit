@@ -34,9 +34,9 @@
             :done="step > 2"
             :header-nav="step > 2"
         >
-            {{ $t('bootstrap.data.body') }} <span class="text-bold text-h5">{{ dataFolder }} </span>
-            <q-btn :label="$t('bootstrap.data.openDataFolderButton')" outline class="q-ma-sm" @click="openDataFodler"/>
-            <q-btn :label="$t('bootstrap.data.changeDataFolderButton')" outline class="q-ma-sm" @click="changeDataFolder"/>
+            <div>{{ $t('bootstrap.data.body') }}</div>
+            <div class="text-bold text-h5">{{ dataFolder }} </div>
+            <div><q-btn :label="$t('bootstrap.data.changeDataFolderButton')" outline class="q-ma-sm" @click="changeDataFolder"/></div>
 
             <div class="text-h4 text-bold text-negative text-center q-pa-lg" v-if="$q.platform.is.win">{{ $t('bootstrap.data.windows') }}</div>
 
