@@ -1,5 +1,5 @@
 <template>
-    <a-page padding class="">
+    <q-page class="">
         <q-card
             flat
             class="bg-transparent"
@@ -102,12 +102,34 @@
                 <div><span class="">Currently your modules located under:</span> {{ modulesDataFolderPath }}  </div>
                 <q-btn outline label="Open data folder" class="fit q-mt-sm" @click="openModulesDataFolder" />
                 <q-btn outline label="Change modules data location" class="fit q-mt-sm" @click="selectFolderForModulesData" />
-                <q-btn outline label="Delete modules cache" color="negative" class="fit q-mt-sm" @click="deleteModulesCache" />
-                <q-btn outline label="Delete all the data" color="negative" class="fit q-mt-sm" @click="deleteAllData" />
+                <q-btn outline label="Delete modules cache" color="negative" class="fit q-mt-sm" @click="deleteModuelsCacheDialog = true" />
+                <q-btn outline label="Delete all the data" color="negative" class="fit q-mt-sm" @click="deleteAllDataDialog = true" />
             </q-card-section>
 
         </q-card>
-    </a-page>
+    </q-page>
+
+    <q-dialog v-model="deleteModuelsCacheDialog">
+        <q-card class="q-pa-md" flat style="border: solid 3px red;">
+            <q-card-section class="text-center text-h5 text-bold">
+                Do you really want to delete modules cache? Application will quit after this action and may not automatically restart.
+            </q-card-section>
+            <q-card-action>
+                <q-btn label="Delete" class="fit" color="negative" outline @click="deleteModulesCache"/>
+            </q-card-action>
+        </q-card>
+    </q-dialog>
+
+    <q-dialog v-model="deleteAllDataDialog">
+        <q-card class="q-pa-md" flat style="border: solid 3px red;">
+            <q-card-section class="text-center text-h5 text-bold">
+                Do you really want to delete all the data including settings and modules cache? Application will quit after this action and may not automatically restart.
+            </q-card-section>
+            <q-card-action>
+                <q-btn label="Delete" class="fit" color="negative" outline @click="deleteAllData"/>
+            </q-card-action>
+        </q-card>
+    </q-dialog>
 </template>
 
 <script lang="ts" setup>
@@ -164,10 +186,12 @@ async function setItArmyUUID(newValue: string | number | null) {
     await window.settingsAPI.itarmy.setUUID(String(newValue))
 }
 
+const deleteModuelsCacheDialog = ref(false)
 async function deleteModulesCache() {
     await window.settingsAPI.modules.deleteData()
 }
 
+const deleteAllDataDialog = ref(false)
 async function deleteAllData() {
     await window.settingsAPI.deleteData()
 }

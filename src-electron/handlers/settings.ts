@@ -74,6 +74,7 @@ export class Settings {
     }
 
     async deleteData() {
+        this.deleteModulesData()
         const p = joinPath(app.getPath('appData'), 'UACyberShield', 'itarmykit')
         if (existsSync(p)) {
             await fsPromises.rmdir(p, { recursive: true })
