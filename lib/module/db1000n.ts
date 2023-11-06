@@ -47,6 +47,7 @@ export class DB1000N extends Module<Config> {
     const progressGenerator = this.installVersionFromGithub('arriven', 'db1000n', versionTag, [
       { name: 'db1000n_linux_amd64.tar.gz', arch: 'x64', platform: 'linux' },
       { name: 'db1000n_linux_arm64.tar.gz', arch: 'arm64', platform: 'linux' },
+      { name: 'db1000n_windows_386.zip', arch: 'ia32', platform: 'win32' },
       { name: 'db1000n_windows_amd64.zip', arch: 'x64', platform: 'win32' },
       { name: 'db1000n_windows_arm64.zip', arch: 'arm64', platform: 'win32' },
       { name: 'db1000n_darwin_amd64.tar.gz', arch: 'x64', platform: 'darwin' },

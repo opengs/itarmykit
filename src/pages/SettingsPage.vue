@@ -102,8 +102,8 @@
                 <div><span class="">Currently your modules located under:</span> {{ modulesDataFolderPath }}  </div>
                 <q-btn outline label="Open data folder" class="fit q-mt-sm" @click="openModulesDataFolder" />
                 <q-btn outline label="Change modules data location" class="fit q-mt-sm" @click="selectFolderForModulesData" />
-                <q-btn outline label="Delete modules cache" color="negative" class="fit q-mt-sm" disable />
-                <q-btn outline label="Delete all the data" color="negative" class="fit q-mt-sm" disable />
+                <q-btn outline label="Delete modules cache" color="negative" class="fit q-mt-sm" @click="deleteModulesCache" />
+                <q-btn outline label="Delete all the data" color="negative" class="fit q-mt-sm" @click="deleteAllData" />
             </q-card-section>
 
         </q-card>
@@ -111,6 +111,7 @@
 </template>
 
 <script lang="ts" setup>
+import { app } from 'electron';
 import LanguageSelectorComponent from './settings/LanguageSelectorComponent.vue';
 
 import { onMounted, ref } from 'vue';
@@ -161,6 +162,14 @@ async function openModulesDataFolder() {
 const itArmyUUID = ref("")
 async function setItArmyUUID(newValue: string | number | null) {
     await window.settingsAPI.itarmy.setUUID(String(newValue))
+}
+
+async function deleteModulesCache() {
+    await window.settingsAPI.modules.deleteData()
+}
+
+async function deleteAllData() {
+    await window.settingsAPI.deleteData()
 }
 
 async function loadSettings() {

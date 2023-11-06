@@ -154,6 +154,9 @@ const settingsAPI = {
   async get (): Promise<SettingsData> {
     return await ipcRenderer.invoke('settings:get')
   },
+  async deleteData(): Promise<void> {
+    return await ipcRenderer.invoke('settings:deleteData')
+  },
   system: {
     async setAutoUpdate (data: SettingsData['system']['autoUpdate']): Promise<void> {
       return await ipcRenderer.invoke('settings:system:autoUpdate', data)
@@ -177,6 +180,9 @@ const settingsAPI = {
     },
     async openDataFolder (): Promise<void> {
       return await ipcRenderer.invoke('settings:modules:openDataFolder')
+    },
+    async deleteData(): Promise<void> {
+      return await ipcRenderer.invoke('settings:modules:deleteData')
     }
   },
   itarmy: {

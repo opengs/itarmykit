@@ -62,21 +62,33 @@ function createWindow () {
   handle(mainWindow)
 }
 
-// On windows, when downloading modules, data is saved to cache thus requring for user to add several folders to exception of windows defender / antivirus
-if (process.platform === 'win32') {
-  app.commandLine.appendSwitch("disable-http-cache");
+if (!app.requestSingleInstanceLock()) {
+  app.quit()
+} else {
+  app.on('second-instance', () => {
+    // Someone tried to run a second instance, we should focus our window.
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore()
+      mainWindow.focus()
+    }
+  })
+
+  // On windows, when downloading modules, data is saved to cache thus requring for user to add several folders to exception of windows defender / antivirus
+  if (process.platform === 'win32') {
+    app.commandLine.appendSwitch("disable-http-cache");
+  }
+
+  app.whenReady().then(createWindow)
+
+  app.on('window-all-closed', () => {
+    if (platform !== 'darwin') {
+      app.quit()
+    }
+  })
+
+  app.on('activate', () => {
+    if (mainWindow === undefined) {
+      createWindow()
+    }
+  })
 }
-
-app.whenReady().then(createWindow)
-
-app.on('window-all-closed', () => {
-  if (platform !== 'darwin') {
-    app.quit()
-  }
-})
-
-app.on('activate', () => {
-  if (mainWindow === undefined) {
-    createWindow()
-  }
-})

@@ -1,6 +1,6 @@
 import { join as joinPath }from 'path'
 import { app, ipcMain } from 'electron'
-import { promises as fsPromises, readFileSync } from 'fs'
+import { promises as fsPromises, readFileSync, existsSync } from 'fs'
 import EventEmitter from 'events';
 
 export interface SettingsData {
@@ -71,6 +71,13 @@ export class Settings {
             this.loadSync()
         }
         return this.data
+    }
+
+    async deleteData() {
+        const p = joinPath(app.getPath('appData'), 'UACyberShield', 'itarmykit')
+        if (existsSync(p)) {
+            await fsPromises.rmdir(p, { recursive: true })
+        }
     }
 
     async save() {
@@ -195,6 +202,12 @@ export class Settings {
         await shell.openPath(this.data.modules.dataPath)
     }
 
+    async deleteModulesData() {
+        if (existsSync(this.data.modules.dataPath)) {
+            await fsPromises.rmdir(this.data.modules.dataPath, { recursive: true })
+        }
+    }
+
     async setItArmyUUID(data: SettingsData['itarmy']['uuid']) {
         if (!this.loaded) {
             await this.load()
@@ -231,6 +244,12 @@ export function handleSettings(settings: Settings) {
         return await settings.getData()
     })
 
+    ipcMain.handle('settings:deleteData', async () => {
+        await settings.deleteData()
+        app.relaunch()
+        app.exit()
+    })
+
     ipcMain.handle('settings:system:autoUpdate', async (_e, data: SettingsData['system']['autoUpdate']) => {
         await settings.setSystemAutoUpdate(data)
     })
@@ -258,6 +277,12 @@ export function handleSettings(settings: Settings) {
 
     ipcMain.handle('settings:modules:openDataFolder', async () => {
         await settings.openModulesDataFolder()
+    })
+
+    ipcMain.handle('settings:modules:deleteData', async () => {
+        await settings.deleteModulesData()
+        app.relaunch()
+        app.exit()
     })
 
     ipcMain.handle('settings:itarmy:uuid', async (_e, data: SettingsData['itarmy']['uuid']) => {
