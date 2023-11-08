@@ -118,6 +118,9 @@ export async function configureMaxPreset(callback: (progress: InstallProgress) =
     distressConfig.concurrency = 20480
     db1000nConfig.scale = 5
 
+    mhddosProxyConfig.copies = 0 // Auto
+    mhddosProxyConfig.threads = 16384
+
     await installModule(mhddosProxyConfig, distressConfig, db1000nConfig, callback)
     await window.executionEngineAPI.startModule()
     await window.settingsAPI.system.setAutoUpdate(true)

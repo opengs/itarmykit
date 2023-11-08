@@ -27,7 +27,7 @@ export class MHDDOSProxy extends Module<Config> {
     return {
       autoUpdate: true,
       executableArguments: [],
-      copies: 0,
+      copies: 1,
       threads: 8192,
       vpnPercents: 0
     }
@@ -83,8 +83,11 @@ export class MHDDOSProxy extends Module<Config> {
       args.push('--user-id', settings.itarmy.uuid)
     }
     args.push('--no-updates')
-    if (config.copies > 0) {
+    if (config.copies !== 0) {
       args.push('--copies', config.copies.toString())
+    }
+    if (config.copies == 0) {
+      args.push('--copies', "auto")
     }
     args.push('--threads', config.threads.toString())
     if (config.vpnPercents > 0) {
