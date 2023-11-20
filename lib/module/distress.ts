@@ -29,7 +29,7 @@ export class Distress extends Module<Config> {
     return {
       autoUpdate: true,
       executableArguments: [],
-      concurrency: 1024,
+      concurrency: 4096,
       directUDPFailover: false,
       useMyIP: 0,
       useTor: 0
@@ -72,15 +72,17 @@ export class Distress extends Module<Config> {
       args.push('--user-id', settings.itarmy.uuid)
     }
     args.push('--disable-auto-update', '--json-logs')
-    args.push('--concurrency', config.concurrency.toString())
-    if (config.directUDPFailover) {
-      args.push('--direct-udp-failover', '1')
+    if (config.concurrency > 0) {
+      args.push('--concurrency', config.concurrency.toString())
     }
     if (config.useTor > 0) {
       args.push('--use-tor', config.useTor.toString())
     }
     if (config.useMyIP > 0) {
       args.push('--use-my-ip', config.useMyIP.toString())
+    }
+    if (config.useMyIP > 0 && config.directUDPFailover) {
+      args.push('--direct-udp-mixed-flood')
     }
     args.push(...config.executableArguments.filter(arg => arg !== ''))
 

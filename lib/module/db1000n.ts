@@ -70,7 +70,9 @@ export class DB1000N extends Module<Config> {
 
     args.push('--log-format', 'json')
     args.push('--scale', config.scale.toString())
-    args.push('--min-interval', config.minInterval.toString() + "ms")
+    if (config.minInterval > 0) {
+      args.push('--min-interval', config.minInterval.toString() + "ms")
+    }
     if (config.enablePrimitive) {
       args.push('--enable-primitive')
     }
