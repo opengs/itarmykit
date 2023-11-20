@@ -31,26 +31,11 @@
                 <q-toggle color="primary" v-model="configAutoUpdate" @update:model-value="setConfigDebouced"/>
                 </q-item-section>
             </q-item>
-            <q-item class="row q-pa-none q-pt-sm">
-                <q-item-section>
-                <q-item-label>UDP flood</q-item-label>
-                <q-item-label caption>Allow UDP flood atack</q-item-label>
-                </q-item-section>
-                <q-item-section side top>
-                <q-toggle color="primary" v-model="configAllowUdpFlood" @update:model-value="setConfigDebouced"/>
-                </q-item-section>
-            </q-item>
             <div class="row q-pt-sm">
                 <div class="col text-subtitle1">Concurrency</div>
-                <q-slider v-model="configConcurrency" :min="0" :max="16384" :step="512" label color="primary" class="col-8 q-pr-md" @update:model-value="setConfigDebouced"/>
+                <q-slider v-model="configConcurrency" :min="128" :max="65534" :inner-min="128" :step="64" label color="primary" class="col-8 q-pr-md" @update:model-value="setConfigDebouced"/>
                 <q-input outlined v-model="configConcurrency" type="number" dense class="col-2" @update:model-value="setConfigDebouced"/>
-                <div class="col-12 text-caption text-grey-8" style="margin-top: -15px;">Number of task spawners</div>
-            </div>
-            <div class="row q-pt-sm">
-                <div class="col text-subtitle1">Use my IP</div>
-                <q-slider v-model="configUseMyIP" :min="0" :max="100" :step="1" label color="primary" class="col-8 q-pr-md" @update:model-value="setConfigDebouced"/>
-                <q-input outlined v-model="configUseMyIP" type="number" dense class="col-2" @update:model-value="setConfigDebouced"/>
-                <div class="col-12 text-caption text-grey-8" style="margin-top: -15px;">Percentage of usage of my ip address</div>
+                <div class="col-12 text-caption text-grey-8" style="margin-top: -15px;">Number of task spawners. 0 set 4k default</div>
             </div>
             <div class="row q-pt-sm">
                 <div class="col text-subtitle1">Tor connections</div>
@@ -58,7 +43,21 @@
                 <q-input outlined v-model="configTorConnections" type="number" dense class="col-2" @update:model-value="setConfigDebouced"/>
                 <div class="col-12 text-caption text-grey-8" style="margin-top: -15px;">Use Tor connections for atack</div>
             </div>
-            
+            <div class="row q-pt-sm">
+                <div class="col text-subtitle1">Use my IP</div>
+                <q-slider v-model="configUseMyIP" :min="0" :max="100" :step="1" label color="primary" class="col-8 q-pr-md" @update:model-value="setConfigDebouced"/>
+                <q-input outlined v-model="configUseMyIP" type="number" dense class="col-2" @update:model-value="setConfigDebouced"/>
+                <div class="col-12 text-caption text-grey-8" style="margin-top: -15px;">Percentage of usage of my ip address</div>
+            </div>
+            <q-item class="row q-pa-none q-pt-sm">
+                <q-item-section>
+                <q-item-label>UDP flood</q-item-label>
+                <q-item-label caption><b>Allow UDP flood atack. Work if 'Use my IP' > 0</b></q-item-label>
+                </q-item-section>
+                <q-item-section side top>
+                <q-toggle color="primary" v-model="configAllowUdpFlood" @update:model-value="setConfigDebouced"/>
+                </q-item-section>
+            </q-item>
             <div class="row q-pt-sm">
                 <div class="col-12 text-subtitle1">Executable arguments (only for advanced users)</div>
                 <q-input outlined v-model="configExecutableArguments" dense class="col-12" hint="Additional executable arguments that will be used when starting binary" :prefix="configExecutableArgumentsPrefix" @update:model-value="setConfigDebouced"/>
@@ -91,7 +90,7 @@ const configUseMyIP = ref(0)
 const configTorConnections = ref(0)
 const configExecutableArguments = ref("")
 const configExecutableArgumentsPrefix = computed(() => {
-    return `--disable-auto-update --json-logs --concurrency ${configConcurrency.value}` + (configUseMyIP.value != 0 ? ` --use-my-ip ${configUseMyIP.value}` : "") + (configTorConnections.value != 0 ? ` --use-tor ${configTorConnections.value}` : "") + (configAllowUdpFlood.value ? ` --direct-udp-failover 1` : "")
+    return `--disable-auto-update --json-logs --concurrency ${configConcurrency.value}` + (configUseMyIP.value != 0 ? ` --use-my-ip ${configUseMyIP.value}` : "") + (configTorConnections.value != 0 ? ` --use-tor ${configTorConnections.value}` : "") + (configAllowUdpFlood.value ? ` --direct-udp-mixed-flood` : "")
 })
 
 const installedVersions = ref([] as string[])

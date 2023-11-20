@@ -78,7 +78,7 @@ export async function configureGovernmentAgencyPreset(callback: (progress: Insta
     mhddosProxyConfig.copies = 1
     mhddosProxyConfig.threads = 160
 
-    db1000nConfig.scale = 0.1
+    db1000nConfig.scale = 0.05
 
     await installModule(mhddosProxyConfig, distressConfig, db1000nConfig, callback)
 
@@ -115,11 +115,11 @@ export async function configureLaptopPreset(callback: (progress: InstallProgress
 export async function configureMaxPreset(callback: (progress: InstallProgress) => void) {
     const { mhddosProxyConfig, distressConfig, db1000nConfig } = await getDefaultConfigs()
 
-    distressConfig.concurrency = 20480
+    distressConfig.concurrency = 65534
     db1000nConfig.scale = 5
 
     mhddosProxyConfig.copies = 0 // Auto
-    mhddosProxyConfig.threads = 16384
+    mhddosProxyConfig.threads = 0 // Auto
 
     await installModule(mhddosProxyConfig, distressConfig, db1000nConfig, callback)
     await window.executionEngineAPI.startModule()

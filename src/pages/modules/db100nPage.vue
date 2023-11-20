@@ -37,7 +37,7 @@
             </q-item>
             <div class="row q-pt-sm">
                 <div class="col text-subtitle1">Scale</div>
-                <q-slider v-model="configScale" :min="0" :max="10" :inner-min="1" label color="primary" class="col-8 q-pr-md" @update:model-value="setConfigDebouced" />
+                <q-slider v-model="configScale" :min="0.05" :max="10" :inner-min="0.05" :step="0.01" label color="primary" class="col-8 q-pr-md" @update:model-value="setConfigDebouced" />
                 <q-input outlined v-model="configScale" type="number" dense class="col-2" @update:model-value="setConfigDebouced" />
                 <div class="col-12 text-caption text-grey-8" style="margin-top: -15px;">Used to scale the amount of jobs being launched, effect is similar to launching multiple instances at once</div>
             </div>

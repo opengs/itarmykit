@@ -89,11 +89,14 @@ export class MHDDOSProxy extends Module<Config> {
     if (config.copies == 0) {
       args.push('--copies', "auto")
     }
-    args.push('--threads', config.threads.toString())
+    if (config.threads > 0) {
+      args.push('--threads', config.threads.toString())
+    }
     if (config.vpnPercents > 0) {
       args.push('--vpn', 'true')
       args.push('--vpn-percents', config.vpnPercents.toString())
     }
+    args.push('--source', "itarmykit")
     args.push(...config.executableArguments.filter(arg => arg !== ''))
 
     let filename = 'mhddos_proxy_linux'

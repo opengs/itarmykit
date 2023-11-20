@@ -39,7 +39,7 @@
             </div>
             <div class="row q-pt-sm">
                 <div class="col text-subtitle1">Threads</div>
-                <q-slider v-model="configThreads" :min="1024" :max="32768" :step="1024" label color="primary" class="col-8 q-pr-md" @update:model-value="setConfigDebouced"/>
+                <q-slider v-model="configThreads" :min="0" :max="65534" :step="64" label color="primary" class="col-8 q-pr-md" @update:model-value="setConfigDebouced"/>
                 <q-input outlined v-model="configThreads" type="number" dense class="col-2" @update:model-value="setConfigDebouced"/>
                 <div class="col-12 text-caption text-grey-8" style="margin-top: -15px;">Number of threads runned per process. 0 to auto</div>
             </div>
