@@ -43,7 +43,7 @@
             </div>
             <div class="row q-pt-sm">
                 <div class="col text-subtitle1 ">Interval</div>
-                <q-slider v-model="configInterval" :min="0" :max="1000" :step="50" label color="primary" class="col-8 q-pr-md " @update:model-value="setConfigDebouced"/>
+                <q-slider v-model="configInterval" :min="0" :max="100" :step="5" label color="primary" class="col-8 q-pr-md " @update:model-value="setConfigDebouced"/>
                 <q-input outlined v-model="configInterval" type="number" dense class="col-2" @update:model-value="setConfigDebouced" />
                 <div class="col-12 text-caption text-grey-8" style="margin-top: -15px;">Minimum interval between job iterations</div>
             </div>
