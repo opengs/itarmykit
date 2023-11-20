@@ -72,7 +72,9 @@ export class Distress extends Module<Config> {
       args.push('--user-id', settings.itarmy.uuid)
     }
     args.push('--disable-auto-update', '--json-logs')
-    args.push('--concurrency', config.concurrency.toString())
+    if (config.concurrency > 0) {
+      args.push('--concurrency', config.concurrency.toString())
+    }
     if (config.useTor > 0) {
       args.push('--use-tor', config.useTor.toString())
     }
