@@ -93,6 +93,12 @@ export default {
           description: "Dont make any changes to the configuration. You will have to provide everything manually",
         }
       }
+    },
+
+    doneDialog: {
+      title: "Bootstrap completed",
+      body: "You can start using application now. Application still need some time to start (1-3 minutes). During this time there may no be updates on the GUI. This is OK for first launch :). After some period of time chart an the dashboard will appear.",
+      finishButton: "Cool. I'm ready to start",
     }
   }
 }

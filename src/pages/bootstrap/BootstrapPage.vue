@@ -132,6 +132,10 @@
             :preset-name="presetToInstall ? presetToInstall : Preset.NORMAL"
         />
     </q-dialog>
+
+    <q-dialog v-model="doneDialog" persistent>
+        <BoostrapDoneDialog />
+    </q-dialog>
     </div>
 </template>
 
@@ -144,9 +148,12 @@ import { Preset } from './moduleConfig';
 import ModuleInstallationComponent from './ModuleInstallationComponent.vue';
 import { useQuasar } from 'quasar';
 
+import BoostrapDoneDialog from './BoostrapDoneDialog.vue';
+
 const step = ref(1);
 const router = useRouter();
 const quasar = useQuasar();
+const doneDialog = ref(false);
 
 const dataFolder = ref("")
 
@@ -184,7 +191,7 @@ const moduleInstallationDialog = ref(false)
 async function finishModuleStep() {
     if (presetToInstall.value === null) {
         await window.settingsAPI.bootstrap.setStep("DONE")
-        await router.push({ name: "dashboard" })
+        await router.push({ name: "dashboard" }) //For expert mode will will not show notification that he need to wait several minutes, because he must do everything by himselve.
     } else {
         moduleInstallationDialog.value = true
     }
@@ -200,7 +207,7 @@ async function moduleInstallationError(error: string) {
 async function moduleInstalledSuccessfully() {
     moduleInstallationDialog.value = false
     await window.settingsAPI.bootstrap.setStep("DONE")
-    await router.push({ name: "dashboard" })
+    doneDialog.value = true
 }
 
 async function loadSettings() {

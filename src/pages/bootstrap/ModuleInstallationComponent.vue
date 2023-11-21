@@ -2,7 +2,7 @@
     <q-card>
         <q-card-section>
             <div class="text-h6">{{ $t('bootstrap.module.installation.title') }}</div>
-            <div class="text-subtitle2">{{ stage }}</div>
+            <div class="text-subtitle2 text-center">{{ stage }}</div>
         </q-card-section>
         <q-card-section flat class="background-transparent">
             <q-linear-progress :value="stageProgress"></q-linear-progress>
