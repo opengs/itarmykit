@@ -19,7 +19,38 @@ export default {
       executionLog: "Execution log",
       stdout: "Standard output (stdout)",
       stderr: "Standard error (stderr)",
-    }
+    },
+	menu: {
+		main: "Main",
+		active: "Active Module",
+		available: "Available modules"
+	},
+	db1000n: {
+		configuration: "Сonfiguration",
+		selVersion: "Selected version",
+		selVersionDescription: "Version of the module to run",
+		autoupdates: "Automatic updates",
+		autoupdatesDescription: "Automatically update module to the newest version",
+		scale: "Scale",
+		scaleDescription: "Used to scale the amount of jobs being launched, effect is similar to launching multiple instances at once",
+		interval: "Interval",
+		intervalDescription: "Minimum interval between job iterations",
+		primitive: "Enable primitive",
+		primitiveDescription: "Set to true if you want to run primitive jobs that are less resource-efficient",
+		proxiesList: "Proxies list",
+		proxiesListDescription: "Address (in filesystem or on internet) to the file with proxies in format 'protocol://ip:port' or 'ip:port'",
+		proxyProtocol: "Default proxy protocol",
+		proxyProtocolDescription: "Protocol to use if it not defined in proxy list",
+		arguments: "Executable arguments (only for advanced users)",
+		argumentsDescription: "Additional executable arguments that will be used when starting binary",
+		versions: "Versions"
+	},
+	mhddosProxy: {
+		
+	},
+	distress: {
+		
+	}
   },
   top: {
     achivements: {
@@ -100,5 +131,13 @@ export default {
       body: "You can start using application now. Application still need some time to start (1-3 minutes). During this time there may no be updates on the GUI. This is OK for first launch :). After some period of time chart an the dashboard will appear.",
       finishButton: "Cool. I'm ready to start",
     }
+  },
+  
+  dashboard: {
+    statistics: "Attack power statistics",
+	bytes: "Data sent / Bitrate",
+	moduleStatus: "Module Status",
+	updates: "Kit Updates",
+	latest: "LATEST"
   }
 }

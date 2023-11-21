@@ -19,59 +19,61 @@
                 <div class="col-12 q-pt-xs"><span class="text-subtitle2">Author readme: </span> The software is provided as is under no guarantee. I will update both the repository and this documentation as I go during following days (date of writing this is 26th of February 2022, third day of Russian invasion into Ukraine).</div>    
             </div>
 
-            <div class="row text-h5 text-bold text-grey-10 q-mt-lg">Configuration</div>
+            <div class="row text-h5 text-bold text-grey-10 q-mt-lg">{{ $t('modules.db1000n.configuration') }}</div>
             <q-separator />
             <div class="row q-pt-md">
-                <div class="col text-subtitle1">Selected version</div>
+                <div class="col text-subtitle1">{{ $t('modules.db1000n.selVersion') }}</div>
                 <q-select outlined v-model="configSelectedVersion" type="number" dense class="col-4" :options="installedVersions" @update:model-value="setConfigDebouced" />
-                <div class="col-12 text-caption text-grey-8" style="margin-top: -15px;">Version of the module to run</div>
+                <div class="col-12 text-caption text-grey-8" style="margin-top: -15px;">{{ $t('modules.db1000n.selVersionDescription') }}</div>
             </div>
             <q-item class="row q-pa-none q-pt-sm">
                 <q-item-section>
-                <q-item-label>Automatic updates</q-item-label>
-                <q-item-label caption>Automatically update module to the newest version</q-item-label>
+                <q-item-label>{{ $t('modules.db1000n.autoupdates') }}</q-item-label>
+                <q-item-label caption>{{ $t('modules.db1000n.autoupdatesDescription') }}</q-item-label>
                 </q-item-section>
                 <q-item-section side top>
                 <q-toggle color="primary" v-model="configAutoUpdate" @update:model-value="setConfigDebouced" />
                 </q-item-section>
             </q-item>
             <div class="row q-pt-sm">
-                <div class="col text-subtitle1">Scale</div>
-                <q-slider v-model="configScale" :min="0.05" :max="10" :inner-min="0.05" :step="0.01" label color="primary" class="col-8 q-pr-md" @update:model-value="setConfigDebouced" />
+                <div class="col text-subtitle1">{{ $t('modules.db1000n.scale') }}</div>
+                <q-slider v-model="configScale" :min="0.05" :max="10" :inner-min="0.05" :step="0.01" label color="primary" class="col-6 q-pr-md" @update:model-value="setConfigDebouced" />
                 <q-input outlined v-model="configScale" type="number" dense class="col-2" @update:model-value="setConfigDebouced" />
-                <div class="col-12 text-caption text-grey-8" style="margin-top: -15px;">Used to scale the amount of jobs being launched, effect is similar to launching multiple instances at once</div>
+                <div class="col-10 text-caption text-grey-8" style="margin-top: -15px;">{{ $t('modules.db1000n.scaleDescription') }}</div>
             </div>
             <div class="row q-pt-sm">
-                <div class="col text-subtitle1 ">Interval</div>
-                <q-slider v-model="configInterval" :min="0" :max="100" :step="5" label color="primary" class="col-8 q-pr-md " @update:model-value="setConfigDebouced"/>
+                <div class="col text-subtitle1 ">{{ $t('modules.db1000n.interval') }}</div>
+                <q-slider v-model="configInterval" :min="0" :max="100" :step="5" label color="primary" class="col-6 q-pr-md " @update:model-value="setConfigDebouced"/>
                 <q-input outlined v-model="configInterval" type="number" dense class="col-2" @update:model-value="setConfigDebouced" />
-                <div class="col-12 text-caption text-grey-8" style="margin-top: -15px;">Minimum interval between job iterations</div>
+                <div class="col-12 text-caption text-grey-8" style="margin-top: -15px;">{{ $t('modules.db1000n.intervalDescription') }}</div>
             </div>
             <q-item class="row q-pa-none q-pt-sm">
                 <q-item-section>
-                <q-item-label>Enable primitive</q-item-label>
-                <q-item-label caption>Set to true if you want to run primitive jobs that are less resource-efficient</q-item-label>
+                <q-item-label>{{ $t('modules.db1000n.primitive') }}</q-item-label>
+                <q-item-label caption>{{ $t('modules.db1000n.primitiveDescription') }}</q-item-label>
                 </q-item-section>
                 <q-item-section side top>
                 <q-toggle color="primary" v-model="configEnablePrimitive" @update:model-value="setConfigDebouced" />
                 </q-item-section>
             </q-item>
             <div class="row q-pt-sm">
-                <div class="col-12 text-subtitle1">Proxies list</div>
-                <q-input outlined v-model="configProxiesList" dense class="col-12" hint="Address (in filesystem or on internet) to the file with proxies in format 'protocol://ip:port' or 'ip:port'" @update:model-value="setConfigDebouced"/>
+                <div class="col-12 text-subtitle1">{{ $t('modules.db1000n.proxiesList') }}</div>
+                <q-input outlined v-model="configProxiesList" dense class="col-12" hint="" @update:model-value="setConfigDebouced"/>
+				<q-item-label caption>{{ $t('modules.db1000n.proxiesListDescription') }}</q-item-label>
             </div>
             <div class="row q-pt-md">
-                <div class="col text-subtitle1">Default proxy protocol</div>
+                <div class="col text-subtitle1">{{ $t('modules.db1000n.proxyProtocol') }}</div>
                 <q-select outlined v-model="configProxiesListProtocol" type="number" dense class="col-4" :options="configProxiesListProtocolOptions" @update:model-value="setConfigDebouced" clearable/>
-                <div class="col-12 text-caption text-grey-8" style="margin-top: -15px;">Protocol to use if it not defined in proxy list</div>
+                <div class="col-12 text-caption text-grey-8" style="margin-top: -15px;">{{ $t('modules.db1000n.proxyProtocolDescription') }}</div>
             </div>
             <div class="row q-pt-sm">
-                <div class="col-12 text-subtitle1">Executable arguments (only for advanced users)</div>
-                <q-input outlined v-model="configExecutableArguments" dense class="col-12" hint="Additional executable arguments that will be used when starting binary" :prefix="configExecutableArgumentsPrefix" @update:model-value="setConfigDebouced"/>
+                <div class="col-12 text-subtitle1">{{ $t('modules.db1000n.arguments') }}</div>
+                <q-input outlined v-model="configExecutableArguments" dense class="col-12" hint="" :prefix="configExecutableArgumentsPrefix" @update:model-value="setConfigDebouced"/>
+				<q-item-label caption>{{ $t('modules.db1000n.argumentsDescription') }}</q-item-label>
             </div>
             
 
-            <div class="row text-h5 text-bold text-grey-10 q-mt-lg">Versions</div>
+            <div class="row text-h5 text-bold text-grey-10 q-mt-lg">{{ $t('modules.db1000n.versions') }}</div>
             <q-separator/>
             <VersionsListComponent
                 module-name="DB1000N"

@@ -7,7 +7,7 @@
             <div class="col-3 q-pl-xs"><ItArmyIDComponent  /></div>
         </div>
         <q-card class="row q-mt-sm q-pa-md bg-transparent" flat bordered>
-            <q-card-section class="text-bold text-h5 q-pa-none q-pl-md">Atack power statistics</q-card-section>
+            <q-card-section class="text-bold text-h5 q-pa-none q-pl-md">{{ $t('dashboard.statistics') }}</q-card-section>
             <BitrateChartComponent class="fit" />
         </q-card>
     </q-page>
