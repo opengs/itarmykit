@@ -11,8 +11,8 @@
             </q-item-section>
             <q-item-section style="white-space: pre-line; " v-else>{{ version.body.trimEnd() }}</q-item-section>
             <q-item-section side>
-                <q-btn v-if="version.installed && props.selectedVersion != version.tag" color="dark" size="sm" @click="emit('update:selectedVersion', version.tag)">Select this version to use</q-btn>
-                <q-btn v-if="!version.installed" icon="download" color="primary" size="sm" :loading="installingVersion" :disable="installingVersion" @click="installVersion(version.tag)">Download and Install</q-btn>
+                <q-btn v-if="version.installed && props.selectedVersion != version.tag" color="dark" size="sm" @click="emit('update:selectedVersion', version.tag)">{{ $t('modules.available.versions.selectUse') }}</q-btn>
+                <q-btn v-if="!version.installed" icon="download" color="primary" size="sm" :loading="installingVersion" :disable="installingVersion" @click="installVersion(version.tag)">{{ $t('modules.available.versions.downloadInstall') }}</q-btn>
             </q-item-section>
         </q-item>
     </q-list>

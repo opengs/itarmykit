@@ -1,7 +1,6 @@
 <template>
     <q-select
       v-model="language"
-      label="Language"
       outlined
       :options="languages"
       :option-value="opt => opt.symbol"

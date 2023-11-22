@@ -10,6 +10,11 @@ export default {
     developers: 'Developers',
   },
   modules: {
+    menu: {
+      main: "Main",
+      active: "Active Module",
+      available: "Available modules"
+    },
     active: {
       selected: "Seleted module to run",
       enabled: {
@@ -20,39 +25,56 @@ export default {
       stdout: "Standard output (stdout)",
       stderr: "Standard error (stderr)",
     },
-	menu: {
-		main: "Main",
-		active: "Active Module",
-		available: "Available modules"
-	},
-	db1000n: {
-		configuration: "Сonfiguration",
-		selVersion: "Selected version",
-		selVersionDescription: "Version of the module to run",
-		autoupdates: "Automatic updates",
-		autoupdatesDescription: "Automatically update module to the newest version",
-		scale: "Scale",
-		scaleDescription: "Used to scale the amount of jobs being launched, effect is similar to launching multiple instances at once",
-		interval: "Interval",
-		intervalDescription: "Minimum interval between job iterations",
-		primitive: "Enable primitive",
-		primitiveDescription: "Set to true if you want to run primitive jobs that are less resource-efficient",
-		proxiesList: "Proxies list",
-		proxiesListDescription: "Address (in filesystem or on internet) to the file with proxies in format 'protocol://ip:port' or 'ip:port'",
-		proxyProtocol: "Default proxy protocol",
-		proxyProtocolDescription: "Protocol to use if it not defined in proxy list",
-		arguments: "Executable arguments (only for advanced users)",
-		argumentsDescription: "Additional executable arguments that will be used when starting binary",
-		versions: "Versions"
-	},
-	mhddosProxy: {
-		
-	},
-	distress: {
-		
-	}
+    available: {
+      configuration: "Сonfiguration",
+      selVersion: "Selected version",
+      selVersionDescription: "Version of the module to run",
+      autoupdates: "Automatic updates",
+      autoupdatesDescription: "Automatically update module to the newest version",
+      arguments: "Executable arguments (only for advanced users)",
+      argumentsDescription: "Additional executable arguments that will be used when starting binary",
+        versions: {
+          versions: "Versions",
+          downloadInstall: "Download and Install",
+          selectUse: "Select this version to use"
+        }
+    },
+    db1000n: {
+      scale: "Scale",
+      scaleDescription: "Used to scale the amount of jobs being launched, effect is similar to launching multiple instances at once",
+      interval: "Interval",
+      intervalDescription: "Minimum interval between job iterations",
+      primitive: "Enable primitive",
+      primitiveDescription: "Set to true if you want to run primitive jobs that are less resource-efficient",
+      proxiesList: "Proxies list",
+      proxiesListDescription: "Address (in filesystem or on internet) to the file with proxies in format 'protocol://ip:port' or 'ip:port'",
+      proxyProtocol: "Default proxy protocol",
+      proxyProtocolDescription: "Protocol to use if it not defined in proxy list"
+    },
+    mhddosProxy: {
+      copies: "Copies",
+      copiesDescription: "Number of started processes (copies of the module). 0 to auto",
+      threads: "Threads",
+      threadsDescription: "Number of threads runned per process. 0 to auto",
+      useMyIp: "Use my IP",
+      useMyIpDescription: "Percentage of own IP address usage or VPN if configured"
+    },
+    distress: {
+      concurrency: "Concurrency",
+      concurrencyDescription: "Number of task spawners. 0 sets the default to 4096",
+      torConnections: "Tor connections",
+      torConnectionsDescription: "Use a Tor connection to attack",
+      useMyIp: "Use my IP",
+      useMyIpDescription: "Percentage of own IP address usage or VPN if configured",
+      udpFlood: "UDP flood",
+      udpFloodDescription: "Allow UDP flood attack. Works if use your own IP or VPN"
+    },
   },
   top: {
+    volunteers: "TOP VOLUNTEERS",
+    week: "This week",
+    month: "This month",
+
     achivements: {
       peopleAreLikeShips: {
         title: "People are like ships",
@@ -131,6 +153,20 @@ export default {
       body: "You can start using application now. Application still need some time to start (1-3 minutes). During this time there may no be updates on the GUI. This is OK for first launch :). After some period of time chart an the dashboard will appear.",
       finishButton: "Cool. I'm ready to start",
     }
+  },
+  settings: {
+    system: "System",
+    autoUpdates: "Automatic updates",
+    autoUpdatesDescription: "Automatically update application to the newest version",
+    autoStartup: "Automatic startup",
+    autoStartupDescription: "Automatically startup application on system startup",
+    hideTray: "Hide application in tray",
+    hideTrayDescription: "Hide application in tray instead of closing it. Also when starting up, dont show the main window.",
+    language: "Language",
+    data: "Data",
+    dataDescription: "Currently your modules located under:",
+    warnDelCache: "Do you really want to delete modules cache? Application will quit after this action and may not automatically restart.",
+    warnDelData: "Do you really want to delete all the data including settings and modules cache? Application will quit after this action and may not automatically restart."
   },
   
   dashboard: {
