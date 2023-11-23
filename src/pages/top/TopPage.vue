@@ -1,12 +1,12 @@
 <template>
     <q-page padding>
-        <div class="text-h4 text-center text-bold q-mb-md">TOP USERS</div>
+        <div class="text-h4 text-center text-bold q-mb-md">{{ $t('top.volunteers') }}</div>
         <q-tabs
             v-model="activeTab"
             dense
         >
-            <q-tab name="weekly" label="This week" />
-            <q-tab name="monthly" label="This month" />
+            <q-tab name="weekly" :label="$t('top.week')" />
+            <q-tab name="monthly" :label="$t('top.month')" />
         </q-tabs>
 
         <q-separator class="q-mb-sm"/>

@@ -5,12 +5,12 @@
             class="bg-transparent"
         >
             <q-card-section>
-                <div class="text-h5">System</div>
+                <div class="text-h5">{{ $t('settings.system') }}</div>
                 <q-separator class="q-mt-xs q-mb-xs"/>
                 <q-item class="" v-ripple clickable @click="setSystemAutoUpdate(!systemAutoUpdate)">
                     <q-item-section>
-                        <q-item-label>Automatic updates</q-item-label>
-                        <q-item-label caption>Automatically update application to the newest version</q-item-label>
+                        <q-item-label>{{ $t('settings.autoUpdates') }}</q-item-label>
+                        <q-item-label caption>{{ $t('settings.autoUpdatesDescription') }}</q-item-label>
                     </q-item-section>
                     <q-item-section side top>
                         <q-toggle color="primary" v-model="systemAutoUpdate" @update:model-value="setSystemAutoUpdate" />
@@ -19,8 +19,8 @@
 
                 <q-item class="" v-ripple clickable @click="setSystemAutoStartup(!systemAutoStartup)">
                     <q-item-section>
-                        <q-item-label>Automatic startup</q-item-label>
-                        <q-item-label caption>Automatically startup application on system startup</q-item-label>
+                        <q-item-label>{{ $t('settings.autoStartup') }}</q-item-label>
+                        <q-item-label caption>{{ $t('settings.autoStartupDescription') }}</q-item-label>
                     </q-item-section>
                     <q-item-section side top>
                         <q-toggle color="primary" v-model="systemAutoStartup" @update:model-value="setSystemAutoStartup" />
@@ -29,8 +29,8 @@
 
                 <q-item class="" v-ripple clickable @click="setSystemHideInTray(!systemHideInTray)">
                     <q-item-section>
-                        <q-item-label>Hide application in tray</q-item-label>
-                        <q-item-label caption>Hide application in tray instead of closing it. Also when starting up, dont show the main window.</q-item-label>
+                        <q-item-label>{{ $t('settings.hideTray') }}</q-item-label>
+                        <q-item-label caption>{{ $t('settings.hideTrayDescription') }}</q-item-label>
                     </q-item-section>
                     <q-item-section side top>
                         <q-toggle color="primary" v-model="systemHideInTray" @update:model-value="setSystemHideInTray" />
@@ -38,11 +38,15 @@
                 </q-item>
 
                 <div class="q-pt-sm">
-                <LanguageSelectorComponent />
+                    <div class="text-h6">{{ $t('settings.language') }}</div>
+                    <q-separator class="q-mt-xs q-mb-sm"/>
+                    <LanguageSelectorComponent />
                 </div>
             </q-card-section>
 
-            <q-card-section>
+            <!-- TODO Schedule -->
+
+            <!-- <q-card-section>
                 <div class="text-h5">Schedule</div>
                 <q-separator class="q-mt-xs q-mb-xs"/>
                 <q-item class="" v-ripple clickable @click="setSystemSheduleEnabled(!systemSheduleEnabled)" disable>
@@ -88,18 +92,20 @@
                     </div>
                 </div>
                 <q-select outlined v-model="sheduleActivity" type="number" class="" :options="sheduleActivityOptions" @update:model-value="setSheduleActivity" label="Replacing activity" :disable="!systemSheduleEnabled" />
-            </q-card-section>
+            </q-card-section> -->
+
+            <!-- END TODO -->
 
             <q-card-section>
-                <div class="text-h5">ItArmy</div>
+                <div class="text-h6">IT Army of Ukraine</div>
                 <q-separator class="q-mt-xs q-mb-sm"/>
                 <q-input outlined label="IT Army ID" v-model="itArmyUUID" @update:model-value="setItArmyUUID" debounce="500" type="password"/>
             </q-card-section>
 
             <q-card-section>
-                <div class="text-h5">Data</div>
+                <div class="text-h6">{{ $t('settings.data') }}</div>
                 <q-separator class="q-mt-xs q-mb-xs"/>
-                <div><span class="">Currently your modules located under:</span> {{ modulesDataFolderPath }}  </div>
+                <div><span class="">{{ $t('settings.dataDescription') }}</span>  <b>{{ modulesDataFolderPath }}</b>  </div>
                 <q-btn outline label="Open data folder" class="fit q-mt-sm" @click="openModulesDataFolder" />
                 <q-btn outline label="Change modules data location" class="fit q-mt-sm" @click="selectFolderForModulesData" />
                 <q-btn outline label="Delete modules cache" color="negative" class="fit q-mt-sm" @click="deleteModuelsCacheDialog = true" />
@@ -112,7 +118,7 @@
     <q-dialog v-model="deleteModuelsCacheDialog">
         <q-card class="q-pa-md" flat style="border: solid 3px red;">
             <q-card-section class="text-center text-h5 text-bold">
-                Do you really want to delete modules cache? Application will quit after this action and may not automatically restart.
+                {{ $t('settings.warnDelCache') }}
             </q-card-section>
             <q-card-action>
                 <q-btn label="Delete" class="fit" color="negative" outline @click="deleteModulesCache"/>
@@ -123,7 +129,7 @@
     <q-dialog v-model="deleteAllDataDialog">
         <q-card class="q-pa-md" flat style="border: solid 3px red;">
             <q-card-section class="text-center text-h5 text-bold">
-                Do you really want to delete all the data including settings and modules cache? Application will quit after this action and may not automatically restart.
+                {{ $t('settings.warnDelData') }}
             </q-card-section>
             <q-card-action>
                 <q-btn label="Delete" class="fit" color="negative" outline @click="deleteAllData"/>

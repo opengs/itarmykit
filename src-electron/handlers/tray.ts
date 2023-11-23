@@ -11,12 +11,12 @@ export function handleTray(settings: Settings, mainWindow: BrowserWindow) {
     const tray = new Tray(nativeImage.createEmpty());
     tray.setContextMenu(Menu.buildFromTemplate([
         {
-        label: 'Show App', click: function () {
+        label: 'Open', click: function () {
             mainWindow.show();
         }
         },
         {
-        label: 'Quit', click: function () {
+        label: 'Exit', click: function () {
             isQuiting = true;
             app.quit();
         }
