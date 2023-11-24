@@ -106,10 +106,10 @@
                 <div class="text-h6">{{ $t('settings.data') }}</div>
                 <q-separator class="q-mt-xs q-mb-xs"/>
                 <div><span class="">{{ $t('settings.dataDescription') }}</span>  <b>{{ modulesDataFolderPath }}</b>  </div>
-                <q-btn outline label="Open data folder" class="fit q-mt-sm" @click="openModulesDataFolder" />
-                <q-btn outline label="Change modules data location" class="fit q-mt-sm" @click="selectFolderForModulesData" />
-                <q-btn outline label="Delete modules cache" color="negative" class="fit q-mt-sm" @click="deleteModuelsCacheDialog = true" />
-                <q-btn outline label="Delete all the data" color="negative" class="fit q-mt-sm" @click="deleteAllDataDialog = true" />
+                <q-btn outline :label="$t('settings.openDataFolder')" class="fit q-mt-sm" @click="openModulesDataFolder" />
+                <q-btn outline :label="$t('settings.changeModulesDataLocation')" class="fit q-mt-sm" @click="selectFolderForModulesData" />
+                <q-btn outline :label="$t('settings.deleteModulesCache')" color="negative" class="fit q-mt-sm" @click="deleteModuelsCacheDialog = true" />
+                <q-btn outline :label="$t('settings.deleteAllTheData')" color="negative" class="fit q-mt-sm" @click="deleteAllDataDialog = true" />
             </q-card-section>
 
         </q-card>

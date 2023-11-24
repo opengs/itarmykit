@@ -15,7 +15,7 @@
   "scripts": {
     "lint": "eslint --ext .js,.ts,.vue ./",
     "lintfix": "eslint --fix --ext .js,.ts,.vue ./",
-    "dev": "quasar dev",
+    "dev": "quasar dev -m electron",
     "build": "quasar build"
   },
   "dependencies": {

@@ -166,7 +166,11 @@ export default {
     data: "Data",
     dataDescription: "Currently your modules located under:",
     warnDelCache: "Do you really want to delete modules cache? Application will quit after this action and may not automatically restart.",
-    warnDelData: "Do you really want to delete all the data including settings and modules cache? Application will quit after this action and may not automatically restart."
+    warnDelData: "Do you really want to delete all the data including settings and modules cache? Application will quit after this action and may not automatically restart.",
+    openDataFolder: "Open data folder",
+    changeModulesDataLocation: "Change modules data location",
+    deleteModulesCache: "Delete modules cache",
+    deleteAllTheData: "Delete all the data",
   },
   
   dashboard: {
