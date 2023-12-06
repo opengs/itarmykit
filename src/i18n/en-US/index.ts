@@ -3,97 +3,97 @@
 
 export default {
   layout: {
-    dashboard: 'Dashboard',
-    modules: 'DDOS modules',
+    dashboard: 'Main',
+    modules: 'DDOS Modules',
     settings: 'Settings',
-    top: 'Leaderboard',
+    top: 'Rankings',
     developers: 'Developers',
   },
   modules: {
     menu: {
       main: "Main",
       active: "Active Module",
-      available: "Available modules"
+      available: "Available Modules"
     },
     active: {
-      selected: "Seleted module to run",
+      selected: "Selected Module for Launch",
       enabled: {
-        title: "Module enabled",
+        title: "Activate Module",
         caption: "Enable or disable module execution"
       },
-      executionLog: "Execution log",
-      stdout: "Standard output (stdout)",
-      stderr: "Standard error (stderr)",
+      executionLog: "Execution Log",
+      stdout: "Standard Output (stdout)",
+      stderr: "Standard Error Output (stderr)",
     },
     available: {
-      configuration: "Сonfiguration",
-      selVersion: "Selected version",
-      selVersionDescription: "Version of the module to run",
-      autoupdates: "Automatic updates",
-      autoupdatesDescription: "Automatically update module to the newest version",
-      arguments: "Executable arguments (only for advanced users)",
-      argumentsDescription: "Additional executable arguments that will be used when starting binary",
-        versions: {
-          versions: "Versions",
-          downloadInstall: "Download and Install",
-          selectUse: "Select this version to use"
-        }
+      configuration: "Configuration",
+      selVersion: "Select Version",
+      selVersionDescription: "Module version for launch",
+      autoupdates: "Automatic Updates",
+      autoupdatesDescription: "Automatically update the module to the latest version",
+      arguments: "Launch Parameters (for advanced users)",
+      argumentsDescription: "Additional launch parameters to be used during binary file execution",
+      versions: {
+        versions: "List of Versions",
+        downloadInstall: "Download and Install",
+        selectUse: "Select for Use"
+      }
     },
     db1000n: {
-      scale: "Scale",
-      scaleDescription: "Used to scale the amount of jobs being launched, effect is similar to launching multiple instances at once",
+      scale: "Scaling",
+      scaleDescription: "Used to scale the number of tasks launched, similar to running multiple instances simultaneously",
       interval: "Interval",
-      intervalDescription: "Minimum interval between job iterations",
-      primitive: "Enable primitive",
-      primitiveDescription: "Set to true if you want to run primitive jobs that are less resource-efficient",
-      proxiesList: "Proxies list",
-      proxiesListDescription: "Address (in filesystem or on internet) to the file with proxies in format 'protocol://ip:port' or 'ip:port'",
-      proxyProtocol: "Default proxy protocol",
-      proxyProtocolDescription: "Protocol to use if it not defined in proxy list"
+      intervalDescription: "Minimum interval between task iterations",
+      primitive: "Primitive Mode",
+      primitiveDescription: "Activate if you want to perform primitive tasks, which are less resource efficient",
+      proxiesList: "Proxy List",
+      proxiesListDescription: "Address (in the file system or on the Internet) to the file with proxy servers in the format 'protocol://ip:port' or 'ip:port'",
+      proxyProtocol: "Proxy Protocol",
+      proxyProtocolDescription: "Protocol to use if not defined in the proxy list"
     },
     mhddosProxy: {
       copies: "Copies",
-      copiesDescription: "Number of started processes (copies of the module). 0 to auto",
+      copiesDescription: "Number of processes (module copies) launched. 0 for auto",
       threads: "Threads",
-      threadsDescription: "Number of threads runned per process. 0 to auto",
-      useMyIp: "Use my IP",
-      useMyIpDescription: "Percentage of own IP address usage or VPN if configured"
+      threadsDescription: "Number of threads launched per process. 0 for auto",
+      useMyIp: "Use My IP",
+      useMyIpDescription: "Percentage of using your own IP address or VPN, if configured"
     },
     distress: {
       concurrency: "Concurrency",
-      concurrencyDescription: "Number of task spawners. 0 sets the default to 4096",
-      torConnections: "Tor connections",
-      torConnectionsDescription: "Use a Tor connection to attack",
-      useMyIp: "Use my IP",
-      useMyIpDescription: "Percentage of own IP address usage or VPN if configured",
-      udpFlood: "UDP flood",
-      udpFloodDescription: "Allow UDP flood attack. Works if use your own IP or VPN"
-    },
+      concurrencyDescription: "Number of task creators. 0 sets default to 4096",
+      torConnections: "Tor Connections",
+      torConnectionsDescription: "Use Tor connections for the attack",
+      useMyIp: "Use My IP",
+      useMyIpDescription: "Percentage of using your own IP address or VPN, if configured",
+      udpFlood: "UDP Flood",
+      udpFloodDescription: "Allow UDP flood attack. Works if you use your own IP or VPN"
+    }
   },
   top: {
     volunteers: "TOP VOLUNTEERS",
-    week: "This week",
-    month: "This month",
+    week: "Per Week",
+    month: "Per Month",
 
-    achivements: {
+    achievements: {
       peopleAreLikeShips: {
-        title: "People are like ships",
-        subtitle: "if russians - ** **** ********",
+        title: "People are like Ships",
+        subtitle: "if they're Russian, they're going *****",
 
-        body: "Looks like you have just tried to select russian language. You need our help. Dont wory, we will denazificate you and make you free.",
-        explanationHint: "I dont understand. Explain me this meme.",
-        explanation: '"russian warship, go fuck yourself", was the final communication made on 24 February, the first day of the 2022 Snake Island campaign, by Ukrainian border guard Roman Hrybov to the russian missile cruiser moskva. On 13 April 2022, moskva was critically damaged by an explosion caused by Ukrainian anti-ship missiles and sank the following day. "People are like ships" is a well-known in Ukraine song by Skryabin band.Denazification and making Ukrainians free - are slogans of russian propaganda of "russian world" doctrine.',
+        body: "Looks like you just tried to select Russian language. You need us to rescue you. Don't worry, we'll soon denazify and liberate you.",
+        explanationHint: "I don't understand. Clarify this meme for me.",
+        explanation: "This was a test! This option is open for people from other countries and languages. Strange that you came here. We're sending a banderomobile for you.",
       
-        goodButton: "Sory. I'm underdeveloped. I'm ready to be free",
-        badButton: "I dont like Ukraine",
+        goodButton: "I'm silly. Please liberate me.",
+        badButton: "I don't like Ukraine",
       },
     }
   },
   bootstrap: {
-    title: "Looks like you are first time here. Let us help you",
+    title: "Looks like this is your first launch. Let's help you",
 
     header: {
-      language: "Select language",
+      language: "Choose Language",
       data: "Data",
       itarmy: "ITArmy ID",
       module: "Modules"
@@ -104,80 +104,80 @@ export default {
     },
 
     data: {
-      body: "Application will automatically download required modules and store them on yours PC. Modules and all the data will be stored in the folder",
-      windows: "Before continue, make sure you added data folder to the windows defender and antivirus exceptions. Otherwise, all the downloaded data will be deleted.",
-      openDataFolderButton: "Open data folder",
-      changeDataFolderButton: "Change data folder",
+      body: "The app will automatically download the necessary modules and save them on your PC. Modules and all data will be stored in the folder",
+      windows: "Before continuing, make sure you've added the data folder to the windows defender and antivirus exceptions. Otherwise, all downloaded data will be deleted.",
+      openDataFolderButton: "Open Data Folder",
+      changeDataFolderButton: "Change Data Folder",
       continueButton: "Continue",
       backButton: "Back"
     },
 
     itarmy: {
-      body: "If you have ITArmy ID, you can enter it here. Otherwise, you can skip this step.",
+      body: "If you have an ITArmy ID, enter it below. If not, press the continue button",
       uuidInputTitle: "ITArmy ID",
       continueButton: "Continue",
       backButton: "Back"
     },
 
     module: {
-      body: "Select configuration preset. You can change all the configured options later.",
+      body: "Choose a preset. All data can then be changed",
       installation: {
-        title: "Installing module"
+        title: "Module Installation",
       },
       preset: {
         government: {
-          title: "Government / Old PC",
-          description: "This preset will use as little resources as possible. This may cut several features of the modules.",
+          title: "Government Institution / Old PC",
+          description: "This preset uses as few resources as possible. This may disable some module functions.",
         },
         laptop: {
           title: "Laptop",
-          description: "This preset will try to use less resources, but will not cut features.",
+          description: "This preset will try to use as few resources as possible but won't disable functions.",
         },
         normal: {
           title: "Normal",
-          description: "Normal computer at home. This preset will use default (supplied by developers) configuration options for installed modules",
+          description: "Normal home computer. This preset uses the configuration provided by module developers by default.",
         },
         max: {
           title: "Maximum",
-          description: "Maximum performance. This preset will use maximum resources of your computer. This may cause some lags in other applications.",
+          description: "Maximum power. This preset uses the maximum resources of your computer. This may cause lags in other programs.",
         },
         expert: {
           title: "Expert",
-          description: "Dont make any changes to the configuration. You will have to provide everything manually",
+          description: "This preset does not perform any actions. All settings must be done manually.",
         }
       }
     },
 
     doneDialog: {
-      title: "Bootstrap completed",
-      body: "You can start using application now. Application still need some time to start (1-3 minutes). During this time there may no be updates on the GUI. This is OK for first launch :). After some period of time chart an the dashboard will appear.",
-      finishButton: "Cool. I'm ready to start",
+      title: "Setup Completed",
+      body: "Now you can start using the application. But we need a bit more time to prepare everything (1-3 minutes). During this time there may be no updates on the main dashboard. This is normal for the first launch :) In a few minutes, charts and current information will appear on the main dashboard.",
+      finishButton: "Great! Let's start!",
     }
   },
   settings: {
     system: "System",
-    autoUpdates: "Automatic updates",
-    autoUpdatesDescription: "Automatically update application to the newest version",
-    autoStartup: "Automatic startup",
-    autoStartupDescription: "Automatically startup application on system startup",
-    hideTray: "Hide application in tray",
-    hideTrayDescription: "Hide application in tray instead of closing it. Also when starting up, dont show the main window.",
+    autoUpdates: "Automatic Updates",
+    autoUpdatesDescription: "Automatically update the application to the latest version.",
+    autoStartup: "Automatic Startup",
+    autoStartupDescription: "Automatically start the application when the system boots.",
+    hideTray: "Hide App in Tray",
+    hideTrayDescription: "Hide the app in the tray, not close it. Also, do not show the main window during startup.",
     language: "Language",
-    data: "Data",
-    dataDescription: "Currently your modules located under:",
-    warnDelCache: "Do you really want to delete modules cache? Application will quit after this action and may not automatically restart.",
-    warnDelData: "Do you really want to delete all the data including settings and modules cache? Application will quit after this action and may not automatically restart.",
-    openDataFolder: "Open data folder",
-    changeModulesDataLocation: "Change modules data location",
-    deleteModulesCache: "Delete modules cache",
-    deleteAllTheData: "Delete all the data",
+    data: "Storage",
+    dataDescription: "Currently your modules are located in the folder:",
+    warnDelCache: "Are you sure you want to delete the modules cache? The app will close after this action and may not restart automatically.",
+    warnDelData: "Do you really want to delete all data, including cache, settings, and modules? The app will close after this action and may not restart automatically.",
+    openDataFolder: "Open Data Folder",
+    changeModulesDataLocation: "Change Modules Data Location",
+    deleteModulesCache: "Delete Modules Cache",
+    deleteAllTheData: "Delete All Data",
   },
   
   dashboard: {
-    statistics: "Attack power statistics",
-	bytes: "Data sent / Bitrate",
+    statistics: "Attack Power Statistics",
+	bytes: "Sent / Traffic",
 	moduleStatus: "Module Status",
-	updates: "Kit Updates",
-	latest: "LATEST"
+	updates: "KIT Version",
+	latest: "Current"
   }
 }
