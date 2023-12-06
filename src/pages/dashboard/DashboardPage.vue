@@ -1,10 +1,10 @@
 <template>
     <q-page padding>
         <div class="row">
-            <div class="col-3 q-pr-xs"><ModuleStatusComponent  /></div>
-            <div class="col-3 q-pr-xs q-pl-xs"><BytesSendComponent  /></div>
-            <div class="col-3 q-pr-xs q-pl-xs"><UpdateComponent  /></div>
-            <div class="col-3 q-pl-xs"><ItArmyIDComponent  /></div>
+            <div class="col-xs-12 col-sm-6 col-lg-3 q-pa-xs"><ModuleStatusComponent  /></div>
+            <div class="col-xs-12 col-sm-6 col-lg-3 q-pa-xs"><BytesSendComponent  /></div>
+            <div class="col-xs-12 col-sm-6 col-lg-3 q-pa-xs"><UpdateComponent  /></div>
+            <div class="col-xs-12 col-sm-6 col-lg-3 q-pa-xs"><ItArmyIDComponent  /></div>
         </div>
         <q-card class="row q-mt-sm q-pa-md bg-transparent" flat bordered>
             <q-card-section class="text-bold text-h5 q-pa-none q-pl-md">{{ $t('dashboard.statistics') }}</q-card-section>
