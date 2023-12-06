@@ -81,7 +81,7 @@ const configThreads = ref(8)
 const configVPNPercents = ref(0)
 const configExecutableArguments = ref("")
 const configExecutableArgumentsPrefix = computed(() => {
-    return `--no-updates` + (configVPNPercents.value > 0 ? ` --vpn true --vpn-percents ${configVPNPercents.value}` : "") + (configCopies.value > 0 ? ` --copies ${configCopies.value}` : "") + (configThreads.value > 0 ? ` --threads ${configThreads.value}` : "")
+    return `--no-updates` + (configVPNPercents.value > 0 ? ` --vpn --vpn-percents ${configVPNPercents.value}` : "") + (configCopies.value > 0 ? ` --copies ${configCopies.value}` : "") + (configThreads.value > 0 ? ` --threads ${configThreads.value}` : "")
 })
 
 const installedVersions = ref([] as string[])
