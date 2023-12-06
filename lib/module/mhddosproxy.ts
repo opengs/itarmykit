@@ -93,7 +93,7 @@ export class MHDDOSProxy extends Module<Config> {
       args.push('--threads', config.threads.toString())
     }
     if (config.vpnPercents > 0) {
-      args.push('--vpn', 'true')
+      args.push('--vpn')
       args.push('--vpn-percents', config.vpnPercents.toString())
     }
     args.push('--source', "itarmykit")
