@@ -82,8 +82,7 @@ export default {
 
         body: "Looks like you just tried to select Russian language. You need us to rescue you. Don't worry, we'll soon denazify and liberate you.",
         explanationHint: "I don't understand. Clarify this meme for me.",
-        explanation: "This was a test! This option is open for people from other countries and languages. Strange that you came here. We're sending a banderomobile for you.",
-      
+        explanation: '"russian warship, go fuck yourself", was the final communication made on 24 February, the first day of the 2022 Snake Island campaign, by Ukrainian border guard Roman Hrybov to the russian missile cruiser moskva. On 13 April 2022, moskva was critically damaged by an explosion caused by Ukrainian anti-ship missiles and sank the following day. "People are like ships" is a well-known in Ukraine song by Skryabin band.Denazification and making Ukrainians free - are slogans of russian propaganda of "russian world" doctrine.',
         goodButton: "I'm silly. Please liberate me.",
         badButton: "I don't like Ukraine",
       },
