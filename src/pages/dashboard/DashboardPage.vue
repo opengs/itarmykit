@@ -11,12 +11,15 @@
             <BitrateChartComponent class="fit" />
         </q-card>
         <div class="col q-pl-lg">
-          <div class="text-bold text-h5 q-mt-lg">{{ $t('modules.active.executionLog') }}:</div>
-          <q-separator></q-separator>
-          <q-input outlined v-model="executionLog" type="textarea" class="row q-mt-sm"/>
-          <q-input outlined v-model="stdOUT" type="textarea" class="row q-mt-sm"/>
-          <q-input outlined v-model="stdERR" type="textarea" class="row q-mt-sm"/>
-          <q-separator></q-separator>
+			<q-separator></q-separator>
+			<details closed>
+			<summary class="text-bold text-h5 q-mt-lg" style="cursor: pointer;">{{ $t('modules.active.executionLog') }}</summary>
+				
+				<q-input outlined v-model="executionLog" type="textarea" class="row q-mt-sm"/>
+				<q-input outlined v-model="stdOUT" type="textarea" class="row q-mt-sm"/>
+				<q-input outlined v-model="stdERR" type="textarea" class="row q-mt-sm"/>
+			</details>
+			<q-separator></q-separator>
         </div>
     </q-page>
 </template>
