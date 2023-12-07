@@ -14,6 +14,10 @@ export interface ExecutionLogEntry {
     message: string
 }
 
+export interface StatisticsTotals {
+    totalBytesSent: number
+}
+
 export interface State {
     moduleToRun?: ModuleName
     run: boolean
@@ -22,6 +26,7 @@ export interface State {
     stdOut: Array<string>
     stdErr: Array<string>
     statistics: Array<ModuleExecutionStatisticsEventData>
+    statisticsTotals: StatisticsTotals
 }
 
 
@@ -66,6 +71,7 @@ export class ExecutionEngine {
         if (state.statistics.length > 100) {
             state.statistics.shift()
         }
+        state.statisticsTotals.totalBytesSent += data.bytesSend
         await this.setState(state)
     }
 
@@ -222,9 +228,14 @@ export class ExecutionEngine {
                 const configString = await fs.promises.readFile(ExecutionEngine.stateFilePath, 'utf8')
                 this.state = JSON.parse(configString) as State
             } catch {
-                this.state = { run: false, executionLog: [] ,statistics: [], stdErr: [], stdOut: [] } // To enable TS types
+                this.state = { run: false, executionLog: [] ,statistics: [], stdErr: [], stdOut: [], statisticsTotals: { totalBytesSent: 0 } } // To enable TS types
                 this.setState(this.state)
             }
+        }
+
+        // Backwards compatibility for v1.0.8
+        if (this.state.statisticsTotals === undefined) {
+            this.state.statisticsTotals = { totalBytesSent: 0 }
         }
 
         return this.state

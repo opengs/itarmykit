@@ -43,8 +43,18 @@ function onStatisticsUpdate(_e: IpcRendererEvent, data: ModuleExecutionStatistic
     bps.value = data.currentSendBitrate
 }
 
-onMounted(() => {
+async function loadLastStatistics() {
+    const state = await window.executionEngineAPI.getState()
+    totalBytesSend.value = state.statisticsTotals.totalBytesSent
+    if (state.statistics.length > 0) {
+        const lastStatistics = state.statistics[state.statistics.length - 1]
+        bps.value = lastStatistics.currentSendBitrate
+    }
+}
+
+onMounted(async () => {
     window.executionEngineAPI.listenForStatistics(onStatisticsUpdate)
+    await loadLastStatistics()
 })
 
 onUnmounted(() => {
