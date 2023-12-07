@@ -38,6 +38,8 @@ jobs:
           node-version: '18'
       - name: Install dependencies
         run: |
+          rm -rf dist/
+          rm -rf node_modules/
           npm install -g @quasar/cli yarn --force
           yarn install
       - name: Build and release Windows binaries 
@@ -57,6 +59,8 @@ jobs:
           node-version: '18'
       - name: Install dependencies
         run: |
+          rm -rf dist/
+          rm -rf node_modules/
           npm install -g @quasar/cli yarn --force
           rm package.json, yarn.lock, quasar.config.js
           ren package.winxp.json package.json
