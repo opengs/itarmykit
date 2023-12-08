@@ -77,6 +77,9 @@ const chartOptions = computed (() => { return {
   },
   xaxis: {
     type: 'datetime',
+    labels: {
+      datetimeUTC: false
+    }
   },
   yaxis: {
     labels: {
