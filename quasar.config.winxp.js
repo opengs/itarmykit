@@ -211,6 +211,9 @@ module.exports = configure(function (/* ctx */) {
             }
           ]
         },
+        nsis: {
+          deleteAppDataOnUninstall: true
+        },
 
         artifactName: '${name}-${os}-${arch}.${ext}',
         appId: 'uacybershield.itarmykit',
