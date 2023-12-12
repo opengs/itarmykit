@@ -7,7 +7,7 @@ export interface Config extends BaseConfig {
   // Number of threads per process
   threads: number;
   // Percent of own IP address to use. 0 to disable.
-  vpnPercents: number;
+  useMyIP: number;
 }
 
 export class MHDDOSProxy extends Module<Config> {

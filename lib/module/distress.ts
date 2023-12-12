@@ -6,9 +6,9 @@ export interface Config extends BaseConfig {
   // Number of concurrent tasks
   concurrency: number;
   // Number of Tor connections
-  useTor: number
+  useTor: number;
   // Percentage of own IP usage
-  useMyIP: number
+  useMyIP: number;
 }
 
 export class Distress extends Module<Config> {

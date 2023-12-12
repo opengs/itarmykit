@@ -14,7 +14,9 @@ function selectRandomModuleWithWeight(): ModuleName {
     const modules = [
         { name: 'DISTRESS' as ModuleName, weight: 2 },
         { name: 'MHDDOS_PROXY' as ModuleName, weight: 2 },
-        { name: 'DB1000N' as ModuleName, weight: 1 },
+
+        // DB1000N only for Experts 
+        // { name: 'DB1000N' as ModuleName, weight: 1 },
     ]
 
     const totalWeight = modules.reduce((acc, module) => acc + module.weight, 0)

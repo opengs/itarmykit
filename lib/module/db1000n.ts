@@ -10,7 +10,7 @@ export interface Config extends BaseConfig {
     // Path to the file with proxies. can be on internet
     proxylist: string;
     // Deefault proxy protocol to use
-    defaultProxyProto: 'http' | 'socks4' | 'socks5' | null;
+    defaultProxyProto: 'socks4' | 'socks5' | null;
 }
 
 export class DB1000N extends Module<Config> {
