@@ -55,7 +55,8 @@
             :header-nav="step > 3"
         >
             <div class="q-mb-md">{{ $t('bootstrap.itarmy.body') }}</div>
-            <q-input :label="$t('bootstrap.itarmy.uuidInputTitle')" outlined v-model="itArmyUUID" @update:model-value="setItArmyUUID" :debounce="500" />
+            <div class="q-mb-md">{{ $t('settings.idDescription') }} <a href="https://itarmy.com.ua/statistics/" target="_blank" rel="noopener noreferrer">https://itarmy.com.ua</a></div>
+            <q-input :label="$t('bootstrap.itarmy.uuidInputTitle')" outlined v-model="itArmyUUID" @update:model-value="setItArmyUUID" :debounce="500" type="number"/>
 
             <q-stepper-navigation class="row">
                 <q-btn @click="step = 2" color="primary" :label="$t('bootstrap.itarmy.backButton')" class="q-mr-sm col-2" outline />
