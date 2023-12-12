@@ -79,9 +79,10 @@ export class DB1000N extends Module<Config> {
     if (config.proxylist !== '') {
       args.push('--proxylist', config.proxylist)
     }
-    if (config.defaultProxyProto !== null) {
+    if (config.proxylist !== '' && config.defaultProxyProto !== null) {
       args.push('--default-proxy-proto', config.defaultProxyProto)
     }
+    args.push('--source', "itarmykit")
     args.push(...config.executableArguments.filter(arg => arg !== ''))
 
     const executableName = process.platform === 'win32' ? 'db1000n.exe' : 'db1000n'

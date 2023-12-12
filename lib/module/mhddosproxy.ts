@@ -92,9 +92,8 @@ export class MHDDOSProxy extends Module<Config> {
     if (config.threads > 0) {
       args.push('--threads', config.threads.toString())
     }
-    if (config.vpnPercents > 0) {
-      args.push('--vpn')
-      args.push('--vpn-percents', config.vpnPercents.toString())
+    if (config.useMyIP > 0) {
+      args.push('--use-my-ip', config.useMyIP.toString())
     }
     args.push('--source', "itarmykit")
     args.push(...config.executableArguments.filter(arg => arg !== ''))

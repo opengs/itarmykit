@@ -45,8 +45,8 @@
             </div>
             <div class="row q-pt-sm">
                 <div class="col text-subtitle1">{{ $t('modules.mhddosProxy.useMyIp') }}</div>
-                <q-slider v-model="configVPNPercents" :min="0" :max="100" :step="1" label color="primary" class="col-7 q-pr-md" @update:model-value="setConfigDebouced"/>
-                <q-input outlined v-model="configVPNPercents" type="number" dense class="col-2" @update:model-value="setConfigDebouced"/>
+                <q-slider v-model="configUseMyIP" :min="0" :max="100" :step="1" label color="primary" class="col-7 q-pr-md" @update:model-value="setConfigDebouced"/>
+                <q-input outlined v-model="configUseMyIP" type="number" dense class="col-2" @update:model-value="setConfigDebouced"/>
                 <div class="col-12 text-caption text-grey-8" style="margin-top: -15px;">{{ $t('modules.mhddosProxy.useMyIpDescription') }}</div>
             </div>
             <div class="row q-pt-sm">
@@ -78,10 +78,10 @@ const configSelectedVersion = ref(null as string | null)
 const configAutoUpdate = ref(true)
 const configCopies = ref(1)
 const configThreads = ref(8)
-const configVPNPercents = ref(0)
+const configUseMyIP = ref(0)
 const configExecutableArguments = ref("")
 const configExecutableArgumentsPrefix = computed(() => {
-    return `--no-updates` + (configVPNPercents.value > 0 ? ` --vpn --vpn-percents ${configVPNPercents.value}` : "") + (configCopies.value > 0 ? ` --copies ${configCopies.value}` : "") + (configThreads.value > 0 ? ` --threads ${configThreads.value}` : "")
+    return `--no-updates` + (configUseMyIP.value != 0 ? ` --use-my-ip ${configUseMyIP.value}` : "") + (configCopies.value > 0 ? ` --copies ${configCopies.value}` : "") + (configThreads.value > 0 ? ` --threads ${configThreads.value}` : "")
 })
 
 const installedVersions = ref([] as string[])
@@ -92,7 +92,7 @@ async function loadConfig() {
     configAutoUpdate.value = config.autoUpdate
     configCopies.value = Number(config.copies)
     configThreads.value = Number(config.threads)
-    configVPNPercents.value = Number(config.vpnPercents)
+    configUseMyIP.value = Number(config.useMyIP)
     configExecutableArguments.value = config.executableArguments.join(" ")
 }
 
@@ -104,7 +104,7 @@ async function setConfig() {
         copies: Number(configCopies.value),
         threads: Number(configThreads.value),
         executableArguments: configExecutableArguments.value.split(" "),
-        vpnPercents: Number(configVPNPercents.value),
+        useMyIP: Number(configUseMyIP.value),
     } as Config
 
     await window.modulesAPI.setConfig<Config>('MHDDOS_PROXY', config)

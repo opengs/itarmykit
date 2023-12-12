@@ -99,8 +99,8 @@ const configScale = ref(1)
 const configInterval = ref(0)
 const configEnablePrimitive = ref(false)
 const configProxiesList = ref("")
-const configProxiesListProtocol = ref(null as "socks4" | "socks5" | "http" | null)
-const configProxiesListProtocolOptions = ["socks4", "socks5", "http"]
+const configProxiesListProtocol = ref(null as "socks4" | "socks5" | null)
+const configProxiesListProtocolOptions = ["socks4", "socks5"]
 const configExecutableArguments = ref("")
 const configExecutableArgumentsPrefix = computed(() => {
     return `--log-format json --scale ${configScale.value} --min-interval ${configInterval.value}ms` + (configEnablePrimitive.value ? ' --enable-primitive' : '') + (configProxiesList.value ? ` --proxylist ${configProxiesList.value}` : '') + (configProxiesListProtocol.value ? ` --default-proxy-proto ${configProxiesListProtocol.value}` : '')
