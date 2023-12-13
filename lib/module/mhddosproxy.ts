@@ -68,8 +68,16 @@ export class MHDDOSProxy extends Module<Config> {
   protected override async stopExecutable (): Promise<void> {
     if (process.platform === 'win32') {
       // on windows MHDDOS fails to kill subprocesses when the main process is killed
+      let filename = 'mhddos_proxy_win.exe'
+      for (const asset of this.assetMapping) {
+        if (asset.arch === process.arch && asset.platform === process.platform) {
+          filename = asset.name
+          break
+        }
+      }
+
       await new Promise<void>((resolve) => {
-        const handler = spawn(`taskkill /F /T /PID ${this.executedProcessHandler?.pid}`, { shell: true })
+        const handler = spawn(`taskkill /F /T /PID ${filename}`, { shell: true })
         handler.on('close', () => {resolve()})
         handler.on('error', () => {resolve()})
         handler.on('exit', () => {resolve()})
