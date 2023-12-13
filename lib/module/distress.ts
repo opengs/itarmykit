@@ -6,9 +6,9 @@ export interface Config extends BaseConfig {
   // Number of concurrent tasks
   concurrency: number;
   // Number of Tor connections
-  useTor: number
+  useTor: number;
   // Percentage of own IP usage
-  useMyIP: number
+  useMyIP: number;
 }
 
 export class Distress extends Module<Config> {
@@ -84,6 +84,7 @@ export class Distress extends Module<Config> {
     if (config.useMyIP > 0 && config.directUDPFailover) {
       args.push('--direct-udp-mixed-flood')
     }
+    args.push('--source', "itarmykit")
     args.push(...config.executableArguments.filter(arg => arg !== ''))
 
     let filename = 'distress_x86_64-unknown-linux-musl'

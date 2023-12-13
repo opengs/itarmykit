@@ -162,6 +162,7 @@ export default {
     hideTray: "Hide App in Tray",
     hideTrayDescription: "Hide the app in the tray, not close it. Also, do not show the main window during startup.",
     language: "Language",
+    idDescription: "How to get ID ? Look on",
     data: "Storage",
     dataDescription: "Currently your modules are located in the folder:",
     warnDelCache: "Are you sure you want to delete the modules cache? The app will close after this action and may not restart automatically.",

@@ -211,6 +211,9 @@ module.exports = configure(function (/* ctx */) {
             }
           ]
         },
+        nsis: {
+          deleteAppDataOnUninstall: true
+        },
         mac: {
           icon: 'src-electron/icons/icon.icns',
           target: [

@@ -97,9 +97,9 @@
             <!-- END TODO -->
 
             <q-card-section>
-                <div class="text-h6">IT Army of Ukraine</div>
+                <div class="text-h6">IT Army of Ukraine</div><span>{{ $t('settings.idDescription') }} <a href="https://itarmy.com.ua/statistics/" target="_blank" rel="noopener noreferrer">https://itarmy.com.ua</a> </span>
                 <q-separator class="q-mt-xs q-mb-sm"/>
-                <q-input outlined label="IT Army ID" v-model="itArmyUUID" @update:model-value="setItArmyUUID" debounce="500" type="password"/>
+                <q-input outlined label="IT Army ID" v-model="itArmyUUID" @update:model-value="setItArmyUUID" debounce="500" type="number"/>
             </q-card-section>
 
             <q-card-section>
