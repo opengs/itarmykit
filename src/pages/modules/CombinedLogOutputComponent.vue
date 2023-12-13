@@ -1,6 +1,6 @@
 <template>
     <q-scroll-area ref="scroll" outlined style="height: 200px; max-height: 300px;" class="row q-mt-sm">
-        {{ log }}
+        <pre>{{ log }}</pre>
     </q-scroll-area>
 </template>
 
