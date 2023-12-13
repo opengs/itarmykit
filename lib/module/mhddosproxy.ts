@@ -30,7 +30,7 @@ export class MHDDOSProxy extends Module<Config> {
       executableArguments: [],
       copies: 1,
       threads: 8192,
-      vpnPercents: 0
+      useMyIP: 0
     }
   }
 
