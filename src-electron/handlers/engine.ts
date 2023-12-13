@@ -292,7 +292,7 @@ export class ExecutionEngine {
     }
 }
 
-export function handleExecutionEngine(modules: Array<Distress | DB1000N | MHDDOSProxy>) {
+export function handleExecutionEngine(modules: Array<Distress | DB1000N | MHDDOSProxy>): ExecutionEngine {
     const engine = new ExecutionEngine(modules)
 
     app.on('before-quit', async () => {
@@ -346,4 +346,6 @@ export function handleExecutionEngine(modules: Array<Distress | DB1000N | MHDDOS
     })
 
     void engine.init()
+
+    return engine
 }

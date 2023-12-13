@@ -20,9 +20,9 @@ export function handle (mainWindow: BrowserWindow) {
   ]
 
   handleModules(modules)
-  handleExecutionEngine(modules)
+  const engine = handleExecutionEngine(modules)
   handleTop()
-  handleUpdater(settings)
+  handleUpdater(settings, engine)
   handleTray(settings, mainWindow)
   handleSettings(settings)
   handleDevelopers()
