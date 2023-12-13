@@ -1,3 +1,5 @@
+import { Platform } from 'quasar'
+
 import { Config as DistressConfig } from 'lib/module/distress'
 import { Config as MHDDOSProxyConfig } from 'lib/module/mhddosproxy'
 import { Config as DB1000NConfig } from 'lib/module/db1000n'
@@ -13,11 +15,13 @@ export enum Preset {
 function selectRandomModuleWithWeight(): ModuleName {
     const modules = [
         { name: 'DISTRESS' as ModuleName, weight: 2 },
-        { name: 'MHDDOS_PROXY' as ModuleName, weight: 2 },
-
         // DB1000N only for Experts 
         // { name: 'DB1000N' as ModuleName, weight: 1 },
     ]
+
+    if (!Platform.is.mac) { // MHDDOS_PROXY only for Windows and Linux
+        modules.push({ name: 'MHDDOS_PROXY' as ModuleName, weight: 2 },)
+    }
 
     const totalWeight = modules.reduce((acc, module) => acc + module.weight, 0)
     const randomNumber = Math.random() * totalWeight
