@@ -1,18 +1,27 @@
 <template>
-    <q-input outlined v-model="log" type="textarea" class="row q-mt-sm"/>
+    <q-scroll-area ref="scroll" outlined style="height: 200px; max-height: 300px;" class="row q-mt-sm">
+        {{ log }}
+    </q-scroll-area>
 </template>
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 import { IpcRendererEvent } from 'electron';
+import { QScrollArea } from 'quasar';
 
 const log = ref("")
+const scroll = ref<QScrollArea>()
 
 async function loadState() {
     const executionEngineState = await window.executionEngineAPI.getState()
     log.value = executionEngineState.executionLog.map((e) => JSON.stringify(e) + "\n").join("")
     log.value += executionEngineState.stdOut.join("")
     log.value += executionEngineState.stdErr.join("")
+    
+    // Has to be executed after first draw of the component to be able to adjust size
+    setTimeout(() => {
+        scroll.value?.setScrollPercentage("vertical", 1, 1000)
+    }, 500)
 }
 
 function onExecutionLog(_e: IpcRendererEvent, data: any) {
@@ -21,6 +30,7 @@ function onExecutionLog(_e: IpcRendererEvent, data: any) {
     while (log.value.length > 10000) {
         log.value = log.value.slice(1000)
     }
+    scroll.value?.setScrollPercentage("vertical", 1, 1000)
 }
 
 function onStdOut(_e: IpcRendererEvent, data: string) {
@@ -28,6 +38,7 @@ function onStdOut(_e: IpcRendererEvent, data: string) {
     while (log.value.length > 10000) {
         log.value = log.value.slice(1000)
     }
+    scroll.value?.setScrollPercentage("vertical", 1, 1000)
 }
 
 function onStdErr(_e: IpcRendererEvent, data: string) {
@@ -35,6 +46,7 @@ function onStdErr(_e: IpcRendererEvent, data: string) {
     while (log.value.length > 10000) {
         log.value = log.value.slice(1000)
     }
+    scroll.value?.setScrollPercentage("vertical", 1, 1000)
 }
 
 onMounted(async () => {
