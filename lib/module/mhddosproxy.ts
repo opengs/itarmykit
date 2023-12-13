@@ -65,23 +65,27 @@ export class MHDDOSProxy extends Module<Config> {
     return data.toString()
   }
 
+  async killProcessesOnWindows(): Promise<void> {
+    let filename = 'mhddos_proxy_win.exe'
+    for (const asset of this.assetMapping) {
+      if (asset.arch === process.arch && asset.platform === process.platform) {
+        filename = asset.name
+        break
+      }
+    }
+
+    await new Promise<void>((resolve) => {
+      const handler = spawn(`taskkill /F /T /PID ${filename}`, { shell: true })
+      handler.on('close', () => {resolve()})
+      handler.on('error', () => {resolve()})
+      handler.on('exit', () => {resolve()})
+    })
+  }
+
   protected override async stopExecutable (): Promise<void> {
     if (process.platform === 'win32') {
       // on windows MHDDOS fails to kill subprocesses when the main process is killed
-      let filename = 'mhddos_proxy_win.exe'
-      for (const asset of this.assetMapping) {
-        if (asset.arch === process.arch && asset.platform === process.platform) {
-          filename = asset.name
-          break
-        }
-      }
-
-      await new Promise<void>((resolve) => {
-        const handler = spawn(`taskkill /F /T /PID ${filename}`, { shell: true })
-        handler.on('close', () => {resolve()})
-        handler.on('error', () => {resolve()})
-        handler.on('exit', () => {resolve()})
-      })
+      await this.killProcessesOnWindows()
       this.executedProcessHandler = undefined
     } else {
       await super.stopExecutable()
@@ -89,6 +93,13 @@ export class MHDDOSProxy extends Module<Config> {
   }
 
   override async start (): Promise<void> {
+    // MHDDOS requires fix on Windows. In some cases, when program is killed, it fails to kill subprocesses. For example on automatic updates.
+    // This is a workaround for this problem.
+    if (process.platform === 'win32') {
+      await this.killProcessesOnWindows()
+    }
+    // ------
+
     const settings = await this.settings.getData()
     const config = await this.getConfig()
 
