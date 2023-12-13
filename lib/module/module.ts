@@ -223,7 +223,9 @@ export abstract class Module<ConfigType extends BaseConfig> {
         if (response.status !== 200) {
           throw new Error(`Cant fetch github releases: ${await response.text()}`)
         }
-        this.githubReleaseCache = await response.json() as Array<{ tag_name: string, name: string, body: string }>
+        let newReleasesList = await response.json() as Array<{ tag_name: string, name: string, body: string, prerelease: boolean, draft: boolean }>
+        newReleasesList = newReleasesList.filter((release) => !release.prerelease && !release.draft)
+        this.githubReleaseCache = newReleasesList
         this.githubReleaseCacheTime = new Date()
       }
 
