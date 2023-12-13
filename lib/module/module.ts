@@ -144,6 +144,22 @@ export abstract class Module<ConfigType extends BaseConfig> {
       await fs.promises.rmdir(path.join(installDirectory, versionTag), { recursive: true })
     }
 
+    public async installLatestVersion (): Promise<boolean> {
+      const versions = await this.getAllVersions()
+      if (versions.length > 0 && !versions[0].installed) {
+        const progressGenerator = this.installVersion(versions[0].tag)
+        for await (const progress of progressGenerator) {
+          if (progress.stage === 'DONE') {
+            const config = await this.getConfig()
+            config.selectedVersion = versions[0].tag
+            await this.setConfig(config)
+            return true
+          }
+        }
+      }
+      return false
+    }
+
     protected async *installVersionFromGithub (owner: string, repo: string, tag: string, assetMapping: Array<{ name: string, arch: 'x64' | 'arm64' | 'ia32', platform: 'linux' | 'win32' | 'darwin' }>): AsyncGenerator<InstallProgress, void, void> {
         interface GithubRelease {
             assets: Array<{ name: string, browser_download_url: string }>
@@ -344,8 +360,14 @@ export abstract class Module<ConfigType extends BaseConfig> {
       return data.toString()
     }
     protected async startExecutable (executableName: string, args: string[]): Promise<ChildProcessWithoutNullStreams> {
+      let config = await this.getConfig()
+      if (config.autoUpdate) {
+        await this.installLatestVersion()
+        config = await this.getConfig()
+      }
+
       const installDirectory = await this.getInstallationDirectory()
-      const config = await this.getConfig()
+
       if (config.selectedVersion === undefined) {
         const error = new Error('Failed to start executable. No version selected')
         this.emit('execution:error', { type: 'execution:error', error })
