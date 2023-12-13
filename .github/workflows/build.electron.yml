@@ -46,28 +46,28 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
         run: |
           quasar build --mode electron --publish always -T win32 --icon=/src-electron/icons/icon.ico
-  build_for_windows_xp:
-    name: Build for windows XP
-    runs-on: windows-2022
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '18'
-      - name: Install dependencies
-        run: |
-          npm install -g @quasar/cli yarn --force
-          rm package.json, yarn.lock, quasar.config.js
-          ren package.winxp.json package.json
-          ren quasar.config.winxp.js quasar.conf.js
-          yarn install
-      - name: Build and release WindowsXP binaries 
-        env:
-          EP_GH_IGNORE_TIME: true
-          GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-        run: |
-          quasar build --mode electron --publish always -T win32 --icon=/src-electron/icons/icon.ico
+  #build_for_windows_xp:
+  #  name: Build for windows XP
+  #  runs-on: windows-2022
+  #  steps:
+  #    - name: Checkout repository
+  #      uses: actions/checkout@v2
+  #    - uses: actions/setup-node@v2
+  #      with:
+  #        node-version: '18'
+  #    - name: Install dependencies
+  #      run: |
+  #        npm install -g @quasar/cli yarn --force
+  #        rm package.json, yarn.lock, quasar.config.js
+  #        ren package.winxp.json package.json
+  #        ren quasar.config.winxp.js quasar.conf.js
+  #        yarn install
+  #    - name: Build and release WindowsXP binaries 
+  #      env:
+  #        EP_GH_IGNORE_TIME: true
+  #        GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+  #      run: |
+  #        quasar build --mode electron --publish always -T win32 --icon=/src-electron/icons/icon.ico
   build_for_macos:
     name: Build for macos
     runs-on: macos-12
