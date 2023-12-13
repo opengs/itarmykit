@@ -10,28 +10,28 @@ const log = ref("")
 
 async function loadState() {
     const executionEngineState = await window.executionEngineAPI.getState()
-    log.value = executionEngineState.executionLog.map((e) => JSON.stringify(e) + "\n").join("[EXECUTION]: ")
-    log.value += executionEngineState.stdOut.join("[STDOUT]: ")
-    log.value += executionEngineState.stdErr.join("[STDERR]: ")
+    log.value = executionEngineState.executionLog.map((e) => JSON.stringify(e) + "\n").join("")
+    log.value += executionEngineState.stdOut.join("")
+    log.value += executionEngineState.stdErr.join("")
 }
 
 function onExecutionLog(_e: IpcRendererEvent, data: any) {
     data = JSON.stringify(data) + "\n"
-    log.value += "[EXECUTION]: " + data
+    log.value += data
     while (log.value.length > 10000) {
         log.value = log.value.slice(1000)
     }
 }
 
 function onStdOut(_e: IpcRendererEvent, data: string) {
-    log.value += "[STDOUT]: " + data
+    log.value += data
     while (log.value.length > 10000) {
         log.value = log.value.slice(1000)
     }
 }
 
 function onStdErr(_e: IpcRendererEvent, data: string) {
-    log.value += "[STDERR]: " + data
+    log.value += data
     while (log.value.length > 10000) {
         log.value = log.value.slice(1000)
     }
