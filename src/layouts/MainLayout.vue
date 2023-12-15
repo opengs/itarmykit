@@ -1,6 +1,7 @@
 <template>
-  <q-layout view="lHh Lpr lFf" class="bg-grey-2">
-    <q-header bordered class="bg-grey-2 text-black">
+  <MatrixCanvas />
+  <q-layout view="lHh Lpr lFf" class="">
+    <q-header bordered :class=" $q.dark.isActive ? 'bg-dark':'bg-white text-black'">
       <q-toolbar>
         <q-btn
           flat
@@ -23,12 +24,12 @@
       v-model="leftDrawerOpen"
       show-if-above
       bordered
-      class="bg-grey-2"
+      class=""
     >
       <q-list>
         <q-item-label
           header
-          class="text-center text-bold text-uppercase text-h4 q-mt-md q-mb-md text-grey-9"
+          :class="'text-center text-bold text-uppercase text-h4 q-mt-md q-mb-md' + ($q.dark.isActive ? ' text-grey-1 ':' text-grey-9 ')"
         >
           IT Army Kit
         </q-item-label>
@@ -36,7 +37,7 @@
         <div class="row" style="border-top: solid 1px #aaa;">
           <div v-for="page of pages" :key="page.name" class="row fit" @click="goToPage(page.page)">
             <div class="col bg-yellow-7" style="max-width: 6px;border-bottom: solid 1px #aaa;border-right: solid 1px #aaa;" v-if="($route.name as string).startsWith(page.name)"></div>
-            <div :class="'col text-subtitle1 text-bold q-pl-md selectable_menu ' + (($route.name as string).startsWith(page.name) ? 'bg-grey-4':'')" style="border-bottom: solid 1px #aaa;"> <q-icon size="xs" :name="page.icon" class="q-mr-xs"></q-icon> {{ $t(page.title) }}</div>
+            <div :class="'col text-subtitle1 text-bold q-pl-md selectable_menu ' + (($route.name as string).startsWith(page.name) ? ($q.dark.isActive ? 'bg-black':'bg-grey-4'):'')" style="border-bottom: solid 1px #aaa;"> <q-icon size="xs" :name="page.icon" class="q-mr-xs"></q-icon> {{ $t(page.title) }}</div>
           </div>
         </div>
       </q-list>
@@ -54,6 +55,8 @@ import { useRouter } from 'vue-router'
 import { version } from '../../package.json'
 
 const router = useRouter()
+
+import MatrixCanvas from './MatrixCanvas.vue';
 
 const pages = [
   { name: 'dashboard', title: 'layout.dashboard', page: 'dashboard', icon: 'dashboard' },

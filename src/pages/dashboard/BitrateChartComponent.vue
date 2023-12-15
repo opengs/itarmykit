@@ -1,7 +1,7 @@
 <template>
     <VueApexCharts
         width="100%"
-        height="400"
+        height="300"
         type="area"
         :options="chartOptions"
         :series="seriesData"

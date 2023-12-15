@@ -25,6 +25,10 @@ export interface SettingsData {
     bootstrap: {
         step: 'LANGUAGE' | 'DATA_FOLDER' | 'MODULES_CONFIGURATION' | 'ITARMY_UUID' | 'DONE'
         selectedModulesConfig: 'NONE' | 'GOVERNMENT_AGENCY' | 'WORK' | 'HOME'
+    },
+    gui: {
+        darkMode: boolean
+        matrixMode: boolean
     }
 }
 
@@ -54,6 +58,10 @@ export class Settings {
         bootstrap: {
             step: 'LANGUAGE',
             selectedModulesConfig: 'NONE'
+        },
+        gui: {
+            darkMode: false,
+            matrixMode: false
         }
     }
     private loaded = false
@@ -105,6 +113,13 @@ export class Settings {
                 this.data.bootstrap = {
                     step: 'DONE',
                     selectedModulesConfig: 'NONE'
+                }
+            }
+
+            if (this.data.gui === undefined) {
+                this.data.gui = {
+                    darkMode: false,
+                    matrixMode: false
                 }
             }
         } catch (e) {
@@ -238,6 +253,26 @@ export class Settings {
         await this.save()
         this.settingsChangedEmiter.emit('settingsChanged', this.data)
     }
+
+    async setGuiDarkMode(data: SettingsData['gui']['darkMode']) {
+        if (!this.loaded) {
+            await this.load()
+        }
+
+        this.data.gui.darkMode = data
+        await this.save()
+        this.settingsChangedEmiter.emit('settingsChanged', this.data)
+    }
+
+    async setGuiMatrixMode(data: SettingsData['gui']['matrixMode']) {
+        if (!this.loaded) {
+            await this.load()
+        }
+
+        this.data.gui.matrixMode = data
+        await this.save()
+        this.settingsChangedEmiter.emit('settingsChanged', this.data)
+    }
 }
 
 export function handleSettings(settings: Settings) {
@@ -296,5 +331,13 @@ export function handleSettings(settings: Settings) {
 
     ipcMain.handle('settings:bootstrap:selectedModulesConfig', async (_e, data: SettingsData['bootstrap']['selectedModulesConfig']) => {
         await settings.setBootstrapSelectedModulesConfig(data)
+    })
+
+    ipcMain.handle('settings:gui:darkMode', async (_e, data: SettingsData['gui']['darkMode']) => {
+        await settings.setGuiDarkMode(data)
+    })
+
+    ipcMain.handle('settings:gui:matrixMode', async (_e, data: SettingsData['gui']['matrixMode']) => {
+        await settings.setGuiMatrixMode(data)
     })
 }

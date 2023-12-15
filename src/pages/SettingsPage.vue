@@ -5,7 +5,7 @@
             class="bg-transparent"
         >
             <q-card-section>
-                <div class="text-h5">{{ $t('settings.system') }}</div>
+                <div class="text-h6">{{ $t('settings.system') }}</div>
                 <q-separator class="q-mt-xs q-mb-xs"/>
                 <q-item class="" v-ripple clickable @click="setSystemAutoUpdate(!systemAutoUpdate)">
                     <q-item-section>
@@ -103,6 +103,29 @@
             </q-card-section>
 
             <q-card-section>
+                <div class="text-h6">{{ $t('settings.look') }}</div>
+                <q-separator class="q-mt-xs q-mb-xs"/>
+                <q-item class="" v-ripple clickable @click="setDarkMode(!guiDarkMode)">
+                    <q-item-section>
+                        <q-item-label>{{ $t('settings.darkMode') }}</q-item-label>
+                    </q-item-section>
+                    <q-item-section side top>
+                        <q-toggle color="primary" v-model="guiDarkMode" @update:model-value="setDarkMode" />
+                    </q-item-section>
+                </q-item>
+
+                <q-item class="" v-ripple clickable @click="setMatrixMode(!guiMatrixMode)">
+                    <q-item-section>
+                        <q-item-label>{{ $t('settings.matrixMode') }}</q-item-label>
+                    </q-item-section>
+                    <q-item-section side top>
+                        <q-toggle color="primary" v-model="guiMatrixMode" @update:model-value="setMatrixMode" />
+                    </q-item-section>
+                </q-item>
+
+            </q-card-section>
+
+            <q-card-section>
                 <div class="text-h6">{{ $t('settings.data') }}</div>
                 <q-separator class="q-mt-xs q-mb-xs"/>
                 <div><span class="">{{ $t('settings.dataDescription') }}</span>  <b>{{ modulesDataFolderPath }}</b>  </div>
@@ -140,9 +163,15 @@
 
 <script lang="ts" setup>
 import { app } from 'electron';
+import { useQuasar } from 'quasar';
 import LanguageSelectorComponent from './settings/LanguageSelectorComponent.vue';
 
 import { onMounted, ref } from 'vue';
+
+import { useMatrixStore } from 'src/layouts/matrix.store';
+
+const $q = useQuasar()
+const matrixStore = useMatrixStore()
 
 const systemAutoUpdate = ref(true)
 async function setSystemAutoUpdate(newValue: boolean) {
@@ -202,6 +231,19 @@ async function deleteAllData() {
     await window.settingsAPI.deleteData()
 }
 
+const guiDarkMode = ref(false)
+async function setDarkMode(newValue: boolean) {
+    await window.settingsAPI.gui.setDarkMode(newValue)
+    guiDarkMode.value = newValue
+    $q.dark.set(newValue)
+}
+
+const guiMatrixMode = ref(false)
+async function setMatrixMode(newValue: boolean) {
+    matrixStore.setEnabled(newValue)
+    guiMatrixMode.value = newValue
+}
+
 async function loadSettings() {
     const settings = await window.settingsAPI.get()
     systemAutoUpdate.value = settings.system.autoUpdate
@@ -213,6 +255,8 @@ async function loadSettings() {
     sheduleActivity.value = settings.schedule.activity
     modulesDataFolderPath.value = settings.modules.dataPath
     itArmyUUID.value = settings.itarmy.uuid
+    guiDarkMode.value = settings.gui.darkMode
+    guiMatrixMode.value = settings.gui.matrixMode
 }
 
 onMounted(async () => {
