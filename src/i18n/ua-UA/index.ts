@@ -175,7 +175,7 @@ export default {
     openDataFolder: "Відкрити папку з даними",
     changeModulesDataLocation: "Змінити розташування даних модулів",
     deleteModulesCache: "Видалити кеш модулів",
-    deleteAllTheData: "Видалити всі дані",
+    deleteAllTheData: "Заводські налаштування",
   },
 
   dashboard: {

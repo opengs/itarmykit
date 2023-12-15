@@ -174,7 +174,7 @@ export default {
     openDataFolder: "Open Data Folder",
     changeModulesDataLocation: "Change Modules Data Location",
     deleteModulesCache: "Delete Modules Cache",
-    deleteAllTheData: "Delete All Data",
+    deleteAllTheData: "Factory Settings",
   },
 
   dashboard: {
