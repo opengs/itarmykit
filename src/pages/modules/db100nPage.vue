@@ -4,7 +4,7 @@
             <MenuComponent />
         </div>
         <div class="col q-pl-lg">
-            <div class="row text-h5 text-bold text-grey-10">Death by 1000 needles (DB1000N)</div>
+            <div class="row text-h5 text-bold">Death by 1000 needles (DB1000N)</div>
             <q-separator />
             <div class="row col q-pt-sm">
                 <div class="col-12 q-pt-xs"><span class="text-subtitle2">Author: <a class="text-primary cursor-pointer" href="https://github.com/arriven" target="_blank">arriven</a></span></div>
@@ -19,7 +19,7 @@
                 <div class="col-12 q-pt-xs"><span class="text-subtitle2">Author readme: </span> The software is provided as is under no guarantee. I will update both the repository and this documentation as I go during following days (date of writing this is 26th of February 2022, third day of Russian invasion into Ukraine).</div>    
             </div>
 
-            <div class="row text-h5 text-bold text-grey-10 q-mt-lg">{{ $t('modules.available.configuration') }}</div>
+            <div class="row text-h5 text-bold q-mt-lg">{{ $t('modules.available.configuration') }}</div>
             <q-separator />
             <div class="row q-pt-md">
                 <div class="col text-subtitle1">{{ $t('modules.available.selVersion') }}</div>
@@ -69,11 +69,11 @@
             <div class="row q-pt-sm">
                 <div class="col-12 text-subtitle1">{{ $t('modules.available.arguments') }}</div>
                 <q-input outlined v-model="configExecutableArguments" dense class="col-12" hint="" :prefix="configExecutableArgumentsPrefix" @update:model-value="setConfigDebouced"/>
-				<q-item-label caption>{{ $t('modules.available.argumentsDescription') }}</q-item-label>
+				<div class="text-caption text-grey-8" style="margin-top: -15px;">{{ $t('modules.available.argumentsDescription') }}</div>
             </div>
             
 
-            <div class="row text-h5 text-bold text-grey-10 q-mt-lg">{{ $t('modules.available.versions.versions') }}</div>
+            <div class="row text-h5 text-bold q-mt-lg">{{ $t('modules.available.versions.versions') }}</div>
             <q-separator/>
             <VersionsListComponent
                 module-name="DB1000N"

@@ -4,7 +4,7 @@
             <MenuComponent />
         </div>
         <div class="col q-pl-lg">
-            <div class="row text-h5 text-bold text-grey-10">DISTRESS</div>
+            <div class="row text-h5 text-bold">DISTRESS</div>
             <q-separator />
             <div class="row col q-pt-sm">
                 <div class="col-12 q-pt-xs"><span class="text-subtitle2">Author: <a class="text-primary cursor-pointer" href="https://github.com/Yneth" target="_blank">Yneth</a></span></div>
@@ -15,7 +15,7 @@
                 <div class="col-12 q-pt-xs"><span class="text-subtitle2">Author readme: </span> By default uses proxies of all possible countries.</div>    
             </div>
 
-            <div class="row text-h5 text-bold text-grey-10 q-mt-lg">{{ $t('modules.available.configuration') }}</div>
+            <div class="row text-h5 text-bold q-mt-lg">{{ $t('modules.available.configuration') }}</div>
             <q-separator />
             <div class="row q-pt-md">
                 <div class="col text-subtitle1">{{ $t('modules.available.selVersion') }}</div>
@@ -61,10 +61,10 @@
             <div class="row q-pt-sm">
                 <div class="col-12 text-subtitle1">{{ $t('modules.available.arguments') }}</div>
                 <q-input outlined v-model="configExecutableArguments" dense class="col-12" hint="" :prefix="configExecutableArgumentsPrefix" @update:model-value="setConfigDebouced"/>
-                <q-item-label caption>{{ $t('modules.available.argumentsDescription') }}</q-item-label>
+                <div class="text-caption text-grey-8" style="margin-top: -15px;">{{ $t('modules.available.argumentsDescription') }}</div>
             </div>
 
-            <div class="row text-h5 text-bold text-grey-10 q-mt-lg">{{ $t('modules.available.versions.versions') }}</div>
+            <div class="row text-h5 text-bold q-mt-lg">{{ $t('modules.available.versions.versions') }}</div>
             <q-separator/>
             <VersionsListComponent
                 module-name="DISTRESS"

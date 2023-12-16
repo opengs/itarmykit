@@ -197,6 +197,14 @@ const settingsAPI = {
     async setSelectedModulesConfig (data: SettingsData['bootstrap']['selectedModulesConfig']): Promise<void> {
       return await ipcRenderer.invoke('settings:bootstrap:selectedModulesConfig', data)
     }
+  },
+  gui: {
+    async setDarkMode (data: SettingsData['gui']['darkMode']): Promise<void> {
+      return await ipcRenderer.invoke('settings:gui:darkMode', data)
+    },
+    async setMatrixMode (data: SettingsData['gui']['matrixMode']): Promise<void> {
+      return await ipcRenderer.invoke('settings:gui:matrixMode', data)
+    }
   }
 }
 

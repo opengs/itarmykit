@@ -159,6 +159,9 @@ export default {
   },
   settings: {
     system: "System",
+    look: "GUI",
+    darkMode: "Dark Mode",
+    matrixMode: "Matrix Mode",
     autoUpdates: "Automatic Updates",
     autoUpdatesDescription: "Automatically update the application to the latest version.",
     autoStartup: "Automatic Startup",

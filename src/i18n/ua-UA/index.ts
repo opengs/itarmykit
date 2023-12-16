@@ -160,6 +160,9 @@ export default {
   },
   settings: {
     system: "Система",
+    look: "Інтерфейс",
+    darkMode: "Темний режим",
+    matrixMode: "Режим матриці (хакерський)",
     autoUpdates: "Автоматичне оновлення",
     autoUpdatesDescription: "Автоматичне оновлення програми до останньої версії.",
     autoStartup: "Автоматичний запуск",

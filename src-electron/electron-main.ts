@@ -1,4 +1,4 @@
-import { app, BrowserWindow, nativeTheme, nativeImage } from 'electron'
+import { app, BrowserWindow, nativeTheme, nativeImage, ipcMain } from 'electron'
 import path from 'path'
 import os from 'os'
 

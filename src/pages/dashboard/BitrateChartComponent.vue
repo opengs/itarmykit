@@ -1,7 +1,7 @@
 <template>
     <VueApexCharts
         width="100%"
-        height="400"
+        height="300"
         type="area"
         :options="chartOptions"
         :series="seriesData"
@@ -15,6 +15,9 @@ import { ExecutionLogEntry } from 'app/src-electron/handlers/engine';
 import { IpcRendererEvent } from 'electron';
 import { onMounted, onUnmounted, ref, computed } from 'vue';
 import VueApexCharts from 'vue3-apexcharts'
+import { useQuasar } from 'quasar';
+
+const $q = useQuasar()
 
 function humanBytesString(bytes: number, dp=1) {
   const thresh = 1000;
@@ -49,7 +52,10 @@ const chartOptions = computed (() => { return {
     type: 'area',
     zoom: {
       autoScaleYaxis: true
-    }
+    },
+    toolbar: {
+      show: false
+    },
   },
   annotations: {
     xaxis: executionEvents.value.map((e) => {
@@ -78,13 +84,19 @@ const chartOptions = computed (() => { return {
   xaxis: {
     type: 'datetime',
     labels: {
-      datetimeUTC: false
+      datetimeUTC: false,
+      style: {
+        colors: ($q.dark.isActive ? '#fff' : '#000') ,
+      }
     }
   },
   yaxis: {
     labels: {
       formatter: function (val: number) {
         return humanBytesString(val) + "/s"
+      },
+      style: {
+        colors: ($q.dark.isActive ? '#fff' : '#000') ,
       }
     }
   },
@@ -94,9 +106,9 @@ const chartOptions = computed (() => { return {
   fill: {
     type: 'gradient',
     gradient: {
-      shadeIntensity: 1,
+      shadeIntensity: ($q.dark.isActive ? 0 : 1),
       opacityFrom: 0.7,
-      opacityTo: 0.9,
+      opacityTo: ($q.dark.isActive ? 0 : 0.9),
       stops: [0, 100]
     }
   },
