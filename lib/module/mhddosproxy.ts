@@ -182,6 +182,13 @@ export class MHDDOSProxy extends Module<Config> {
           if (lastStatisticsEvent != null) {
             const now = new Date()
             const timeDiff = (now.getTime() - lastStatisticsEvent.getTime()) / 1000.0
+            
+            // Bugfix [https://github.com/opengs/itarmykit/issues/19]. When PC goes to sleep mode, timediff is huge and not relevant
+            if (timeDiff > 60) {
+              lastStatisticsEvent = new Date()
+              continue
+            }
+
             if (timeDiff > 0) {
               bytesSend = currentSendBitrate * timeDiff
             }

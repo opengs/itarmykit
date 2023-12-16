@@ -118,6 +118,13 @@ export class DB1000N extends Module<Config> {
           } else {
             const now = new Date()
             const timeDiff = (now.getTime() - lastStatisticsEvent.getTime()) / 1000.0
+
+            // Bugfix [https://github.com/opengs/itarmykit/issues/19]. When PC goes to sleep mode, timediff is huge and not relevant
+            if (timeDiff > 60) {
+              lastStatisticsEvent = new Date()
+              continue
+            }
+
             if (timeDiff > 0) {
               currentSendBitrate = bytesSend * 1.0 / timeDiff
             }
