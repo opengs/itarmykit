@@ -204,6 +204,9 @@ const settingsAPI = {
     },
     async setMatrixMode (data: SettingsData['gui']['matrixMode']): Promise<void> {
       return await ipcRenderer.invoke('settings:gui:matrixMode', data)
+    },
+    async setMatrixModeUnlocked (data: SettingsData['gui']['matrixModeUnlocked']): Promise<void> {
+      return await ipcRenderer.invoke('settings:gui:matrixModeUnlocked', data)
     }
   }
 }

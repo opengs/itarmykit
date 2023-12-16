@@ -174,6 +174,18 @@ export default {
     changeModulesDataLocation: "Change Modules Data Location",
     deleteModulesCache: "Delete Modules Cache",
     deleteAllTheData: "Delete All Data",
+
+    matrixQuiz: {
+      header: "Wake up, {name} ...",
+      body: "You are genno-modified ukrnazi from west Ukraine laboratories. We are all brain-washed and think the same. Answer associations (first what is on your mind) to prove that.",
+
+      q1: "What is rustling?",
+      q2: "Who is putin?",
+      q3: "What is dried up?",
+
+      cancell: "Wake up as nothing happened",
+      submit: "Down to the rabbit hole",
+    }
   },
   
   dashboard: {

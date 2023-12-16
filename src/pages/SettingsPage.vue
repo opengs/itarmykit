@@ -114,7 +114,7 @@
                     </q-item-section>
                 </q-item>
 
-                <q-item class="" v-ripple clickable @click="setMatrixMode(!guiMatrixMode)">
+                <q-item v-if="matrixModeUnlocked" class="" v-ripple clickable @click="setMatrixMode(!guiMatrixMode)">
                     <q-item-section>
                         <q-item-label>{{ $t('settings.matrixMode') }}</q-item-label>
                     </q-item-section>
@@ -143,9 +143,9 @@
             <q-card-section class="text-center text-h5 text-bold">
                 {{ $t('settings.warnDelCache') }}
             </q-card-section>
-            <q-card-action>
+            <q-card-actions>
                 <q-btn label="Delete" class="fit" color="negative" outline @click="deleteModulesCache"/>
-            </q-card-action>
+            </q-card-actions>
         </q-card>
     </q-dialog>
 
@@ -154,10 +154,14 @@
             <q-card-section class="text-center text-h5 text-bold">
                 {{ $t('settings.warnDelData') }}
             </q-card-section>
-            <q-card-action>
+            <q-card-actions>
                 <q-btn label="Delete" class="fit" color="negative" outline @click="deleteAllData"/>
-            </q-card-action>
+            </q-card-actions>
         </q-card>
+    </q-dialog>
+
+    <q-dialog v-model="matrixModeQuizDialog" persistent>
+        <MatrixModeQuizDialog @on-close="matrixModeQuizDialog = false; void loadSettings()"/>
     </q-dialog>
 </template>
 
@@ -169,6 +173,7 @@ import LanguageSelectorComponent from './settings/LanguageSelectorComponent.vue'
 import { onMounted, ref } from 'vue';
 
 import { useMatrixStore } from 'src/layouts/matrix.store';
+import MatrixModeQuizDialog from './settings/MatrixModeQuizDialog.vue';
 
 const $q = useQuasar()
 const matrixStore = useMatrixStore()
@@ -236,6 +241,10 @@ async function setDarkMode(newValue: boolean) {
     await window.settingsAPI.gui.setDarkMode(newValue)
     guiDarkMode.value = newValue
     $q.dark.set(newValue)
+
+    if (itArmyUUID && newValue && !matrixModeUnlocked.value) {
+        matrixModeQuizDialog.value = true
+    }
 }
 
 const guiMatrixMode = ref(false)
@@ -243,6 +252,9 @@ async function setMatrixMode(newValue: boolean) {
     matrixStore.setEnabled(newValue)
     guiMatrixMode.value = newValue
 }
+
+const matrixModeUnlocked = ref(false)
+const matrixModeQuizDialog = ref(false)
 
 async function loadSettings() {
     const settings = await window.settingsAPI.get()
@@ -257,6 +269,7 @@ async function loadSettings() {
     itArmyUUID.value = settings.itarmy.uuid
     guiDarkMode.value = settings.gui.darkMode
     guiMatrixMode.value = settings.gui.matrixMode
+    matrixModeUnlocked.value = settings.gui.matrixModeUnlocked
 }
 
 onMounted(async () => {

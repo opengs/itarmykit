@@ -29,6 +29,7 @@ export interface SettingsData {
     gui: {
         darkMode: boolean
         matrixMode: boolean
+        matrixModeUnlocked: boolean
     }
 }
 
@@ -61,7 +62,8 @@ export class Settings {
         },
         gui: {
             darkMode: false,
-            matrixMode: false
+            matrixMode: false,
+            matrixModeUnlocked: false
         }
     }
     private loaded = false
@@ -119,7 +121,8 @@ export class Settings {
             if (this.data.gui === undefined) {
                 this.data.gui = {
                     darkMode: false,
-                    matrixMode: false
+                    matrixMode: false,
+                    matrixModeUnlocked: false
                 }
             }
         } catch (e) {
@@ -273,6 +276,16 @@ export class Settings {
         await this.save()
         this.settingsChangedEmiter.emit('settingsChanged', this.data)
     }
+
+    async setGuiMatrixModeUnlocked(data: SettingsData['gui']['matrixModeUnlocked']) {
+        if (!this.loaded) {
+            await this.load()
+        }
+
+        this.data.gui.matrixModeUnlocked = data
+        await this.save()
+        this.settingsChangedEmiter.emit('settingsChanged', this.data)
+    }
 }
 
 export function handleSettings(settings: Settings) {
@@ -339,5 +352,9 @@ export function handleSettings(settings: Settings) {
 
     ipcMain.handle('settings:gui:matrixMode', async (_e, data: SettingsData['gui']['matrixMode']) => {
         await settings.setGuiMatrixMode(data)
+    })
+
+    ipcMain.handle('settings:gui:matrixModeUnlocked', async (_e, data: SettingsData['gui']['matrixModeUnlocked']) => {
+        await settings.setGuiMatrixModeUnlocked(data)
     })
 }
