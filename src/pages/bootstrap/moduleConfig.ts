@@ -7,15 +7,16 @@ import { InstallProgress, ModuleName } from 'app/lib/module/module'
 
 export enum Preset {
     GOVERNMENT_AGENCY = 'GOVERNMENT_AGENCY',
-    NORMAL = 'NORMAL',
     LAPTOP = 'LAPTOP',
+    COMFORT = 'COMFORT',
+    NORMAL = 'NORMAL',
     MAX = 'MAX',
 }
 
 function selectRandomModuleWithWeight(): ModuleName {
     const modules = [
         { name: 'DISTRESS' as ModuleName, weight: 2 },
-        // DB1000N only for Experts 
+        // DB1000N only for Experts
         // { name: 'DB1000N' as ModuleName, weight: 1 },
     ]
 
@@ -94,8 +95,14 @@ export async function configureGovernmentAgencyPreset(callback: (progress: Insta
     await window.settingsAPI.system.setHideInTray(true)
 }
 
-export async function configureNormalPreset(callback: (progress: InstallProgress) => void) {
+export async function configureLaptopPreset(callback: (progress: InstallProgress) => void) {
     const { mhddosProxyConfig, distressConfig, db1000nConfig } = await getDefaultConfigs()
+
+    distressConfig.concurrency = 1280
+    mhddosProxyConfig.copies = 1
+    mhddosProxyConfig.threads = 1024
+    db1000nConfig.scale = 0.15
+
     await installModule(mhddosProxyConfig, distressConfig, db1000nConfig, callback)
     await window.executionEngineAPI.startModule()
     await window.settingsAPI.system.setAutoUpdate(true)
@@ -103,14 +110,23 @@ export async function configureNormalPreset(callback: (progress: InstallProgress
     await window.settingsAPI.system.setHideInTray(true)
 }
 
-export async function configureLaptopPreset(callback: (progress: InstallProgress) => void) {
+export async function configureComfortPreset(callback: (progress: InstallProgress) => void) {
     const { mhddosProxyConfig, distressConfig, db1000nConfig } = await getDefaultConfigs()
 
-    distressConfig.concurrency = 2048
+    distressConfig.concurrency = 1512
     mhddosProxyConfig.copies = 1
-    mhddosProxyConfig.threads = 4096
-    db1000nConfig.scale = 0.5
+    mhddosProxyConfig.threads = 1280
+    db1000nConfig.scale = 0.25
 
+    await installModule(mhddosProxyConfig, distressConfig, db1000nConfig, callback)
+    await window.executionEngineAPI.startModule()
+    await window.settingsAPI.system.setAutoUpdate(true)
+    await window.settingsAPI.system.setStartOnBoot(true)
+    await window.settingsAPI.system.setHideInTray(true)
+}
+
+export async function configureNormalPreset(callback: (progress: InstallProgress) => void) {
+    const { mhddosProxyConfig, distressConfig, db1000nConfig } = await getDefaultConfigs()
     await installModule(mhddosProxyConfig, distressConfig, db1000nConfig, callback)
     await window.executionEngineAPI.startModule()
     await window.settingsAPI.system.setAutoUpdate(true)
@@ -139,11 +155,14 @@ export async function configure(preset: Preset, callback: (progress: InstallProg
         case Preset.GOVERNMENT_AGENCY:
             await configureGovernmentAgencyPreset(callback)
             break
-        case Preset.NORMAL:
-            await configureNormalPreset(callback)
-            break
         case Preset.LAPTOP:
             await configureLaptopPreset(callback)
+            break
+        case Preset.COMFORT:
+            await configureComfortPreset(callback)
+            break
+        case Preset.NORMAL:
+            await configureNormalPreset(callback)
             break
         case Preset.MAX:
             await configureMaxPreset(callback)

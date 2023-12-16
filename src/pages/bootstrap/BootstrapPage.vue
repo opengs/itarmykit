@@ -43,7 +43,7 @@
             <q-stepper-navigation class="row">
             <q-btn @click="step = 1" color="primary" :label="$t('bootstrap.data.backButton')" class="q-mr-sm col-2" outline />
             <q-btn @click="finishDataStep" color="primary" :label="$t('bootstrap.data.continueButton')" class="col fit" outline />
-            
+
             </q-stepper-navigation>
         </q-step>
 
@@ -84,20 +84,29 @@
                 </q-item>
                 <q-item tag="label" v-ripple>
                     <q-item-section avatar>
-                    <q-radio v-model="presetToInstall" :val="Preset.NORMAL" color="yellow-7" />
-                    </q-item-section>
-                    <q-item-section>
-                    <q-item-label>{{ $t('bootstrap.module.preset.normal.title') }}</q-item-label>
-                    <q-item-label caption>{{ $t('bootstrap.module.preset.normal.description') }}</q-item-label>
-                    </q-item-section>
-                </q-item>
-                <q-item tag="label" v-ripple>
-                    <q-item-section avatar>
                     <q-radio v-model="presetToInstall" :val="Preset.LAPTOP" color="yellow-7" />
                     </q-item-section>
                     <q-item-section>
                     <q-item-label>{{ $t('bootstrap.module.preset.laptop.title') }}</q-item-label>
                     <q-item-label caption>{{ $t('bootstrap.module.preset.laptop.description') }}</q-item-label>
+                    </q-item-section>
+                </q-item>
+                <q-item tag="label" v-ripple>
+                    <q-item-section avatar>
+                    <q-radio v-model="presetToInstall" :val="Preset.COMFORT" color="yellow-7" />
+                    </q-item-section>
+                    <q-item-section>
+                    <q-item-label>{{ $t('bootstrap.module.preset.comfort.title') }}</q-item-label>
+                    <q-item-label caption>{{ $t('bootstrap.module.preset.comfort.description') }}</q-item-label>
+                    </q-item-section>
+                </q-item>
+                <q-item tag="label" v-ripple>
+                    <q-item-section avatar>
+                    <q-radio v-model="presetToInstall" :val="Preset.NORMAL" color="yellow-7" />
+                    </q-item-section>
+                    <q-item-section>
+                    <q-item-label>{{ $t('bootstrap.module.preset.normal.title') }}</q-item-label>
+                    <q-item-label caption>{{ $t('bootstrap.module.preset.normal.description') }}</q-item-label>
                     </q-item-section>
                 </q-item>
                 <q-item tag="label" v-ripple>
@@ -125,7 +134,7 @@
             </q-stepper-navigation>
         </q-step>
         </q-stepper>
-    
+
     <q-dialog v-model="moduleInstallationDialog">
         <ModuleInstallationComponent
             @error="moduleInstallationError"
