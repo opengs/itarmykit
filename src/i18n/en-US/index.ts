@@ -132,6 +132,10 @@ export default {
           title: "Laptop",
           description: "This preset will try to use as few resources as possible but won't disable functions.",
         },
+        comfort: {
+          title: "Comfort",
+          description: "This preset uses resources in comfortable mode. Does not affect the performance of your computer.",
+        },
         normal: {
           title: "Normal",
           description: "Normal home computer. This preset uses the configuration provided by module developers by default.",
@@ -173,7 +177,7 @@ export default {
     openDataFolder: "Open Data Folder",
     changeModulesDataLocation: "Change Modules Data Location",
     deleteModulesCache: "Delete Modules Cache",
-    deleteAllTheData: "Delete All Data",
+    deleteAllTheData: "Factory Settings",
 
     matrixQuiz: {
       header: "Wake up, {name} ...",
@@ -185,9 +189,9 @@ export default {
 
       cancell: "Wake up as nothing happened",
       submit: "Down to the rabbit hole",
-    }
+    },
   },
-  
+
   dashboard: {
     statistics: "Attack Power Statistics",
 	bytes: "Sent / Traffic",
