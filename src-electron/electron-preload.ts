@@ -123,6 +123,9 @@ const executionEngineAPI = {
   async stopListeningForStatistics (callback: (_e: IpcRendererEvent, data: ModuleExecutionStatisticsEventData) => void): Promise<void> {
     await ipcRenderer.invoke('executionEngine:stopListeningForStatistics')
     ipcRenderer.off('executionEngine:statistics', callback)
+  },
+  async deleteStatistics (): Promise<void> {
+    return await ipcRenderer.invoke('executionEngine:deleteStatistics')
   }
 }
 

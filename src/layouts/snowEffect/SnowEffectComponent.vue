@@ -23,7 +23,7 @@ let bodyHeightPx = null;
 let pageHeightVh = null;
 
 function setHeightVariables() {
-  bodyHeightPx = document.body.offsetHeight - 70;
+  bodyHeightPx = document.body.offsetHeight - 100;
   pageHeightVh = (100 * bodyHeightPx) / window.innerHeight;
 }
 
@@ -92,7 +92,7 @@ function generateSnowCSS(snowDensity = 200) {
   let rule = baseCSS;
 
   for (let i = 1; i < snowDensity; i++) {
-    let randomX = Math.random() * 70; // vw
+    let randomX = Math.random() * 60; // vw
     let randomOffset = Math.random() * 10; // vw;
     let randomXEnd = randomX + randomOffset;
     let randomXEndYoyo = randomX + randomOffset / 2;

@@ -172,10 +172,12 @@ export default {
     idDescription: "How to get ID ? Look on",
     data: "Storage",
     dataDescription: "Currently your modules are located in the folder:",
+    warnDelStatistics: "Are you sure you want to delete the statistics?",
     warnDelCache: "Are you sure you want to delete the modules cache? The app will close after this action and may not restart automatically.",
     warnDelData: "Do you really want to delete all data, including cache, settings, and modules? The app will close after this action and may not restart automatically.",
     openDataFolder: "Open Data Folder",
     changeModulesDataLocation: "Change Modules Data Location",
+    deleteStatistics: "Delete Statistics",
     deleteModulesCache: "Delete Modules Cache",
     deleteAllTheData: "Factory Settings",
 

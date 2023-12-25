@@ -290,6 +290,13 @@ export class ExecutionEngine {
             this.statisticsListeners.splice(index, 1)
         }
     }
+
+    public async deleteStatistics() {
+        const config = await this.getState()
+        config.statistics = []
+        config.statisticsTotals.totalBytesSent = 0
+        await this.setState(config)
+    }
 }
 
 export function handleExecutionEngine(modules: Array<Distress | DB1000N | MHDDOSProxy>): ExecutionEngine {
@@ -344,6 +351,10 @@ export function handleExecutionEngine(modules: Array<Distress | DB1000N | MHDDOS
     ipcMain.handle('executionEngine:stopListeningForStatistics', async (e) => {
         engine.stopListeningForStatistics(e.sender)
     })
+    ipcMain.handle('executionEngine:deleteStatistics', async () => {
+        await engine.deleteStatistics()
+    })
+
 
     void engine.init()
 
