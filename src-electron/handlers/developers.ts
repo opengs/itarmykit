@@ -30,14 +30,19 @@ let contributorsCacheTime: Date | null = null
 async function getDevelopersFromGithub(): Promise<Contributor[]> {
     const itkitResponse = await fetch("https://api.github.com/repos/opengs/itarmykit/contributors?per_page=100")
     const itkitContributors = await itkitResponse.json() as Contributor[]
+    itkitContributors.sort((a, b) => b.contributions - a.contributions)
 
     const shieldResponse = await fetch("https://api.github.com/repos/opengs/uashield/contributors?per_page=100")
     const shieldContributors = await shieldResponse.json() as Contributor[]
+    shieldContributors.sort((a, b) => b.contributions - a.contributions)
 
     const db1000nResponse = await fetch("https://api.github.com/repos/arriven/db1000n/contributors?per_page=100")
     const db1000nContributors = await db1000nResponse.json() as Contributor[]
+    db1000nContributors.sort((a, b) => b.contributions - a.contributions)
 
     let contributors = itkitContributors
+    contributors.sort((a, b) => b.contributions - a.contributions)
+
     for (const shieldContributor of shieldContributors) {
         const existingContributor = contributors.find(c => c.login === shieldContributor.login)
         if (existingContributor) {
@@ -46,8 +51,6 @@ async function getDevelopersFromGithub(): Promise<Contributor[]> {
             contributors.push(shieldContributor)
         }
     }
-
-    contributors.sort((a, b) => b.contributions - a.contributions)
 
     for (const db1000nContributor of db1000nContributors) {
         const existingContributor = contributors.find(c => c.login === db1000nContributor.login)
