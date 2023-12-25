@@ -112,6 +112,9 @@ const chartOptions = computed (() => { return {
       stops: [0, 100]
     }
   },
+  theme: {
+      mode: ($q.dark.isActive ? 'dark' : 'modern'), 
+  },
 }})
 
 async function loadInitialState() {

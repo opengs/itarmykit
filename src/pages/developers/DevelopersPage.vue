@@ -34,7 +34,7 @@
             <q-separator></q-separator>
             <q-card-section>
                 <p>1. Питання по застосунку задавайте в першу чергу на чаті ITArmy: <a href="https://t.me/itarmyofukraine2022" target="_blank">https://t.me/itarmyofukraine2022</a>, в крайньому в нас на каналі <a href="https://t.me/uashield" target="_blank">https://t.me/uashield</a>. Якщо ви будете писати до нас на канал, то памятайте що у нас дуже мало сил і може бути так що не відпишемо. Але зазвичай знаходяться люди з комюніті які можуть допомогти.</p>
-                <p>2. Технічні проблеми з застосунком - якщо вмієте користуватися Github, то запрошуємо створити issue на репозиторії <a href="https://github.com/opengs/itarmykit">https://github.com/opengs/itarmykit</a>, якщо ні - чат ITArmy</p>
+                <p>2. Технічні проблеми з застосунком - якщо вмієте користуватися Github, то запрошуємо створити issue на репозиторії <a href="https://github.com/opengs/itarmykit" target="_blank">https://github.com/opengs/itarmykit</a>, якщо ні - чат ITArmy</p>
                 <p>3. Питання по модулям - скеровуйте до розробників модулів</p>
             </q-card-section>
 
