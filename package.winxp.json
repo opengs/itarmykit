@@ -10,7 +10,7 @@
   },
   "private": false,
   "license": "GPLv3",
-  "repository": "https://github.com/opengs/itarmykit",
+  "repository": "https://github.com/opengs/itarmykit-xp",
   "homepage": "https://itarmy.com.ua",
   "scripts": {
     "lint": "eslint --ext .js,.ts,.vue ./",
