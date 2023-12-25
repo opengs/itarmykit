@@ -198,5 +198,20 @@ export default {
 	moduleStatus: "Module Status",
 	updates: "KIT Version",
 	latest: "Current"
+  },
+
+  developers: {
+    shieldSubtitle: "We are an organization that has been operating since February 25, 2022 - the second day of moscovia's full-scale invasion of Ukraine.",
+    shieldMore: "Learn more about us and our operations:",
+    partners: "Partners",
+    contacts: "Contacts",
+    contactP1: "For questions about the application, first, ask in the IT Army chat:",
+    contactP1_1: "or, as a last resort, on our channel",
+    contactP1_2: "If you write to us on the channel, remember that we have very few resources and might not respond. But usually, there are community members who can help.",
+    contactP2: "Technical problems with the application - if you know how to use Github, please create an issue in the repository",
+    contactP2_1: "if not - ask in the IT Army chat.",
+    contactP3: "Questions about modules - direct them to the module developers.",
+    contributors: "Contributors",
+    contributorsSubtitle: "Help improve the program and your name will automatically appear in this list. The list also shows contributors to the previous version of the application and some modules."
   }
 }

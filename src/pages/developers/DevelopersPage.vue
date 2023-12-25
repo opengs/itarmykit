@@ -9,14 +9,14 @@
                 </q-btn>
                 <div class="col q-pl-md">
                     <div class="full-width text-h4  text-bold">#UACyberShield</div>
-                    <div class="full-width text-subtitle2">Ми організація що працює від 25 лютого 2022 року - другого для повномаштабного вторгнення московії в Україну. Наша ціль це безпека нашої країни у кіберпросторі. </div>
-                    Більше про нас та наші операції: <a href="https://t.me/uashield" target="_blank">https://t.me/uashield</a>
+                    <div class="full-width text-subtitle2">{{ $t('developers.shieldSubtitle') }} </div>
+                    {{ $t('developers.shieldSubtitle') }} <a href="https://t.me/uashield" target="_blank">https://t.me/uashield</a>
                 </div>
             </q-card-section>
 
             <q-card-section />
             
-            <div class="text-h5">Партнери</div>
+            <div class="text-h5">{{ $t('developers.partners') }}</div>
             <q-separator></q-separator>
             
             <q-card-section class="items-center allign-center">
@@ -30,15 +30,15 @@
                 </q-btn>
             </q-card-section>
 
-            <div class="text-h5">Контакт</div>
+            <div class="text-h5">{{ $t('developers.contacts') }}</div>
             <q-separator></q-separator>
             <q-card-section>
-                <p>1. Питання по застосунку задавайте в першу чергу на чаті ITArmy: <a href="https://t.me/itarmyofukraine2022" target="_blank">https://t.me/itarmyofukraine2022</a>, в крайньому в нас на каналі <a href="https://t.me/uashield" target="_blank">https://t.me/uashield</a>. Якщо ви будете писати до нас на канал, то памятайте що у нас дуже мало сил і може бути так що не відпишемо. Але зазвичай знаходяться люди з комюніті які можуть допомогти.</p>
-                <p>2. Технічні проблеми з застосунком - якщо вмієте користуватися Github, то запрошуємо створити issue на репозиторії <a href="https://github.com/opengs/itarmykit" target="_blank">https://github.com/opengs/itarmykit</a>, якщо ні - чат ITArmy</p>
-                <p>3. Питання по модулям - скеровуйте до розробників модулів</p>
+                <p>1. {{ $t('developers.contactP1') }} <a href="https://t.me/itarmyofukraine2022" target="_blank">https://t.me/itarmyofukraine2022</a>, {{ $t('developers.contactP1_1') }} <a href="https://t.me/uashield" target="_blank">https://t.me/uashield</a>. {{ $t('developers.contactP1_2') }}</p>
+                <p>2. {{ $t('developers.contactP2') }} <a href="https://github.com/opengs/itarmykit" target="_blank">https://github.com/opengs/itarmykit</a>, {{ $t('developers.contactP2_1') }}</p>
+                <p>3. {{ $t('developers.contactP3') }}</p>
             </q-card-section>
 
-            <div class="text-h5">Контрибутори</div>
+            <div class="text-h5">{{ $t('developers.contributors') }}</div>
             <q-separator></q-separator>
             
             <q-card-section>
@@ -50,7 +50,7 @@
                         {{ contributor.login  }}: {{ contributor.contributions }} contributions
                     </q-tooltip>
                 </q-btn>
-                <div class="text-subtitle2 text-grey text-center">Допоможи вдосконалювати програму і твоє ім'я автоматично з'явиться у цьому списку. В списку також показані контрибутори до попередньої версії застосунку та деяких модулів.</div>
+                <div class="text-subtitle2 text-grey text-center">{{ $t('developers.contributorsSubtitle') }}</div>
             </q-card-section>
         </q-card>
         <div class="col-2"></div>
