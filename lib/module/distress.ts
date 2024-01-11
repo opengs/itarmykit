@@ -1,4 +1,5 @@
 import { Module, Version, InstallProgress, InstallationTarget, BaseConfig, ModuleName } from './module'
+import { getCPUArchitecture } from './archLib'
 
 export interface Config extends BaseConfig {
   // Enable UDP flood or not
@@ -89,7 +90,7 @@ export class Distress extends Module<Config> {
 
     let filename = 'distress_x86_64-unknown-linux-musl'
     for (const asset of this.assetMapping) {
-      if (asset.arch === process.arch && asset.platform === process.platform) {
+      if (asset.arch === getCPUArchitecture() && asset.platform === process.platform) {
         filename = asset.name
         break
       }

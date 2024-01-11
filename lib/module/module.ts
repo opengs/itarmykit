@@ -7,7 +7,7 @@ import fetch from 'electron-fetch'
 import decompress from 'decompress'
 import { v4 as uuid4 } from 'uuid'
 import { Settings } from '../../src-electron/handlers/settings'
-
+import { getCPUArchitecture } from './archLib'
 
 export type ModuleName = 'DB1000N' | 'DISTRESS' | 'MHDDOS_PROXY'
 
@@ -180,9 +180,9 @@ export abstract class Module<ConfigType extends BaseConfig> {
           return
         }
 
-        const assetName = assetMapping.find((asset) => asset.platform === process.platform && asset.arch === process.arch)?.name
+        const assetName = assetMapping.find((asset) => asset.platform === process.platform && asset.arch === getCPUArchitecture())?.name
         if (assetName === undefined) {
-          yield { stage: 'FAILED', progress: 0, errorCode: InstallationErrorCodes.UNSUPPORTED_PLATFORM, errorMessage: `Tour architecture is "${process.arch}" and platform "${process.platform}" which is not supported.` }
+          yield { stage: 'FAILED', progress: 0, errorCode: InstallationErrorCodes.UNSUPPORTED_PLATFORM, errorMessage: `Tour architecture is "${getCPUArchitecture()}" and platform "${process.platform}" which is not supported.` }
           return
         }
 

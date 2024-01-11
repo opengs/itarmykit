@@ -1,6 +1,6 @@
 import { spawn } from 'child_process'
 import { Module, Version, InstallProgress, InstallationTarget, BaseConfig, ModuleName } from './module'
-import { handle } from 'app/src-electron/handlers';
+import { getCPUArchitecture } from './archLib'
 
 export interface Config extends BaseConfig {
   // Number of processes to launch
@@ -68,7 +68,7 @@ export class MHDDOSProxy extends Module<Config> {
   async killProcessesOnWindows(): Promise<void> {
     let filename = 'mhddos_proxy_win.exe'
     for (const asset of this.assetMapping) {
-      if (asset.arch === process.arch && asset.platform === process.platform) {
+      if (asset.arch === getCPUArchitecture() && asset.platform === process.platform) {
         filename = asset.name
         break
       }
@@ -131,7 +131,7 @@ export class MHDDOSProxy extends Module<Config> {
 
     let filename = 'mhddos_proxy_linux'
     for (const asset of this.assetMapping) {
-      if (asset.arch === process.arch && asset.platform === process.platform) {
+      if (asset.arch === getCPUArchitecture() && asset.platform === process.platform) {
         filename = asset.name
         break
       }
