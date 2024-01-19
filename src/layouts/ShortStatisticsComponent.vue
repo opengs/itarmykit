@@ -26,7 +26,7 @@ const moduleTraffic = ref("");
 const moduleTotalBytesSend = ref("");
 
 function humanBytesString(bytes: number, dp = 1) {
-  const thresh = 1000;
+  const thresh = 1024; // 1024 instead of 1000 to be consistent with other places
 
   if (Math.abs(bytes) < thresh) {
     return bytes + " B";
