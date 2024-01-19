@@ -21,7 +21,6 @@
           <div class="full-width text-subtitle2">
             {{ $t("developers.shieldSubtitle") }}
           </div>
-          {{ $t("developers.shieldSubtitle") }}
           <a href="https://t.me/uashield" target="_blank"
             >https://t.me/uashield</a
           >
