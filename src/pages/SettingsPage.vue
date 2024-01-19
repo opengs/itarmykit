@@ -146,6 +146,14 @@
           debounce="500"
           type="number"
         />
+        <q-input
+          outlined
+          label="IT Army API Key"
+          class="q-mt-sm"
+          v-model="itArmyAPIKey"
+          @update:model-value="setItArmyAPIKey"
+          debounce="500"
+        />
       </q-card-section>
 
       <q-card-section>
@@ -346,6 +354,11 @@ async function setItArmyUUID(newValue: string | number | null) {
   await window.settingsAPI.itarmy.setUUID(String(newValue));
 }
 
+const itArmyAPIKey = ref("");
+async function setItArmyAPIKey(newValue: string | number | null) {
+  await window.settingsAPI.itarmy.setAPIKey(String(newValue));
+}
+
 const deleteStatisticsDialog = ref(false);
 async function deleteStatistics() {
   await window.executionEngineAPI.deleteStatistics();
@@ -393,6 +406,7 @@ async function loadSettings() {
   sheduleActivity.value = settings.schedule.activity;
   modulesDataFolderPath.value = settings.modules.dataPath;
   itArmyUUID.value = settings.itarmy.uuid;
+  itArmyAPIKey.value = settings.itarmy.apiKey;
   guiDarkMode.value = settings.gui.darkMode;
   guiMatrixMode.value = settings.gui.matrixMode;
   matrixModeUnlocked.value = settings.gui.matrixModeUnlocked;

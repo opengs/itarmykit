@@ -21,7 +21,8 @@ export interface SettingsData {
         activity: 'DO_NOTHING' | 'MINIMAL'
     },
     itarmy: {
-        uuid: string
+        uuid: string,
+        apiKey: string
     },
     bootstrap: {
         step: 'LANGUAGE' | 'DATA_FOLDER' | 'MODULES_CONFIGURATION' | 'ITARMY_UUID' | 'DONE'
@@ -58,7 +59,8 @@ export class Settings {
             activity: 'DO_NOTHING'
         },
         itarmy: {
-            uuid: ''
+            uuid: '',
+            apiKey: ''
         },
         bootstrap: {
             step: 'LANGUAGE',
@@ -103,8 +105,13 @@ export class Settings {
     private applyLoadBackwardsCompatibility() {
         if (this.data.itarmy === undefined) {
             this.data.itarmy = {
-                uuid: ''
+                uuid: '',
+                apiKey: ''
             }
+        }
+
+        if (this.data.itarmy.apiKey === undefined) {
+            this.data.itarmy.apiKey = ''
         }
 
         if (this.data.system.language === undefined) {
@@ -248,6 +255,16 @@ export class Settings {
         this.settingsChangedEmiter.emit('settingsChanged', this.data)
     }
 
+    async setItArmyApiKey(data: SettingsData['itarmy']['apiKey']) {
+        if (!this.loaded) {
+            await this.load()
+        }
+
+        this.data.itarmy.apiKey = data
+        await this.save()
+        this.settingsChangedEmiter.emit('settingsChanged', this.data)
+    }
+
     async setBootstrapStep(data: SettingsData['bootstrap']['step']) {
         if (!this.loaded) {
             await this.load()
@@ -361,6 +378,10 @@ export function handleSettings(settings: Settings) {
 
     ipcMain.handle('settings:itarmy:uuid', async (_e, data: SettingsData['itarmy']['uuid']) => {
         await settings.setItArmyUUID(data)
+    })
+
+    ipcMain.handle('settings:itarmy:apiKey', async (_e, data: SettingsData['itarmy']['apiKey']) => {
+        await settings.setItArmyApiKey(data)
     })
 
     ipcMain.handle('settings:bootstrap:step', async (_e, data: SettingsData['bootstrap']['step']) => {

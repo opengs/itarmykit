@@ -191,6 +191,9 @@ const settingsAPI = {
   itarmy: {
     async setUUID (data: SettingsData['itarmy']['uuid']): Promise<void> {
       return await ipcRenderer.invoke('settings:itarmy:uuid', data)
+    },
+    async setAPIKey (data: SettingsData['itarmy']['apiKey']): Promise<void> {
+      return await ipcRenderer.invoke('settings:itarmy:apiKey', data)
     }
   },
   bootstrap: {
