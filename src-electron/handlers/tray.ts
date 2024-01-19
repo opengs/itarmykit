@@ -45,6 +45,14 @@ export function handleTray(settings: Settings, mainWindow: BrowserWindow) {
     tray.setImage(appIcon); // tray icon
     tray.setToolTip('IT Army Kit');
 
+    tray.on('double-click', (event) => {
+        if (mainWindow.isVisible()) {
+            mainWindow.hide();
+        } else {
+            mainWindow.show();
+        }
+    });
+
     mainWindow.on('close', async function (event) {
         const settingsData = await settings.getData()
 
