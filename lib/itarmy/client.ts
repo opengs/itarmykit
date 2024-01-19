@@ -1,6 +1,6 @@
 import { UserStats, getUserStats, GetUserStatsResponse } from './api'
 
-const USERSTATS_CACHE_UPDATE_INTERVAL = 1000 * 30 // 30 seconds
+const USERSTATS_CACHE_UPDATE_INTERVAL = 1000 * 60 * 2 // 2 minutes
 
 export class ItArmyClient {
     protected userStatsCache?: UserStats
