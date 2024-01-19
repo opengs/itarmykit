@@ -153,6 +153,7 @@
           v-model="itArmyAPIKey"
           @update:model-value="setItArmyAPIKey"
           debounce="500"
+          type="password"
         />
       </q-card-section>
 

@@ -9,6 +9,7 @@ import { Settings, handleSettings } from './settings'
 import { handleDevelopers } from './developers'
 import { handleTray } from './tray'
 import { handleActiveness } from './activeness'
+import { handleItArmy } from './itarmy'
 import { BrowserWindow } from 'electron'
 
 export function handle (mainWindow: BrowserWindow) {
@@ -28,4 +29,5 @@ export function handle (mainWindow: BrowserWindow) {
   handleSettings(settings)
   handleDevelopers()
   handleActiveness(settings)
+  handleItArmy(settings)
 }

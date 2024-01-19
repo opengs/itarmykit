@@ -194,7 +194,7 @@ const settingsAPI = {
     },
     async setAPIKey (data: SettingsData['itarmy']['apiKey']): Promise<void> {
       return await ipcRenderer.invoke('settings:itarmy:apiKey', data)
-    }
+    },
   },
   bootstrap: {
     async setStep (data: SettingsData['bootstrap']['step']): Promise<void> {
@@ -272,3 +272,20 @@ const activenessAPI = {
 }
 
 contextBridge.exposeInMainWorld('activenessAPI', activenessAPI)
+
+
+import { GetUserStatsResponse as GetITArmyUserStatsResponse } from '../lib/itarmy/api'
+
+declare global {
+  interface Window {
+      itArmyAPI: typeof itArmyAPI
+  }
+}
+
+const itArmyAPI = {
+  async getStats (): Promise<GetITArmyUserStatsResponse> {
+    return await ipcRenderer.invoke('itarmy:getStats')
+  },
+}
+
+contextBridge.exposeInMainWorld('itArmyAPI', itArmyAPI)

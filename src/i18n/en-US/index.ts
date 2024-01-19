@@ -202,12 +202,13 @@ export default {
 
   dashboard: {
     statistics: "Attack Power Statistics",
-	bytes: "Sent / Traffic",
+	bytes: "Sent / Traffic / Total",
+  bytesHint: "Statistics of send traffic may be not accurate. It depends on the module and the way it works. Total statistics is always precise and shows aggregated information from all the running tools.",
 	moduleStatus: "Module Status",
 	updates: "KIT Version",
 	latest: "Current",
   activeness: {
-    score: "Activeness Score",
+    score: "Activeness Score (BETA)",
   }
   },
 

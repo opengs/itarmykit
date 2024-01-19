@@ -16,10 +16,13 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title> </q-toolbar-title>
+        <q-toolbar-title class="text-right q-pr-xl text-subtitle2">
+          <ShortStatisticsComponent />
+        </q-toolbar-title>
 
         <div>
           v{{ version }}
+          <!--
           <q-btn flat class="q-pa-sm q-ma-xs" @click="showMurkaDialog = true">
             <q-avatar
               style="outline: 2px solid #555"
@@ -30,6 +33,7 @@
             </q-avatar>
             <q-tooltip> Slamy's (developer) cat </q-tooltip>
           </q-btn>
+          -->
 
           <q-dialog v-model="showMurkaDialog">
             <MurkaDialog />
@@ -47,7 +51,8 @@
             ($q.dark.isActive ? ' text-grey-1 ' : ' text-grey-9 ')
           "
         >
-          IT Army Kit 🎅
+          IT Army Kit
+          <!--🎅-->
         </q-item-label>
 
         <div class="row" style="border-top: solid 1px #aaa">
@@ -79,7 +84,7 @@
     </q-drawer>
 
     <q-page-container>
-      <SnowEffectComponent />
+      <!-- <SnowEffectComponent /> -->
       <router-view />
     </q-page-container>
   </q-layout>
@@ -95,6 +100,8 @@ const router = useRouter();
 import MatrixCanvas from "./MatrixCanvas.vue";
 import SnowEffectComponent from "./snowEffect/SnowEffectComponent.vue";
 import MurkaDialog from "./snowEffect/MurkaDialog.vue";
+
+import ShortStatisticsComponent from "./ShortStatisticsComponent.vue";
 
 const pages = [
   {
