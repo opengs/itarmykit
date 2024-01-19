@@ -5,6 +5,7 @@ export default {
   layout: {
     dashboard: 'Main',
     modules: 'DDOS Modules',
+    activeness: 'Activeness (BETA)',
     settings: 'Settings',
     top: 'Rankings',
     developers: 'Developers',
@@ -74,6 +75,7 @@ export default {
     volunteers: "TOP VOLUNTEERS",
     week: "Per Week",
     month: "Per Month",
+    activeness: "Activeness",
 
     achievements: {
       peopleAreLikeShips: {
@@ -86,6 +88,10 @@ export default {
         goodButton: "I'm silly. Please liberate me.",
         badButton: "I don't like Ukraine",
       },
+    },
+
+    activenessData: {
+      notifyLoadFailed: "Failed to load activeness statistics. Error: {error}"
     }
   },
   bootstrap: {
@@ -199,7 +205,10 @@ export default {
 	bytes: "Sent / Traffic",
 	moduleStatus: "Module Status",
 	updates: "KIT Version",
-	latest: "Current"
+	latest: "Current",
+  activeness: {
+    score: "Activeness Score",
+  }
   },
 
   developers: {
@@ -215,5 +224,30 @@ export default {
     contactP3: "Questions about modules - direct them to the module developers.",
     contributors: "Contributors",
     contributorsSubtitle: "Help improve the program and your name will automatically appear in this list. The list also shows contributors to the previous version of the application and some modules."
+  },
+
+  activeness: {
+    login: {
+      title: "Activeness Login",
+      email: "Email",
+      password: "Password",
+      info: "Unfortunatelly, activeness requires additional login to be used. In future we will try to provide one login to all the IT Army services. If you dont know what is the Activeness or you dont have account, visit https://activeness.social/",
+      loginButton: "Login",
+      failed: "Login failed. Check your credentials/network connection/activeness status and try again.",
+    },
+    tasksTable: {
+      title: "Tasks",
+      id: "ID",
+      what: "What to do",
+      link: "Link",
+      description: "Description",
+      actions: "Actions"
+    },
+
+    suggesttarget: "Suggest my target",
+
+    notifyTaskLoadFailed: "Failed to load tasks. Error: {error}",
+    notifyFailedToMakeTaskDone: "Failed to make task done. Error: {error}",
+    notifyFailedTOIgnoreTask: "Failed to ignore task. Error: {error}",
   }
 }

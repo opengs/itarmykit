@@ -231,3 +231,41 @@ const developersAPI = {
 }
 
 contextBridge.exposeInMainWorld('developersAPI', developersAPI)
+
+
+import { GetStatsResponse as GetActivenessStatsResponse, GetTasksListResponse as GetActivenessTasksListResponse, MakeTaskDoneResponse as MakeActivenessTaskDoneResponse, IgnoreTaskResponse as IgnoreActivenessTaskResponse } from '../lib/activeness/api'
+
+declare global {
+  interface Window {
+      activenessAPI: typeof activenessAPI
+  }
+}
+
+const activenessAPI = {
+  async isLoggedIn (): Promise<boolean> {
+    return await ipcRenderer.invoke('activeness:isLoggedIn')
+  },
+  async login (email: string, password: string): Promise<boolean> {
+    return await ipcRenderer.invoke('activeness:login', email, password)
+  },
+  async logout (): Promise<void> {
+    return await ipcRenderer.invoke('activeness:logout')
+  },
+  async getTasksList (): Promise<GetActivenessTasksListResponse> {
+    return await ipcRenderer.invoke('activeness:getTasksList')
+  },
+  async makeTaskDone (id: number): Promise<MakeActivenessTaskDoneResponse> {
+    return await ipcRenderer.invoke('activeness:makeTaskDone', id)
+  },
+  async ignoreTask (id: number): Promise<IgnoreActivenessTaskResponse> {
+    return await ipcRenderer.invoke('activeness:ignoreTask', id)
+  },
+  async getStats(): Promise<GetActivenessStatsResponse> {
+    return await ipcRenderer.invoke('activeness:getStats')
+  },
+  async getMyStats(): Promise<{ score: number }> {
+    return await ipcRenderer.invoke('activeness:getMyStats')
+  }
+}
+
+contextBridge.exposeInMainWorld('activenessAPI', activenessAPI)

@@ -110,6 +110,12 @@ const pages = [
     icon: "fa-solid fa-layer-group",
   },
   {
+    name: "activeness",
+    title: "layout.activeness",
+    page: "activeness",
+    icon: "fa-solid fa-globe",
+  },
+  {
     name: "settings",
     title: "layout.settings",
     page: "settings",

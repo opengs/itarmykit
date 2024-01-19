@@ -8,6 +8,7 @@ import { handleUpdater } from './updater'
 import { Settings, handleSettings } from './settings'
 import { handleDevelopers } from './developers'
 import { handleTray } from './tray'
+import { handleActiveness } from './activeness'
 import { BrowserWindow } from 'electron'
 
 export function handle (mainWindow: BrowserWindow) {
@@ -26,4 +27,5 @@ export function handle (mainWindow: BrowserWindow) {
   handleTray(settings, mainWindow)
   handleSettings(settings)
   handleDevelopers()
+  handleActiveness(settings)
 }

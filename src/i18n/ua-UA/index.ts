@@ -5,6 +5,7 @@ export default {
   layout: {
     dashboard: 'Головна',
     modules: 'DDOS модулі',
+    activeness: 'Activeness (BETA)',
     settings: 'Налаштування',
     top: 'Рейтинги',
     developers: 'Розробники',
@@ -74,6 +75,7 @@ export default {
     volunteers: "TOП ВОЛОНТЕРІВ",
     week: "За тиждень",
     month: "За місяць",
+    activeness: "Activeness",
 
     achivements: {
       peopleAreLikeShips: {
@@ -87,6 +89,10 @@ export default {
         goodButton: "Я дурненький. Будь ласка, асвабадіть мене.",
         badButton: "Я не люблю Україну",
       },
+    },
+
+    activenessData: {
+      notifyLoadFailed: "Не вдалося завантажити статистику activeness. Помилка: {error}"
     }
   },
   bootstrap: {
@@ -200,7 +206,10 @@ export default {
 	bytes: "Відправлено / Трафік",
 	moduleStatus: "Статус модуля",
 	updates: "Версія KIT",
-	latest: "Поточна"
+	latest: "Поточна",
+  activeness: {
+    score: "Очки Activeness",
+  }
   },
 
   developers: {
@@ -216,5 +225,30 @@ export default {
     contactP3: "Питання по модулям - скеровуйте до розробників модулів",
     contributors: "Контрибутори",
     contributorsSubtitle: "Допоможи вдосконалювати програму і твоє ім'я автоматично з'явиться у цьому списку. В списку також показані контрибутори до попередньої версії застосунку та деяких модулів."
+  },
+
+  activeness: {
+    login: {
+      title: "Activeness Login",
+      email: "Емейл",
+      password: "Пароль",
+      info: "Нажаль, activeness потребує додаткового логіну. В майбутньому ми надамо єдиний логін для всіх сервісів IT Army. Якщо ви не знаєте що таке Activeness або немаєте акаунта, то відвідайте https://activeness.social/",
+      loginButton: "Залогуватися",
+      failed: "Не вдалося залогуватися. Перевірте ваші дані/підключення дл мережі/статус activeness і попробуйте ща раз.",
+    },
+    tasksTable: {
+      title: "Завдання",
+      id: "ID",
+      what: "Що зробити",
+      link: "Посилання",
+      description: "Опис",
+      actions: "Дії"
+    },
+
+    suggesttarget: "Запропонувати ціль/завдання",
+
+    notifyTaskLoadFailed: "Не вдалося завантажити завдання. Помилка: {error}",
+    notifyFailedToMakeTaskDone: "Не вдалося відмітити завдання як зроблене. Помилка: {error}",
+    notifyFailedTOIgnoreTask: "Не вдалося проігнорувати завдання. Помилка: {error}",
   }
 }

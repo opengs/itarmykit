@@ -2,6 +2,7 @@ import { join as joinPath }from 'path'
 import { app, ipcMain } from 'electron'
 import { promises as fsPromises, readFileSync, existsSync } from 'fs'
 import EventEmitter from 'events';
+import { SID } from 'app/lib/activeness/api';
 
 export interface SettingsData {
     system: {
@@ -30,6 +31,9 @@ export interface SettingsData {
         darkMode: boolean
         matrixMode: boolean
         matrixModeUnlocked: boolean
+    },
+    activeness: {
+        sid?: SID
     }
 }
 
@@ -64,7 +68,8 @@ export class Settings {
             darkMode: false,
             matrixMode: false,
             matrixModeUnlocked: false
-        }
+        },
+        activeness: {}
     }
     private loaded = false
     private settingsChangedEmiter = new EventEmitter()
@@ -95,36 +100,41 @@ export class Settings {
         await fsPromises.writeFile(Settings.settingsFile, JSON.stringify(this.data))
     }
 
+    private applyLoadBackwardsCompatibility() {
+        if (this.data.itarmy === undefined) {
+            this.data.itarmy = {
+                uuid: ''
+            }
+        }
+
+        if (this.data.system.language === undefined) {
+            this.data.system.language = 'en-US'
+        }
+
+        if (this.data.bootstrap === undefined) {
+            this.data.bootstrap = {
+                step: 'DONE',
+                selectedModulesConfig: 'NONE'
+            }
+        }
+
+        if (this.data.gui === undefined) {
+            this.data.gui = {
+                darkMode: false,
+                matrixMode: false,
+                matrixModeUnlocked: false
+            }
+        }
+
+        if (this.data.activeness === undefined) {
+            this.data.activeness = {}
+        }
+    }
+
     async load() {
         try {
             this.data = JSON.parse(await fsPromises.readFile(Settings.settingsFile, 'utf-8'))
-            
-            // Backwards compatibility
-
-            if (this.data.itarmy === undefined) {
-                this.data.itarmy = {
-                    uuid: ''
-                }
-            }
-
-            if (this.data.system.language === undefined) {
-                this.data.system.language = 'en-US'
-            }
-
-            if (this.data.bootstrap === undefined) {
-                this.data.bootstrap = {
-                    step: 'DONE',
-                    selectedModulesConfig: 'NONE'
-                }
-            }
-
-            if (this.data.gui === undefined) {
-                this.data.gui = {
-                    darkMode: false,
-                    matrixMode: false,
-                    matrixModeUnlocked: false
-                }
-            }
+            this.applyLoadBackwardsCompatibility()
         } catch (e) {
             await this.save()
         }
@@ -134,6 +144,7 @@ export class Settings {
     loadSync() {
         try {
             this.data = JSON.parse(readFileSync(Settings.settingsFile, 'utf-8'))
+            this.applyLoadBackwardsCompatibility()
         } catch (e) {
             void this.save()
         }
@@ -283,6 +294,20 @@ export class Settings {
         }
 
         this.data.gui.matrixModeUnlocked = data
+        await this.save()
+        this.settingsChangedEmiter.emit('settingsChanged', this.data)
+    }
+
+    async setActivenessSID(data: SettingsData['activeness']['sid']) {
+        if (!this.loaded) {
+            await this.load()
+        }
+
+        if (data === undefined) {
+            delete this.data.activeness.sid
+        } else {
+            this.data.activeness.sid = data
+        }
         await this.save()
         this.settingsChangedEmiter.emit('settingsChanged', this.data)
     }
