@@ -50,9 +50,10 @@
       row-key="id"
       hide-bottom
       :pagination="{ rowsPerPage: 1000 }"
+      style="width: 100%;"
     >
       <template v-slot:body-cell-actions="props">
-        <q-td :props="props" auto-width>
+        <q-td :props="props" style="overflow-wrap: break-word;">
           <q-btn
             round
             icon="done"
@@ -86,56 +87,50 @@
   </div>
 </template>
 
-<style scoped>
-  .q-td {
-    overflow-wrap: break-word;
-  }
-</style>
-
 <script setup lang="ts">
-import { Task } from "../../../lib/activeness/api";
-import { computed, onMounted, ref } from "vue";
-import { QTableColumn, useQuasar } from "quasar";
-import { useI18n } from "vue-i18n";
+import { Task } from '../../../lib/activeness/api'
+import { computed, onMounted, ref } from 'vue'
+import { QTableColumn, useQuasar } from 'quasar'
+import { useI18n } from 'vue-i18n'
 
-const $q = useQuasar();
-const $i18n = useI18n();
+const $q = useQuasar()
+const $i18n = useI18n()
 
-const loadingAll = ref(true);
-const loginRequired = ref(true);
+const loadingAll = ref(true)
+const loginRequired = ref(true)
 
-async function updateLoginStatus() {
-  loadingAll.value = true;
+async function updateLoginStatus () {
+  loadingAll.value = true
   try {
-    loginRequired.value = !(await window.activenessAPI.isLoggedIn());
+    loginRequired.value = !(await window.activenessAPI.isLoggedIn())
   } finally {
-    loadingAll.value = false;
+    loadingAll.value = false
   }
 }
 
-const loginLoading = ref(false);
-const emailInput = ref("");
-const passwordInput = ref("");
+const loginLoading = ref(false)
+const emailInput = ref('')
+const passwordInput = ref('')
 
-async function login() {
-  loginLoading.value = true;
+async function login () {
+  loginLoading.value = true
   try {
     const success = await window.activenessAPI.login(
       emailInput.value,
       passwordInput.value
-    );
+    )
     if (!success) {
       $q.notify({
-        message: $i18n.t("activeness.login.failed"),
-        type: "negative",
-        timeout: 5000,
-      });
-      return;
+        message: $i18n.t('activeness.login.failed'),
+        type: 'negative',
+        timeout: 5000
+      })
+      return
     }
 
-    await updateLoginStatus();
+    await updateLoginStatus()
   } finally {
-    loginLoading.value = false;
+    loginLoading.value = false
   }
 }
 
@@ -143,95 +138,95 @@ const columns = computed(
   () =>
     [
       {
-        name: "id",
-        label: $i18n.t("activeness.tasksTable.id"),
-        field: "id",
-        align: "left",
-        sortable: false,
+        name: 'id',
+        label: $i18n.t('activeness.tasksTable.id'),
+        field: 'id',
+        align: 'left',
+        sortable: false
       },
       {
-        name: "what",
-        label: $i18n.t("activeness.tasksTable.what"),
-        field: "whattodo",
-        align: "left",
-        sortable: false,
+        name: 'what',
+        label: $i18n.t('activeness.tasksTable.what'),
+        field: 'whattodo',
+        align: 'left',
+        sortable: false
       },
       {
-        name: "link",
-        label: $i18n.t("activeness.tasksTable.link"),
-        field: "link",
-        align: "left",
-        sortable: false,
+        name: 'link',
+        label: $i18n.t('activeness.tasksTable.link'),
+        field: 'link',
+        align: 'left',
+        sortable: false
       },
       {
-        name: "description",
-        label: $i18n.t("activeness.tasksTable.description"),
-        field: "message",
-        align: "left",
-        sortable: false,
+        name: 'description',
+        label: $i18n.t('activeness.tasksTable.description'),
+        field: 'message',
+        align: 'left',
+        sortable: false
       },
       {
-        name: "actions",
-        label: $i18n.t("activeness.tasksTable.actions"),
-        field: "actions",
-        align: "left",
-        sortable: false,
-      },
+        name: 'actions',
+        label: $i18n.t('activeness.tasksTable.actions'),
+        field: 'actions',
+        align: 'left',
+        sortable: false
+      }
     ] as Array<QTableColumn>
-);
+)
 
-const tasks = ref<Array<Task>>([]);
-async function loadTasks() {
-  const response = await window.activenessAPI.getTasksList();
-  if (response.status != "ok") {
+const tasks = ref<Array<Task>>([])
+async function loadTasks () {
+  const response = await window.activenessAPI.getTasksList()
+  if (response.status != 'ok') {
     $q.notify({
-      message: $i18n.t("activeness.notifyTaskLoadFailed", {
-        error: JSON.stringify(response),
+      message: $i18n.t('activeness.notifyTaskLoadFailed', {
+        error: JSON.stringify(response)
       }),
-      type: "negative",
-      timeout: 5000,
-    });
-    return;
+      type: 'negative',
+      timeout: 5000
+    })
+    return
   }
-  tasks.value = response.list;
+  tasks.value = response.list
 }
 
-const taskActionLoading = ref(false);
+const taskActionLoading = ref(false)
 
-async function makeTaskDone(task: Task) {
-  const response = await window.activenessAPI.makeTaskDone(task.id);
-  if (response.status != "ok") {
+async function makeTaskDone (task: Task) {
+  const response = await window.activenessAPI.makeTaskDone(task.id)
+  if (response.status != 'ok') {
     $q.notify({
-      message: $i18n.t("activeness.notifyFailedToMakeTaskDone", {
-        error: JSON.stringify(response),
+      message: $i18n.t('activeness.notifyFailedToMakeTaskDone', {
+        error: JSON.stringify(response)
       }),
-      type: "negative",
-      timeout: 5000,
-    });
-    return;
+      type: 'negative',
+      timeout: 5000
+    })
+    return
   }
-  await loadTasks();
+  await loadTasks()
 }
 
-async function ignoreTask(task: Task) {
-  const response = await window.activenessAPI.ignoreTask(task.id);
-  if (response.status != "ok") {
+async function ignoreTask (task: Task) {
+  const response = await window.activenessAPI.ignoreTask(task.id)
+  if (response.status != 'ok') {
     $q.notify({
-      message: $i18n.t("activeness.notifyFailedTOIgnoreTask", {
-        error: JSON.stringify(response),
+      message: $i18n.t('activeness.notifyFailedTOIgnoreTask', {
+        error: JSON.stringify(response)
       }),
-      type: "negative",
-      timeout: 5000,
-    });
-    return;
+      type: 'negative',
+      timeout: 5000
+    })
+    return
   }
-  await loadTasks();
+  await loadTasks()
 }
 
 onMounted(async () => {
-  await updateLoginStatus();
+  await updateLoginStatus()
   if (!loginRequired.value) {
-    await loadTasks();
+    await loadTasks()
   }
-});
+})
 </script>
