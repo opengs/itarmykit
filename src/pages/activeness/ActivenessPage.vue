@@ -52,7 +52,7 @@
       :pagination="{ rowsPerPage: 1000 }"
     >
       <template v-slot:body-cell-actions="props">
-        <q-td :props="props">
+        <q-td :props="props" auto-width>
           <q-btn
             round
             icon="done"
@@ -85,6 +85,12 @@
     /></a>
   </div>
 </template>
+
+<style scoped>
+  .q-td {
+    overflow-wrap: break-word;
+  }
+</style>
 
 <script setup lang="ts">
 import { Task } from "../../../lib/activeness/api";
