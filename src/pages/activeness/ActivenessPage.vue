@@ -88,10 +88,10 @@
 </template>
 
 <script setup lang="ts">
-import { Task } from '../../../lib/activeness/api'
-import { computed, onMounted, ref } from 'vue'
-import { QTableColumn, useQuasar } from 'quasar'
-import { useI18n } from 'vue-i18n'
+import { Task } from "../../../lib/activeness/api"
+import { computed, onMounted, ref } from "vue"
+import { QTableColumn, useQuasar } from "quasar"
+import { useI18n } from "vue-i18n"
 
 const $q = useQuasar()
 const $i18n = useI18n()
@@ -109,8 +109,8 @@ async function updateLoginStatus () {
 }
 
 const loginLoading = ref(false)
-const emailInput = ref('')
-const passwordInput = ref('')
+const emailInput = ref("")
+const passwordInput = ref("")
 
 async function login () {
   loginLoading.value = true
@@ -121,8 +121,8 @@ async function login () {
     )
     if (!success) {
       $q.notify({
-        message: $i18n.t('activeness.login.failed'),
-        type: 'negative',
+        message: $i18n.t("activeness.login.failed"),
+        type: "negative",
         timeout: 5000
       })
       return
@@ -138,38 +138,38 @@ const columns = computed(
   () =>
     [
       {
-        name: 'id',
-        label: $i18n.t('activeness.tasksTable.id'),
-        field: 'id',
-        align: 'left',
+        name: "id",
+        label: $i18n.t("activeness.tasksTable.id"),
+        field: "id",
+        align: "left",
         sortable: false
       },
       {
-        name: 'what',
-        label: $i18n.t('activeness.tasksTable.what'),
-        field: 'whattodo',
-        align: 'left',
+        name: "what",
+        label: $i18n.t("activeness.tasksTable.what"),
+        field: "whattodo",
+        align: "left",
         sortable: false
       },
       {
-        name: 'link',
-        label: $i18n.t('activeness.tasksTable.link'),
-        field: 'link',
-        align: 'left',
+        name: "link",
+        label: $i18n.t("activeness.tasksTable.link"),
+        field: "link",
+        align: "left",
         sortable: false
       },
       {
-        name: 'description',
-        label: $i18n.t('activeness.tasksTable.description'),
-        field: 'message',
-        align: 'left',
+        name: "description",
+        label: $i18n.t("activeness.tasksTable.description"),
+        field: "message",
+        align: "left",
         sortable: false
       },
       {
-        name: 'actions',
-        label: $i18n.t('activeness.tasksTable.actions'),
-        field: 'actions',
-        align: 'left',
+        name: "actions",
+        label: $i18n.t("activeness.tasksTable.actions"),
+        field: "actions",
+        align: "left",
         sortable: false
       }
     ] as Array<QTableColumn>
@@ -178,12 +178,12 @@ const columns = computed(
 const tasks = ref<Array<Task>>([])
 async function loadTasks () {
   const response = await window.activenessAPI.getTasksList()
-  if (response.status != 'ok') {
+  if (response.status != "ok") {
     $q.notify({
-      message: $i18n.t('activeness.notifyTaskLoadFailed', {
+      message: $i18n.t("activeness.notifyTaskLoadFailed", {
         error: JSON.stringify(response)
       }),
-      type: 'negative',
+      type: "negative",
       timeout: 5000
     })
     return
@@ -195,12 +195,12 @@ const taskActionLoading = ref(false)
 
 async function makeTaskDone (task: Task) {
   const response = await window.activenessAPI.makeTaskDone(task.id)
-  if (response.status != 'ok') {
+  if (response.status != "ok") {
     $q.notify({
-      message: $i18n.t('activeness.notifyFailedToMakeTaskDone', {
+      message: $i18n.t("activeness.notifyFailedToMakeTaskDone", {
         error: JSON.stringify(response)
       }),
-      type: 'negative',
+      type: "negative",
       timeout: 5000
     })
     return
@@ -210,12 +210,12 @@ async function makeTaskDone (task: Task) {
 
 async function ignoreTask (task: Task) {
   const response = await window.activenessAPI.ignoreTask(task.id)
-  if (response.status != 'ok') {
+  if (response.status != "ok") {
     $q.notify({
-      message: $i18n.t('activeness.notifyFailedTOIgnoreTask', {
+      message: $i18n.t("activeness.notifyFailedTOIgnoreTask", {
         error: JSON.stringify(response)
       }),
-      type: 'negative',
+      type: "negative",
       timeout: 5000
     })
     return
