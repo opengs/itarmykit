@@ -59,6 +59,7 @@ export interface Task {
     link: string
     whattodo: string
     message: string
+    priority: boolean
 }
 export interface GetTasksListRequest {
     sid: SID
@@ -122,7 +123,7 @@ export interface MakeTaskDonePositiveResponse {
     status: 'ok'
 }
 export interface MakeTaskDoneNegativeResponse {
-    status: 'err'
+    status: 'err' | 'sidexpired' | 'sidcheckfail'
     errorType: 'BAD_STATUS_CODE' | 'ERR_FROM_BACKEND' | 'REQUEST_FAILED'
     errorMessage: string
 }
@@ -141,10 +142,20 @@ export async function makeTaskDone(params: MakeTaskDoneRequest): Promise<MakeTas
 
         const responseJSON = await taskDoneResponse.json() as MakeTaskDoneResponse
         if (responseJSON.status !== 'ok') {
+            let message = 'Unknown error'
+            switch (responseJSON.status) {
+                case 'sidexpired':
+                    message = 'SID expired'
+                    break
+                case 'sidcheckfail':
+                    message = 'SID doesnt belong to login/account'
+                    break
+            }
+            
             return {
-                status: 'err',
+                status: responseJSON.status,
                 errorType: 'ERR_FROM_BACKEND',
-                errorMessage: responseJSON.status
+                errorMessage: message
             }
         }
 
@@ -166,7 +177,7 @@ export interface IgnoreTaskPositiveResponse {
     status: 'ok'
 }
 export interface IgnoreTaskNegativeResponse {
-    status: 'err'
+    status: 'err' | 'sidexpired' | 'sidcheckfail'
     errorType: 'BAD_STATUS_CODE' | 'ERR_FROM_BACKEND' | 'REQUEST_FAILED'
     errorMessage: string
 }
@@ -185,10 +196,20 @@ export async function ignoreTask(params: IgnoreTaskRequest): Promise<IgnoreTaskR
 
         const responseJSON = await ignoreTaskResponse.json() as IgnoreTaskResponse
         if (responseJSON.status !== 'ok') {
+            let message = 'Unknown error'
+            switch (responseJSON.status) {
+                case 'sidexpired':
+                    message = 'SID expired'
+                    break
+                case 'sidcheckfail':
+                    message = 'SID doesnt belong to login/account'
+                    break
+            }
+            
             return {
-                status: 'err',
+                status: responseJSON.status,
                 errorType: 'ERR_FROM_BACKEND',
-                errorMessage: responseJSON.status
+                errorMessage: message
             }
         }
 

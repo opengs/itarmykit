@@ -64,7 +64,7 @@ export class ActivenessClient {
             throw new Error('Not logged in')
         }
 
-        if (this.cachedTasksList && this.lastTaskListCacheUpdate && (Date.now() - this.lastTaskListCacheUpdate.getTime()) < TASKS_CACHE_UPDATE_INTERVAL) {
+        if (this.cachedTasksList && this.lastTaskListCacheUpdate && (Date.now() - this.lastTaskListCacheUpdate.getTime()) < TASKS_CACHE_UPDATE_INTERVAL && this.cachedTasksList.length > 0) {
             return {
                 status: 'ok',
                 list:  JSON.parse(JSON.stringify(this.cachedTasksList)) as Array<Task>
