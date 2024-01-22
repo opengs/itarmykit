@@ -58,11 +58,12 @@
       row-key="id"
       hide-bottom
       :pagination="{ rowsPerPage: 1000 }"
+      style="width: 100%;"
       :wrap-cells="true"
       dense
     >
       <template v-slot:body-cell-actions="props">
-        <q-td :props="props">
+        <q-td :props="props" style="overflow-wrap: break-word;">
           <q-btn
             round
             icon="done"
