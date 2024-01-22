@@ -58,12 +58,12 @@
       row-key="id"
       hide-bottom
       :pagination="{ rowsPerPage: 1000 }"
-      style="width: 100%;"
+      style="width: 100%"
       :wrap-cells="true"
       dense
     >
       <template v-slot:body-cell-actions="props">
-        <q-td :props="props" style="overflow-wrap: break-word;">
+        <q-td :props="props" style="overflow-wrap: break-word">
           <q-btn
             round
             icon="done"
@@ -257,7 +257,7 @@ async function makeTaskDone(task: Task) {
       type: "negative",
       timeout: 5000,
     });
-    await updateLoginStatus(); // in casae of log out
+    await logout();
     return;
   }
   await loadTasks();
@@ -273,7 +273,7 @@ async function ignoreTask(task: Task) {
       type: "negative",
       timeout: 5000,
     });
-    await updateLoginStatus(); // in casae of log out
+    await logout();
     return;
   }
   await loadTasks();
