@@ -33,7 +33,7 @@
           outline
           :label="$t('activeness.login.loginButton')"
           :loading="loginLoading"
-          :disable="loginLoading"
+          :disable="loginLoading || !emailInput || !passwordInput"
           @click="login"
         />
       </q-card-actions>
@@ -41,6 +41,14 @@
   </div>
 
   <div v-if="!loginRequired && !loadingAll" class="q-pa-md">
+    <div class="row q-mb-sm">
+      <div class="col-10"></div>
+      <div class="col-2">
+        <q-btn class="full-width" icon="logout" outline @click="logout">{{
+          $t("activeness.logoutButton")
+        }}</q-btn>
+      </div>
+    </div>
     <q-table
       :title="$t('activeness.tasksTable.title')"
       flat
@@ -50,6 +58,8 @@
       row-key="id"
       hide-bottom
       :pagination="{ rowsPerPage: 1000 }"
+      :wrap-cells="true"
+      dense
     >
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
@@ -65,11 +75,26 @@
             round
             icon="delete"
             color="negative"
-            class="q-ml-md"
+            class="q-mt-xs"
             :loading="taskActionLoading"
             :disable="taskActionLoading"
             @click="ignoreTask(props.row)"
           />
+        </q-td>
+      </template>
+
+      <template v-slot:body-cell-priority="props">
+        <q-td :props="props">
+          <q-icon
+            v-if="props.row.priority"
+            name="local_fire_department"
+            color="red"
+            size="md"
+          >
+            <q-tooltip>
+              {{ $t("activeness.tasksTable.priority") }}
+            </q-tooltip>
+          </q-icon>
         </q-td>
       </template>
     </q-table>
@@ -105,6 +130,10 @@ async function updateLoginStatus() {
   } finally {
     loadingAll.value = false;
   }
+
+  if (!loginRequired.value) {
+    await loadTasks();
+  }
 }
 
 const loginLoading = ref(false);
@@ -130,12 +159,25 @@ async function login() {
     await updateLoginStatus();
   } finally {
     loginLoading.value = false;
+    passwordInput.value = "";
   }
+}
+
+async function logout() {
+  await window.activenessAPI.logout();
+  await updateLoginStatus();
 }
 
 const columns = computed(
   () =>
     [
+      {
+        name: "priority",
+        label: "",
+        field: "priority",
+        align: "left",
+        sortable: false,
+      },
       {
         name: "id",
         label: $i18n.t("activeness.tasksTable.id"),
@@ -185,8 +227,20 @@ async function loadTasks() {
       type: "negative",
       timeout: 5000,
     });
+    await updateLoginStatus(); // in casae of log out
     return;
   }
+  // Sort bypriority flag
+  response.list.sort((a, b) => {
+    if (a.priority && !b.priority) {
+      return -1;
+    }
+    if (!a.priority && b.priority) {
+      return 1;
+    }
+    return 0;
+  });
+
   tasks.value = response.list;
 }
 
@@ -202,6 +256,7 @@ async function makeTaskDone(task: Task) {
       type: "negative",
       timeout: 5000,
     });
+    await updateLoginStatus(); // in casae of log out
     return;
   }
   await loadTasks();
@@ -217,6 +272,7 @@ async function ignoreTask(task: Task) {
       type: "negative",
       timeout: 5000,
     });
+    await updateLoginStatus(); // in casae of log out
     return;
   }
   await loadTasks();

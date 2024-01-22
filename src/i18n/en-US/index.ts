@@ -232,8 +232,8 @@ export default {
       title: "Activeness Login",
       email: "Email",
       password: "Password",
-      info: "Unfortunatelly, activeness requires additional login to be used. In future we will try to provide one login to all the IT Army services. If you dont know what is the Activeness or you dont have account, visit https://activeness.social/",
-      loginButton: "Login",
+      info: "Unfortunatelly, activeness requires additional login to be used. In future we will try to provide one login to all the IT Army services. If you dont know what is the Activeness, visit https://activeness.social/",
+      loginButton: "Login / Register",
       failed: "Login failed. Check your credentials/network connection/activeness status and try again.",
     },
     tasksTable: {
@@ -242,9 +242,11 @@ export default {
       what: "What to do",
       link: "Link",
       description: "Description",
-      actions: "Actions"
+      actions: "Actions",
+      priority: "This task is priority. It is very important to do it first.",
     },
 
+    logoutButton: "Logout",
     suggesttarget: "Suggest my target",
 
     notifyTaskLoadFailed: "Failed to load tasks. Error: {error}",

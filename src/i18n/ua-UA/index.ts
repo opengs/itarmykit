@@ -233,8 +233,8 @@ export default {
       title: "Activeness Login",
       email: "Емейл",
       password: "Пароль",
-      info: "Нажаль, activeness потребує додаткового логіну. В майбутньому ми надамо єдиний логін для всіх сервісів IT Army. Якщо ви не знаєте що таке Activeness або немаєте акаунта, то відвідайте https://activeness.social/",
-      loginButton: "Залогуватися",
+      info: "Нажаль, activeness потребує додаткового логіну. В майбутньому ми надамо єдиний логін для всіх сервісів IT Army. Якщо ви не знаєте що таке Activeness, то відвідайте https://activeness.social/",
+      loginButton: "Залогуватися / Зареєструватися",
       failed: "Не вдалося залогуватися. Перевірте ваші дані/підключення дл мережі/статус activeness і попробуйте ща раз.",
     },
     tasksTable: {
@@ -243,9 +243,11 @@ export default {
       what: "Що зробити",
       link: "Посилання",
       description: "Опис",
-      actions: "Дії"
+      actions: "Дії",
+      priority: "Вогник-вогник, жарко-жарко. Це завдання в високому приоритеті і є дуже важливим.",
     },
 
+    logoutButton: "Вийти",
     suggesttarget: "Запропонувати ціль/завдання",
 
     notifyTaskLoadFailed: "Не вдалося завантажити завдання. Помилка: {error}",
