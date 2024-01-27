@@ -173,17 +173,17 @@ export class MHDDOSProxy extends Module<Config> {
             value = value.toLowerCase()
             
             if (value.includes("kb")) {
-              return Number(value.split(" ")[0]) * 128
+              return Number(value.split(" ")[0]) * 125
             } else if (value.includes("mb")) {
-              return Number(value.split(" ")[0]) * 128 * 1024
+              return Number(value.split(" ")[0]) * 125 * 1024
             } else if (value.includes("gb")) {
-              return Number(value.split(" ")[0]) * 128 * 1024 * 1024
+              return Number(value.split(" ")[0]) * 125 * 1024 * 1024
             } else if (value.includes("tb")) {
-              return Number(value.split(" ")[0]) * 128 * 1024 * 1024 * 1024
+              return Number(value.split(" ")[0]) * 125 * 1024 * 1024 * 1024
             } else if (value.includes("pb")) {
-              return Number(value.split(" ")[0]) * 128 * 1024 * 1024 * 1024 * 1024
+              return Number(value.split(" ")[0]) * 125 * 1024 * 1024 * 1024 * 1024
             } else if (value.includes("eb")) {
-              return Number(value.split(" ")[0]) * 128 * 1024 * 1024 * 1024 * 1024 * 1024
+              return Number(value.split(" ")[0]) * 125 * 1024 * 1024 * 1024 * 1024 * 1024
             } else {
               return Number(value.split(" ")[0])
             }
