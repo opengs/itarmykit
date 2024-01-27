@@ -12,7 +12,7 @@ export class ItArmyClient {
         if (apiKey === '') {
             return {
                 success: false,
-                error: 'API key is empty',
+                error: 'EMPTY_API_KEY',
                 errorType: 'REQUEST_FAILED',
                 data: undefined as unknown as UserStats
             }

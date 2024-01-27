@@ -210,7 +210,8 @@ export default {
 	latest: "Поточна",
   activeness: {
     score: "Бали Activeness (BETA)",
-  }
+  },
+  itarmyAPIKeyEmpty: "Ви не вказали IT Army ID. Це не критично, але необхідно для відображення загальної статистики. Ви можете вказати його в налаштуваннях.",
   },
 
   developers: {

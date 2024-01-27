@@ -22,6 +22,17 @@
           v-if="ITArmyNameLoadError != ''"
           ><q-tooltip> {{ ITArmyNameLoadError }} </q-tooltip></q-icon
         >
+
+        <q-icon
+          name="info"
+          size="20px"
+          style="margin-bottom: 2px"
+          color="info"
+          v-if="ITArmyAPIKeyEmpty"
+          ><q-tooltip>
+            {{ $t("dashboard.itarmyAPIKeyEmpty") }}
+          </q-tooltip></q-icon
+        >
       </div>
       <div class="text-subtitle1 text-bold">{{ name }} {{ uuid }}</div>
     </div>
@@ -36,14 +47,22 @@ const name = ref("");
 const uuid = ref("NOT CONFIGURED");
 
 const ITArmyNameLoadError = ref("");
+const ITArmyAPIKeyEmpty = ref(false);
 
 async function loadItArmyName() {
   const response = await window.itArmyAPI.getStats();
   if (response.success) {
     name.value = response.data.login;
+    ITArmyAPIKeyEmpty.value = false;
     ITArmyNameLoadError.value = "";
   } else {
-    ITArmyNameLoadError.value = JSON.stringify(response);
+    if (response.error === "EMPTY_API_KEY") {
+      ITArmyAPIKeyEmpty.value = true;
+      ITArmyNameLoadError.value = "";
+    } else {
+      ITArmyAPIKeyEmpty.value = false;
+      ITArmyNameLoadError.value = JSON.stringify(response);
+    }
   }
 }
 

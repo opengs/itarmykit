@@ -125,6 +125,7 @@ const chartOptions = computed(() => {
 
 async function loadInitialState() {
   const state = await window.executionEngineAPI.getState();
+  state.statistics.sort((a, b) => a.timestamp - b.timestamp);
   seriesData.value[0].data = state.statistics.map((s) => [
     s.timestamp,
     Number(s.currentSendBitrate.toFixed()),

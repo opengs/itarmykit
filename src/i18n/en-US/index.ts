@@ -209,7 +209,8 @@ export default {
 	latest: "Current",
   activeness: {
     score: "Activeness Score (BETA)",
-  }
+  },
+  itarmyAPIKeyEmpty: "IT Army ID is not specified. It is not critical, but it is necessary for displaying general statistics. You can specify it in the settings.",
   },
 
   developers: {
