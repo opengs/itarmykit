@@ -102,6 +102,20 @@
           </q-avatar>
           <q-tooltip>КіберПаляниця Wiki</q-tooltip>
         </q-btn>
+
+        <q-btn
+          class="q-pa-sm q-ma-xs"
+          @click="openExternalLink('https://t.me/studentcyberarmy')"
+        >
+          <q-avatar
+            style="outline: 2px solid #555"
+            class="cursor-pointer"
+            square
+          >
+            <img src="./SKKO.jpg" />
+          </q-avatar>
+          <q-tooltip>СККО</q-tooltip>
+        </q-btn>
       </q-card-section>
 
       <div class="text-h5">{{ $t("developers.contacts") }}</div>
