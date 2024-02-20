@@ -57,6 +57,51 @@
           </q-avatar>
           <q-tooltip> Slamy's (developer) cat </q-tooltip>
         </q-btn>
+
+        <q-btn
+          class="q-pa-sm q-ma-xs"
+          @click="openExternalLink('https://t.me/+63wu1QC3KM04ZTJi')"
+        >
+          <q-avatar
+            style="outline: 2px solid #555"
+            class="cursor-pointer"
+            square
+          >
+            <img src="./kiberkozak.png" />
+          </q-avatar>
+          <q-tooltip>Кіберкозаки</q-tooltip>
+        </q-btn>
+
+        <q-btn
+          class="q-pa-sm q-ma-xs"
+          @click="openExternalLink('https://t.me/+U1y6GhTcu701YWVi')"
+        >
+          <q-avatar
+            style="outline: 2px solid #555"
+            class="cursor-pointer"
+            square
+          >
+            <img src="./kiberpalanica1.jpg" />
+          </q-avatar>
+          <q-tooltip
+            >КіберПаляниця. Працює з перших днів повномасштабного вторгнення,
+            Кожен день - це нова битва</q-tooltip
+          >
+        </q-btn>
+
+        <q-btn
+          class="q-pa-sm q-ma-xs"
+          @click="openExternalLink('https://cyberarmy.com.ua/')"
+        >
+          <q-avatar
+            style="outline: 2px solid #555"
+            class="cursor-pointer"
+            square
+          >
+            <img src="./kiberpalanica2.jpg" />
+          </q-avatar>
+          <q-tooltip>КіберПаляниця Wiki</q-tooltip>
+        </q-btn>
       </q-card-section>
 
       <div class="text-h5">{{ $t("developers.contacts") }}</div>
