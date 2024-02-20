@@ -216,7 +216,7 @@ export default {
   developers: {
     shieldSubtitle: "We are an organization that has been operating since February 25, 2022 - the second day of moscovia's full-scale invasion of Ukraine.",
     shieldMore: "Learn more about us and our operations:",
-    partners: "Partners",
+    partners: "Colleges and Partners",
     contacts: "Contacts",
     contactP1: "For questions about the application, first, ask in the IT Army chat:",
     contactP1_1: "or, as a last resort, on our channel",
