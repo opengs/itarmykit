@@ -5,7 +5,7 @@ export default {
   layout: {
     dashboard: 'Main',
     modules: 'DDOS Modules',
-    activeness: 'Activeness (BETA)',
+    activeness: 'Activeness',
     settings: 'Settings',
     top: 'Rankings',
     developers: 'Developers',
@@ -208,7 +208,7 @@ export default {
 	updates: "KIT Version",
 	latest: "Current",
   activeness: {
-    score: "Activeness Score (BETA)",
+    score: "Activeness Score",
   },
   itarmyAPIKeyEmpty: "IT Army ID is not specified. It is not critical, but it is necessary for displaying general statistics. You can specify it in the settings.",
   },

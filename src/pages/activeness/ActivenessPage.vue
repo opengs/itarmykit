@@ -84,6 +84,19 @@
         </q-td>
       </template>
 
+      <template v-slot:body-cell-link="props">
+        <q-td :props="props" style="overflow-wrap: break-word">
+          <a
+            :href="props.row.link"
+            target="_blank"
+            rel="noopener noreferrer"
+            @click.prevent="openTaskLink(props.row)"
+          >
+            {{ props.row.link }}
+          </a>
+        </q-td>
+      </template>
+
       <template v-slot:body-cell-priority="props">
         <q-td :props="props">
           <q-icon
@@ -277,6 +290,10 @@ async function ignoreTask(task: Task) {
     return;
   }
   await loadTasks();
+}
+
+async function openTaskLink(task: Task) {
+  await window.helpersAPI.openURLInBrowser(task.link);
 }
 
 onMounted(async () => {

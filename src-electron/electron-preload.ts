@@ -289,3 +289,18 @@ const itArmyAPI = {
 }
 
 contextBridge.exposeInMainWorld('itArmyAPI', itArmyAPI)
+
+
+declare global {
+  interface Window {
+      helpersAPI: typeof helpersAPI
+  }
+}
+
+const helpersAPI = {
+  async openURLInBrowser (url: string): Promise<void> {
+    await ipcRenderer.invoke('helpers:openURLInBrowser', url)
+  },
+}
+
+contextBridge.exposeInMainWorld('helpersAPI', helpersAPI)

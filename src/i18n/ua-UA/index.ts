@@ -5,7 +5,7 @@ export default {
   layout: {
     dashboard: 'Головна',
     modules: 'DDOS модулі',
-    activeness: 'Activeness (BETA)',
+    activeness: 'Activeness',
     settings: 'Налаштування',
     top: 'Рейтинги',
     developers: 'Розробники',
@@ -209,7 +209,7 @@ export default {
 	updates: "Версія KIT",
 	latest: "Поточна",
   activeness: {
-    score: "Бали Activeness (BETA)",
+    score: "Бали Activeness",
   },
   itarmyAPIKeyEmpty: "Ви не вказали IT Army ID. Це не критично, але необхідно для відображення загальної статистики. Ви можете вказати його в налаштуваннях.",
   },
