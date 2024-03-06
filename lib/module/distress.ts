@@ -2,8 +2,12 @@ import { Module, Version, InstallProgress, InstallationTarget, BaseConfig, Modul
 import { getCPUArchitecture } from './archLib'
 
 export interface Config extends BaseConfig {
-  // Enable UDP flood or not
-  directUDPFailover: boolean;
+  // Disable UDP flood or not
+  DisableUDPFlood: boolean;
+  // Enable ICMP flood or not
+  EnableICMPFlood: boolean;
+  // Enable PACKET flood or not
+  EnablePACKETFlood: boolean;
   // Number of concurrent tasks
   concurrency: number;
   // Number of Tor connections
@@ -31,7 +35,9 @@ export class Distress extends Module<Config> {
       autoUpdate: true,
       executableArguments: [],
       concurrency: 4096,
-      directUDPFailover: false,
+      DisableUDPFlood: false,
+      EnableICMPFlood: false,
+      EnablePACKETFlood: false,
       useMyIP: 0,
       useTor: 0
     }
@@ -72,7 +78,7 @@ export class Distress extends Module<Config> {
     if (settings.itarmy.uuid !== '') {
       args.push('--user-id', settings.itarmy.uuid)
     }
-    args.push('--disable-auto-update', '--json-logs')
+    args.push('--json-logs')
     if (config.concurrency > 0) {
       args.push('--concurrency', config.concurrency.toString())
     }
@@ -82,8 +88,14 @@ export class Distress extends Module<Config> {
     if (config.useMyIP > 0) {
       args.push('--use-my-ip', config.useMyIP.toString())
     }
-    if (config.useMyIP > 0 && config.directUDPFailover) {
-      args.push('--direct-udp-mixed-flood')
+    if (config.useMyIP > 0 && config.DisableUDPFlood) {
+      args.push('--disable-udp-flood')
+    }
+    if (config.useMyIP > 0 && config.EnableICMPFlood) {
+      args.push('--enable-icmp-flood')
+    }
+    if (config.useMyIP > 0 && config.EnablePACKETFlood) {
+      args.push('--enable-packet-flood')
     }
     args.push('--source', "itarmykit")
     args.push(...config.executableArguments.filter(arg => arg !== ''))

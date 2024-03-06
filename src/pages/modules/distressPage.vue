@@ -51,13 +51,34 @@
             </div>
             <q-item class="row q-pa-none q-pt-sm">
                 <q-item-section>
-                <q-item-label>{{ $t('modules.distress.udpFlood') }}</q-item-label>
-                <q-item-label caption><b>{{ $t('modules.distress.udpFloodDescription') }}</b></q-item-label>
+                <q-item-label>{{ $t('modules.distress.UDPFlood') }}</q-item-label>
+                <q-item-label caption><b>{{ $t('modules.distress.UDPFloodDescription') }}</b></q-item-label>
                 </q-item-section>
                 <q-item-section side top>
-                <q-toggle color="primary" v-model="configAllowUdpFlood" @update:model-value="setConfigDebouced"/>
+                <q-toggle color="primary" v-model="configDisableUDPFlood" @update:model-value="setConfigDebouced"/>
                 </q-item-section>
             </q-item>
+			
+            <q-item class="row q-pa-none q-pt-sm">
+                <q-item-section>
+                <q-item-label>{{ $t('modules.distress.ICMPFlood') }}</q-item-label>
+                <q-item-label caption><b>{{ $t('modules.distress.ICMPFloodDescription') }}</b></q-item-label>
+                </q-item-section>
+                <q-item-section side top>
+                <q-toggle color="primary" v-model="configEnableICMPFlood" @update:model-value="setConfigDebouced"/>
+                </q-item-section>
+            </q-item>
+			
+            <q-item class="row q-pa-none q-pt-sm">
+                <q-item-section>
+                <q-item-label>{{ $t('modules.distress.PACKETFlood') }}</q-item-label>
+                <q-item-label caption><b>{{ $t('modules.distress.PACKETFloodDescription') }}</b></q-item-label>
+                </q-item-section>
+                <q-item-section side top>
+                <q-toggle color="primary" v-model="configEnablePACKETFlood" @update:model-value="setConfigDebouced"/>
+                </q-item-section>
+            </q-item>
+			
             <div class="row q-pt-sm">
                 <div class="col-12 text-subtitle1">{{ $t('modules.available.arguments') }}</div>
                 <q-input outlined v-model="configExecutableArguments" dense class="col-12" hint="" :prefix="configExecutableArgumentsPrefix" @update:model-value="setConfigDebouced"/>
@@ -85,13 +106,15 @@ import { Config } from 'lib/module/distress'
 
 const configSelectedVersion = ref(null as string | null)
 const configAutoUpdate = ref(true)
-const configAllowUdpFlood = ref(true)
+const configDisableUDPFlood = ref(false)
+const configEnableICMPFlood = ref(false)
+const configEnablePACKETFlood = ref(false)
 const configConcurrency = ref(4096)
 const configUseMyIP = ref(0)
 const configTorConnections = ref(0)
 const configExecutableArguments = ref("")
 const configExecutableArgumentsPrefix = computed(() => {
-    return `--disable-auto-update --json-logs --concurrency ${configConcurrency.value}` + (configUseMyIP.value != 0 ? ` --use-my-ip ${configUseMyIP.value}` : "") + (configTorConnections.value != 0 ? ` --use-tor ${configTorConnections.value}` : "") + (configAllowUdpFlood.value ? ` --direct-udp-mixed-flood` : "")
+    return `--json-logs --concurrency ${configConcurrency.value}` + (configUseMyIP.value != 0 ? ` --use-my-ip ${configUseMyIP.value}` : "") + (configTorConnections.value != 0 ? ` --use-tor ${configTorConnections.value}` : "") + (configDisableUDPFlood.value ? ` --disable-udp-flood` : "") + (configEnableICMPFlood.value ? ` --enable-icmp-flood` : "") + (configEnablePACKETFlood.value ? ` --enable-packet-flood` : "")
 })
 
 const installedVersions = ref([] as string[])
@@ -100,7 +123,9 @@ async function loadConfig() {
     const config = await window.modulesAPI.getConfig<Config>('DISTRESS')
     configSelectedVersion.value = config.selectedVersion || null
     configAutoUpdate.value = config.autoUpdate
-    configAllowUdpFlood.value = config.directUDPFailover
+    configDisableUDPFlood.value = config.DisableUDPFlood
+    configEnableICMPFlood.value = config.EnableICMPFlood
+    configEnablePACKETFlood.value = config.EnablePACKETFlood
     configConcurrency.value = Number(config.concurrency)
     configUseMyIP.value = Number(config.useMyIP)
     configTorConnections.value = Number(config.useTor)
@@ -116,7 +141,9 @@ async function setConfig() {
         executableArguments: configExecutableArguments.value.split(" "),
         useMyIP: Number(configUseMyIP.value),
         useTor: Number(configTorConnections.value),
-        directUDPFailover: configAllowUdpFlood.value,
+        DisableUDPFlood: configDisableUDPFlood.value,
+        EnableICMPFlood: configEnableICMPFlood.value,
+        EnablePACKETFlood: configEnablePACKETFlood.value,
     } as Config
 
     await window.modulesAPI.setConfig<Config>('DISTRESS', config)

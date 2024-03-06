@@ -67,8 +67,12 @@ export default {
       torConnectionsDescription: "Використовувати підключення Tor для атаки",
       useMyIp: "Задіяти мій IP",
       useMyIpDescription: "Відсоток використання власної IP-адреси або VPN, якщо налаштовано",
-      udpFlood: "UDP-флуд",
-      udpFloodDescription: "Дозволити атаку UDP-флуд. Працює, якщо ви використовуєте свій власний IP або VPN"
+      UDPFlood: "Вимкнути UDP-флуд",
+      UDPFloodDescription: "Заборонити атаку UDP-флуд. Працює, якщо ви використовуєте свій власний IP",
+      ICMPFlood: "Активувати ICMP-флуд",
+      ICMPFloodDescription: "Дозволити атаку ICMP-флуд. Працює, якщо ви використовуєте свій власний IP",
+      PACKETFlood: "Активувати PACKET-флуд",
+      PACKETFloodDescription: "Не працює на ОС Windows! Дозволити атаку PACKET-флуд. Працює, якщо ви використовуєте свій власний IP"
     }
   },
   top: {
