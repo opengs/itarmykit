@@ -272,7 +272,7 @@ const configTorConnections = ref(0);
 const configExecutableArguments = ref("");
 const configExecutableArgumentsPrefix = computed(() => {
   return (
-    `--disable-auto-update --json-logs --concurrency ${configConcurrency.value}` +
+    `--json-logs --concurrency ${configConcurrency.value}` +
     (configUseMyIP.value != 0 ? ` --use-my-ip ${configUseMyIP.value}` : "") +
     (configTorConnections.value != 0
       ? ` --use-tor ${configTorConnections.value}`

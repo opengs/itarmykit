@@ -78,7 +78,7 @@ export class Distress extends Module<Config> {
     if (settings.itarmy.uuid !== '') {
       args.push('--user-id', settings.itarmy.uuid)
     }
-    args.push('--disable-auto-update', '--json-logs')
+    args.push('--child', '--json-logs')
     if (config.concurrency > 0) {
       args.push('--concurrency', config.concurrency.toString())
     }
