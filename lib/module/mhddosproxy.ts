@@ -142,7 +142,7 @@ export class MHDDOSProxy extends Module<Config> {
     // Process statistics
     let lastStatisticsEvent = null as Date | null
     let statisticsBuffer = ''
-    handler.stderr.on('data', (data: Buffer) => {
+    handler.stdout.on('data', (data: Buffer) => {
       statisticsBuffer += data.toString()
 
       const lines = statisticsBuffer.trimEnd().split('\n')

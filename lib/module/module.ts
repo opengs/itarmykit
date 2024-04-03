@@ -8,6 +8,7 @@ import decompress from 'decompress'
 import { v4 as uuid4 } from 'uuid'
 import { Settings } from '../../src-electron/handlers/settings'
 import { getCPUArchitecture } from './archLib'
+import { ca } from 'app/dist/electron/UnPackaged/assets/index.3949846e'
 
 export type ModuleName = 'DB1000N' | 'DISTRESS' | 'MHDDOS_PROXY'
 
@@ -115,6 +116,8 @@ export abstract class Module<ConfigType extends BaseConfig> {
 
     private _config?: ConfigType
     protected abstract get defaultConfig(): ConfigType
+
+    private autoupdateInterval?: NodeJS.Timeout
 
     protected async getInstallationDirectory () {
       const settingsData = await this.settings.getData()  
@@ -366,6 +369,14 @@ export abstract class Module<ConfigType extends BaseConfig> {
         config = await this.getConfig()
       }
 
+      this.autoupdateInterval = setInterval(async () => {
+        const updateConfig = await this.getConfig()
+        if (updateConfig.autoUpdate && await this.installLatestVersion() && this.isRunning) {
+          await this.stop()
+          await this.start()
+        }
+      }, 1000 * 60 * 30) // Try to autoupdate once in 30 minutes
+
       const installDirectory = await this.getInstallationDirectory()
 
       if (config.selectedVersion === undefined) {
@@ -401,6 +412,9 @@ export abstract class Module<ConfigType extends BaseConfig> {
     }
 
     protected async stopExecutable (): Promise<void> {
+      clearInterval(this.autoupdateInterval)
+      this.autoupdateInterval = undefined
+
       const handler = this.executedProcessHandler // Copy handler, because other async task can chenage it in the meantime
 
       await new Promise<void>((resolve, reject) => {
