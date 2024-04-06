@@ -1,6 +1,6 @@
 {
   "name": "itarmykit",
-  "version": "1.3.7",
+  "version": "1.3.8",
   "description": "IT Army Kit",
   "productName": "IT Army Kit",
   "author": {
@@ -9,7 +9,7 @@
     "url": "https://github.com/opengs"
   },
   "private": false,
-  "license": "GPLv3",
+  "license": "GPL-3.0",
   "repository": "https://github.com/opengs/itarmykit",
   "homepage": "https://itarmy.com.ua",
   "scripts": {
@@ -21,6 +21,7 @@
   "dependencies": {
     "@quasar/extras": "^1.16.4",
     "apexcharts": "^3.42.0",
+    "async-lock": "^1.4.1",
     "decompress": "^4.2.1",
     "electron-fetch": "^1.9.1",
     "electron-updater": "^6.1.4",

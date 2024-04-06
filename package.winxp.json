@@ -1,6 +1,6 @@
 {
   "name": "itarmykit",
-  "version": "1.3.4",
+  "version": "1.3.8",
   "description": "IT Army Kit",
   "productName": "IT Army Kit",
   "author": {
@@ -9,18 +9,19 @@
     "url": "https://github.com/opengs"
   },
   "private": false,
-  "license": "GPLv3",
-  "repository": "https://github.com/opengs/itarmykit-xp",
+  "license": "GPL-3.0",
+  "repository": "https://github.com/opengs/itarmykit",
   "homepage": "https://itarmy.com.ua",
   "scripts": {
     "lint": "eslint --ext .js,.ts,.vue ./",
     "lintfix": "eslint --fix --ext .js,.ts,.vue ./",
-    "dev": "quasar dev",
+    "dev": "quasar dev -m electron",
     "build": "quasar build"
   },
   "dependencies": {
     "@quasar/extras": "^1.16.4",
     "apexcharts": "^3.42.0",
+    "async-lock": "^1.4.1",
     "decompress": "^4.2.1",
     "electron-fetch": "^1.9.1",
     "electron-updater": "^6.1.4",
@@ -42,7 +43,7 @@
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
     "autoprefixer": "^10.4.2",
-    "electron": "^22.3.25",
+    "electron": "^26.2.0",
     "electron-builder": "^24.3.0",
     "electron-packager": "^17.1.1",
     "eslint": "^8.10.0",
