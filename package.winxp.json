@@ -10,7 +10,7 @@
   },
   "private": false,
   "license": "GPL-3.0",
-  "repository": "https://github.com/opengs/itarmykit",
+  "repository": "https://github.com/opengs/itarmykit-xp",
   "homepage": "https://itarmy.com.ua",
   "scripts": {
     "lint": "eslint --ext .js,.ts,.vue ./",
@@ -21,7 +21,7 @@
   "dependencies": {
     "@quasar/extras": "^1.16.4",
     "apexcharts": "^3.42.0",
-    "async-lock": "^1.4.1",
+    "async-mutex": "^0.5.0",
     "decompress": "^4.2.1",
     "electron-fetch": "^1.9.1",
     "electron-updater": "^6.1.4",
@@ -43,7 +43,7 @@
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
     "autoprefixer": "^10.4.2",
-    "electron": "^26.2.0",
+    "electron": "^22.3.25",
     "electron-builder": "^24.3.0",
     "electron-packager": "^17.1.1",
     "eslint": "^8.10.0",
