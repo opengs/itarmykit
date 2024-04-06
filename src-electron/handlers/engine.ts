@@ -194,6 +194,14 @@ export class ExecutionEngine {
         }
     }
 
+    public async setModuleToRun(module?: ModuleName) {
+        await this.stateLock.runExclusive(async () => {
+            const config = await this.getState()
+            config.moduleToRun = module
+            await this.setState(config)
+        })
+    }
+
     public async startModule() {
         if (this.runningModule != null) {
             throw new Error(`Module ${this.runningModule.name} is already running`)
@@ -336,9 +344,7 @@ export function handleExecutionEngine(modules: Array<Distress | DB1000N | MHDDOS
     })
 
     ipcMain.handle('executionEngine:setModuleToRun', async (_e, module?: ModuleName) => {
-        const state = await engine.getState()
-        state.moduleToRun = module
-        await engine.setState(state)
+        await engine.setModuleToRun(module)
     })
 
     ipcMain.handle('executionEngine:listenForExecutionLog', async (e) => {
