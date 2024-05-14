@@ -1,4 +1,4 @@
-import { app, BrowserWindow, nativeTheme, nativeImage, ipcMain } from 'electron'
+import { app, BrowserWindow, shell, nativeTheme, nativeImage, ipcMain } from 'electron'
 import path from 'path'
 import os from 'os'
 
@@ -59,6 +59,11 @@ function createWindow () {
   mainWindow.on('closed', () => {
     mainWindow = undefined
   })
+
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+      shell.openExternal(url);
+      return { action: 'deny' };
+  });
 
   handle(mainWindow)
 }
