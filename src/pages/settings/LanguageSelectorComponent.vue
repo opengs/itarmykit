@@ -45,6 +45,10 @@ const languages: Language[] = [
     symbol: 'en-US'
   },
   {
+    name: 'Deutsch',
+    symbol: 'de-DE'
+  },
+  {
     name: "Московский",
     symbol: 'ru-RU'
   }
@@ -59,7 +63,7 @@ async function onLanguageSelected(lang: Language) {
     await loadSavedLanguage()
     return
   }
-
+  
   i18n.locale.value = language.value.symbol
   await window.settingsAPI.system.setLanguage(language.value.symbol as unknown as "en-US")
 }
