@@ -14,15 +14,26 @@
       <div class="text-caption text-uppercase text-bold text-grey">
         {{ $t("dashboard.activeness.score") }}
       </div>
-      <div class="text-subtitle1 text-bold">{{ score }}</div>
+      <div :class="['text-subtitle1', 'text-bold', scoreColorClass]">{{ score }}</div>
     </div>
   </q-card>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from 'vue';
 
 const score = ref(0);
+
+const scoreColorClass = computed(() => {
+  if (score.value > 75) {
+    return 'text-green';
+  } else if (score.value > 50) {
+    return 'text-yellow';
+  } else {
+    return 'text-red';
+  }
+});
+
 async function loadActivenessScore() {
   const response = await window.activenessAPI.getMyStats();
   score.value = response.score;
