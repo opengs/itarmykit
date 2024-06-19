@@ -1,16 +1,27 @@
 <template>
-    <q-scroll-area ref="scroll" outlined style="height: 200px; max-height: 300px;" class="row q-mt-sm">
-        <pre>{{ log }}</pre>
-    </q-scroll-area>
+  <q-scroll-area ref="scroll" outlined style="height: 200px; max-height: 300px;" class="row q-mt-sm">
+    <pre v-html="formattedLog"></pre>
+  </q-scroll-area>
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref, computed } from 'vue'
 import { IpcRendererEvent } from 'electron';
 import { QScrollArea } from 'quasar';
 
 const log = ref("")
 const scroll = ref<QScrollArea>()
+
+const formattedLog = computed(() => {
+    return log.value.split('\n').map((entry) => {
+        if (entry.includes('error')) {
+            return `<span style="color: red;">${entry}</span>`;
+        } else if (entry.includes('warning')) {
+            return `<span style="color: yellow;">${entry}</span>`;
+        }
+        return entry;
+    }).join('\n');
+});
 
 async function loadState() {
     const executionEngineState = await window.executionEngineAPI.getState()
