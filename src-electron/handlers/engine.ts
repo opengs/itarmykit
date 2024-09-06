@@ -35,6 +35,7 @@ export interface State {
 
 export class ExecutionEngine {
     private static stateFilePath = path.join(app.getPath('appData'), 'UACyberShield', 'itarmykit', 'engine.state.json')
+    private static stateFilePathShadow = path.join(app.getPath('appData'), 'UACyberShield', 'itarmykit', 'engine.state.json-shadow') // some sort of "write ahead" to fix issue with electricity shutdowns
 
     private modules: Array<Distress | DB1000N | MHDDOSProxy> = []
     private runningModule: Distress | DB1000N | MHDDOSProxy | null
@@ -253,8 +254,13 @@ export class ExecutionEngine {
                 const configString = await fs.promises.readFile(ExecutionEngine.stateFilePath, 'utf8')
                 this.state = JSON.parse(configString) as State
             } catch {
-                this.state = { run: false, executionLog: [] ,statistics: [], stdErr: [], stdOut: [], statisticsTotals: { totalBytesSent: 0 } } // To enable TS types
-                await this.setState(this.state)
+                try {
+                    const configString = await fs.promises.readFile(ExecutionEngine.stateFilePathShadow, 'utf8')
+                    this.state = JSON.parse(configString) as State
+                } catch {
+                    this.state = { run: false, executionLog: [] ,statistics: [], stdErr: [], stdOut: [], statisticsTotals: { totalBytesSent: 0 } } // To enable TS types
+                    await this.setState(this.state)
+                }
             }
         }
 
@@ -269,7 +275,13 @@ export class ExecutionEngine {
     private async setState(config: State) {
         this.state = config
         await fs.promises.mkdir(path.dirname(ExecutionEngine.stateFilePath), { recursive: true })
-        await fs.promises.writeFile(ExecutionEngine.stateFilePath, JSON.stringify(config))
+
+        await fs.promises.writeFile(ExecutionEngine.stateFilePathShadow, JSON.stringify(config))
+        try {
+            await fs.promises.unlink(ExecutionEngine.stateFilePath)
+        } catch {} // may not exist
+
+        await fs.promises.rename(ExecutionEngine.stateFilePathShadow, ExecutionEngine.stateFilePath)
     }
 
     private executionLogListeners = [] as Array<WebContents>
