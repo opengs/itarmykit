@@ -1,4 +1,4 @@
-import { join as joinPath }from 'path'
+import { join as joinPath, dirname }from 'path'
 import { app, ipcMain } from 'electron'
 import { promises as fsPromises, readFileSync, existsSync } from 'fs'
 import EventEmitter from 'events';
@@ -99,6 +99,7 @@ export class Settings {
     }
 
     async save() {
+        await fsPromises.mkdir(dirname(Settings.settingsFile), { recursive: true })
         await fsPromises.writeFile(Settings.settingsFile, JSON.stringify(this.data))
     }
 
