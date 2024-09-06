@@ -127,6 +127,7 @@ export class MHDDOSProxy extends Module<Config> {
     }
     args.push('--source', "itarmykit")
     args.push('--lang', lang)
+    args.push('--json-log')
     args.push(...config.executableArguments.filter(arg => arg !== ''))
 
     let filename = 'mhddos_proxy_linux'
@@ -142,7 +143,7 @@ export class MHDDOSProxy extends Module<Config> {
     // Process statistics
     let lastStatisticsEvent = null as Date | null
     let statisticsBuffer = ''
-    handler.stdout.on('data', (data: Buffer) => {
+    handler.stderr.on('data', (data: Buffer) => {
       statisticsBuffer += data.toString()
 
       const lines = statisticsBuffer.trimEnd().split('\n')
@@ -154,48 +155,14 @@ export class MHDDOSProxy extends Module<Config> {
 
       for (const line of lines) {
         try {
-          if (lang === 'ua') {
-            // Sample line: [19:26:37 - INFO] Потужність: 77.3%, З'єднань: 2, Пакети: 12.00/s, Трафік: 70.49 kBit/s
-            if (!line.includes("Трафік") || !line.includes("Пакети") || !line.includes("Потужність")) {
-              continue
-            }
-          } else {
-            // Sample line: [19:53:44 - INFO] Capacity: 19.7%, Connections: 5, Packets: 1.86k/s, Traffic: 2.27 MBit/s
-            if (!line.includes("Capacity") || !line.includes("Connections") || !line.includes("Packets")) {
-              continue
-            }
+          let currentSendBitrate = 0
+          try {
+            currentSendBitrate = Number(JSON.parse(line).bps)
+          } catch {
+            continue
           }
 
           let bytesSend = 0
-          let currentSendBitrate = 0
-
-          const convertToBytes = (value: string): number => {
-            value = value.toLowerCase()
-            
-            if (value.includes("kb")) {
-              return Number(value.split(" ")[0]) * 125
-            } else if (value.includes("mb")) {
-              return Number(value.split(" ")[0]) * 125 * 1024
-            } else if (value.includes("gb")) {
-              return Number(value.split(" ")[0]) * 125 * 1024 * 1024
-            } else if (value.includes("tb")) {
-              return Number(value.split(" ")[0]) * 125 * 1024 * 1024 * 1024
-            } else if (value.includes("pb")) {
-              return Number(value.split(" ")[0]) * 125 * 1024 * 1024 * 1024 * 1024
-            } else if (value.includes("eb")) {
-              return Number(value.split(" ")[0]) * 125 * 1024 * 1024 * 1024 * 1024 * 1024
-            } else {
-              return Number(value.split(" ")[0])
-            }
-          }
-
-          let msg = ""
-          if (lang === 'ua') {
-            msg = line.split("Трафік:")[1].trim()
-          } else {
-            msg = line.split("Traffic:")[1].trim()
-          }
-          currentSendBitrate = convertToBytes(msg)
 
           if (lastStatisticsEvent != null) {
             const now = new Date()
