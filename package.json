@@ -1,6 +1,6 @@
 {
   "name": "itarmykit",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "IT Army Kit",
   "productName": "IT Army Kit",
   "author": {
@@ -43,7 +43,7 @@
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
     "autoprefixer": "^10.4.2",
-    "electron": "^26.2.0",
+    "electron": "^32.0.2",
     "electron-builder": "^24.3.0",
     "electron-packager": "^17.1.1",
     "eslint": "^8.10.0",
