@@ -60,8 +60,14 @@ async function loadItArmyName() {
       ITArmyAPIKeyEmpty.value = true;
       ITArmyNameLoadError.value = "";
     } else {
-      ITArmyAPIKeyEmpty.value = false;
-      ITArmyNameLoadError.value = JSON.stringify(response);
+      if (response.error === "REQUEST_FAILED") {
+        // hide info
+        ITArmyAPIKeyEmpty.value = false;
+        ITArmyNameLoadError.value = "Request to remote server failed";
+      } else {
+        ITArmyAPIKeyEmpty.value = false;
+        ITArmyNameLoadError.value = JSON.stringify(response);
+      }
     }
   }
 }
