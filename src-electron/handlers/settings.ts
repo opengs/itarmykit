@@ -9,7 +9,7 @@ export interface SettingsData {
         autoUpdate: boolean
         hideInTray: boolean
         startOnBoot: boolean,
-        language: 'en-US' | 'ua-UA'
+        language: 'en-US' | 'ua-UA' | 'de-DE'
     },
     modules: {
         dataPath: string;
